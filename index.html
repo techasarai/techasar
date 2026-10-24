@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TECH ASAR</title>
+    <title>TECH ASAR PROJECT - Premium Glowing Paper Maker</title>
     <!-- 🌟 Fonts for exact matching -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Inter:wght@400;600;800&family=Shrikhand&display=swap" rel="stylesheet">
 
@@ -168,8 +168,8 @@
         .action-btn:hover { filter: brightness(1.15); }
         .action-btn.import-btn { background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 1)); color: white; border-color: #3b82f6; }
         .action-btn.saved-btn { background: linear-gradient(135deg, rgba(168, 85, 247, 0.8), rgba(147, 51, 234, 1)); color: white; border-color: #a855f7; }
-        .action-btn.math-btn { background: linear-gradient(135deg, rgba(245, 158, 11, 0.8), rgba(217, 119, 6, 1)); color: white; border-color: #f59e0b; }
         .action-btn.print-btn { background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border-color: var(--primary); }
+        .action-btn.word-btn { background: linear-gradient(135deg, rgba(37, 99, 235, 0.85), rgba(29, 78, 216, 1)); color: white; border-color: #2563eb; }
         .action-btn.two-paper-btn { background: linear-gradient(135deg, rgba(236, 72, 153, 0.8), rgba(219, 39, 119, 1)); color: white; border-color: #ec4899; }
         .action-btn.clear-btn { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.5); }
         body.day-theme .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
@@ -255,10 +255,6 @@
         .saved-info h4 { font-size: 18px; color: #38bdf8; margin-bottom: 6px; }
         .saved-info p { font-size: 13px; color: #94a3b8; }
         
-        .math-category h5 { color: #fcd34d; margin-bottom: 12px; font-size: 16px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center;}
-        .math-grid-box { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 10px; margin-bottom: 25px;}
-        .math-symbol-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #f8fafc; padding: 12px 0; border-radius: 10px; font-size: 18px; cursor: pointer; transition: all 0.1s ease; font-family: 'Cambria', serif; display: flex; justify-content: center; align-items: center; }
-        .math-symbol-btn:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); font-weight: bold; }
         
         /* Full Screen Select */
         .fs-select-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); z-index: 100000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; }
@@ -290,7 +286,7 @@
         @media print {
             body { background: white !important; padding: 0 !important; color: #000 !important; }
             .app-container > *:not(#paperPreview) { display: none !important; }
-            .app-header-ui, .editor-ui, .add-btn, .print-btn, .remove-btn, .section-box, .section-title, .top-action-bar, .modal-overlay, .format-tip-bar, .footer-ui, .fs-select-overlay, #mainLockScreen, #videoSplash { display: none !important; }
+            .app-header-ui, .editor-ui, .add-btn, .print-btn, .word-btn, .remove-btn, .section-box, .section-title, .top-action-bar, .modal-overlay, .format-tip-bar, .footer-ui, .fs-select-overlay, #mainLockScreen, #videoSplash { display: none !important; }
             /* 🚫 Hide Toast in PDF */
             .toast-msg { display: none !important; }
             
@@ -360,7 +356,7 @@
         <!-- 🎨 ORIGINAL BLUE/PURPLE THEME HEADER RESTORED -->
         <div class="app-header-ui">
             <div class="title-container">
-                <h2 class="tech-asar-title">TECH ASAR </h2>
+                <h2 class="tech-asar-title">TECH ASAR</h2>
             </div>
         </div>
 
@@ -378,22 +374,21 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                 Saved Vault <span id="savedCountBadge" style="background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:10px; font-size:12px; margin-left:5px;">0</span>
             </button>
-            <button class="action-btn math-btn" onclick="openMathModal()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 4 6 4 12 12 6 20 18 20"></polyline></svg>
-                Math & Symbols
-            </button>
-            <!-- SEPARATE SAVE BUTTON -->
-            <button class="action-btn" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-color: #10b981;" onclick="saveCurrentPaperToVault()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                Save Paper
-            </button>
             <button class="action-btn print-btn" onclick="generateAndPrintPaper()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 Export PDF
             </button>
+            <button class="action-btn word-btn" onclick="downloadPaperAsWord()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="8 13 10 18 12 14 14 18 16 13"></polyline></svg>
+                Word (.docx)
+            </button>
             <button class="action-btn two-paper-btn" onclick="generateAndPrintTwoPaper()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20" stroke-dasharray="4 4"></line></svg>
                 2x Print
+            </button>
+            <button class="action-btn word-btn" onclick="downloadPaperAsWord(true)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="8 13 10 18 12 14 14 18 16 13"></polyline></svg>
+                2x Word (.docx)
             </button>
             <button class="action-btn clear-btn" onclick="clearPaper()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -567,17 +562,6 @@
         </div>
     </div>
 
-    <!-- ✨ AI SYMBOL IMPORT MODAL -->
-    <div id="aiSymbolModal" class="modal-overlay" style="z-index: 110000;">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeAiSymbolModal()">✕</button>
-            <div class="modal-title">✨ AI Symbol Import (HTML)</div>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">AI से सिंबल का HTML कोड लिखवाकर यहाँ डालें। (उदाहरण: <code>&lt;button class="math-symbol-btn" onclick="copySymbol('∞')"&gt;∞&lt;/button&gt;</code>)</p>
-            <textarea id="aiSymbolImportText" rows="5" placeholder="AI से मिला HTML कोड यहाँ पेस्ट करें..."></textarea>
-            <button class="action-btn import-btn" style="width: 100%; justify-content: center; font-size: 16px; margin-top: 15px;" onclick="addImportedAISymbols()">💾 सिंबल जोड़ें (Add Symbols)</button>
-        </div>
-    </div>
-
     <!-- SAVED PAPERS MODAL -->
     <div id="savedPapersModal" class="modal-overlay">
         <div class="modal-content">
@@ -622,122 +606,6 @@
         </div>
     </div>
 
-    <!-- MATH SYMBOLS MODAL -->
-    <div id="mathModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 800px;">
-            <button class="modal-close" onclick="closeMathModal()">✕</button>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap:wrap; gap:10px;">
-                <div class="modal-title" style="margin:0;">📐 Math & HTML Symbols</div>
-                <button class="action-btn import-btn" style="padding: 8px 16px; font-size: 13px;" onclick="openAiSymbolModal()">
-                    ✨ Import Custom AI Symbol
-                </button>
-            </div>
-            
-            <!-- 🧪 FULL RESTORED SYMBOLS -->
-            <div class="math-category">
-                <h5>1. Chemistry & Subscripts (विज्ञान और सबस्क्रिप्ट - PbNO₃)</h5>
-                <div class="math-grid-box">
-                    <button class="math-symbol-btn" onclick="copySymbol('₀')">₀</button><button class="math-symbol-btn" onclick="copySymbol('₁')">₁</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('₂')">₂</button><button class="math-symbol-btn" onclick="copySymbol('₃')">₃</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('₄')">₄</button><button class="math-symbol-btn" onclick="copySymbol('₅')">₅</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('₆')">₆</button><button class="math-symbol-btn" onclick="copySymbol('₇')">₇</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('₈')">₈</button><button class="math-symbol-btn" onclick="copySymbol('₉')">₉</button>
-                </div>
-            </div>
-
-            <div class="math-category">
-                <h5>2. Important HTML Elements & Symbols (महत्वपूर्ण चिन्ह)</h5>
-                <div class="math-grid-box" style="grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));">
-                    <button class="math-symbol-btn html-symbol-btn" style="grid-column: span 2; font-size:14px;" onclick="copySymbol('&copy;')">© Copy</button>
-                    <button class="math-symbol-btn html-symbol-btn" style="grid-column: span 2; font-size:14px;" onclick="copySymbol('&reg;')">® Reg</button>
-                    <button class="math-symbol-btn html-symbol-btn" style="grid-column: span 2; font-size:14px;" onclick="copySymbol('<br>')">&lt;br&gt; Break</button>
-                </div>
-            </div>
-
-            <div class="math-category">
-                <h5>3. Basic Operators & Equalities (बेसिक ऑपरेटर)</h5>
-                <div class="math-grid-box">
-                    <button class="math-symbol-btn" onclick="copySymbol('+')">+</button><button class="math-symbol-btn" onclick="copySymbol('-')">-</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('×')">×</button><button class="math-symbol-btn" onclick="copySymbol('÷')">÷</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('±')">±</button><button class="math-symbol-btn" onclick="copySymbol('∓')">∓</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('=')">=</button><button class="math-symbol-btn" onclick="copySymbol('≠')">≠</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('≈')">≈</button><button class="math-symbol-btn" onclick="copySymbol('≅')">≅</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('≡')">≡</button><button class="math-symbol-btn" onclick="copySymbol('≤')">≤</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('≥')">≥</button><button class="math-symbol-btn" onclick="copySymbol('≪')">≪</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('≫')">≫</button><button class="math-symbol-btn" onclick="copySymbol('∝')">∝</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('~')">~</button><button class="math-symbol-btn" onclick="copySymbol('≃')">≃</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∼')">∼</button><button class="math-symbol-btn" onclick="copySymbol('≄')">≄</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('≆')">≆</button>
-                </div>
-            </div>
-
-            <div class="math-category">
-                <h5>4. Fractions, Roots & Powers (भिन्न, घात और करणी)</h5>
-                <div class="math-grid-box">
-                    <button class="math-symbol-btn" onclick="copySymbol('¼')">¼</button><button class="math-symbol-btn" onclick="copySymbol('½')">½</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('¾')">¾</button><button class="math-symbol-btn" onclick="copySymbol('⅓')">⅓</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⅔')">⅔</button><button class="math-symbol-btn" onclick="copySymbol('⅕')">⅕</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⅙')">⅙</button><button class="math-symbol-btn" onclick="copySymbol('⅛')">⅛</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⅑')">⅑</button><button class="math-symbol-btn" onclick="copySymbol('⅒')">⅒</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('√')">√</button><button class="math-symbol-btn" onclick="copySymbol('∛')">∛</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∜')">∜</button><button class="math-symbol-btn" onclick="copySymbol('x²')">x²</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('x³')">x³</button><button class="math-symbol-btn" onclick="copySymbol('xⁿ')">xⁿ</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('x₁')">x₁</button><button class="math-symbol-btn" onclick="copySymbol('x₂')">x₂</button>
-                </div>
-            </div>
-
-            <div class="math-category">
-                <h5>5. Calculus, Set Theory & Arrows (कैलकुलस, समुच्चय और तीर)</h5>
-                <div class="math-grid-box">
-                    <button class="math-symbol-btn" onclick="copySymbol('∑')">∑</button><button class="math-symbol-btn" onclick="copySymbol('∏')">∏</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∫')">∫</button><button class="math-symbol-btn" onclick="copySymbol('∬')">∬</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∮')">∮</button><button class="math-symbol-btn" onclick="copySymbol('∞')">∞</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∇')">∇</button><button class="math-symbol-btn" onclick="copySymbol('∂')">∂</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∈')">∈</button><button class="math-symbol-btn" onclick="copySymbol('∉')">∉</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⊂')">⊂</button><button class="math-symbol-btn" onclick="copySymbol('⊃')">⊃</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⊆')">⊆</button><button class="math-symbol-btn" onclick="copySymbol('⊇')">⊇</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∪')">∪</button><button class="math-symbol-btn" onclick="copySymbol('∩')">∩</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∅')">∅</button><button class="math-symbol-btn" onclick="copySymbol('∀')">∀</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∃')">∃</button><button class="math-symbol-btn" onclick="copySymbol('ℵ')">ℵ</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∴')">∴</button><button class="math-symbol-btn" onclick="copySymbol('∵')">∵</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∷')">∷</button><button class="math-symbol-btn" onclick="copySymbol('⇒')">⇒</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⇔')">⇔</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('→')">→</button><button class="math-symbol-btn" onclick="copySymbol('←')">←</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('↑')">↑</button><button class="math-symbol-btn" onclick="copySymbol('↓')">↓</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('↔')">↔</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⊕')">⊕</button><button class="math-symbol-btn" onclick="copySymbol('⊗')">⊗</button>
-                </div>
-            </div>
-
-            <div class="math-category">
-                <h5>6. Geometry, Physics & Greek (ज्यामिति एवं विज्ञान)</h5>
-                <div class="math-grid-box">
-                    <button class="math-symbol-btn" onclick="copySymbol('∆')">∆</button><button class="math-symbol-btn" onclick="copySymbol('∠')">∠</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∡')">∡</button><button class="math-symbol-btn" onclick="copySymbol('∟')">∟</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('∥')">∥</button><button class="math-symbol-btn" onclick="copySymbol('∦')">∦</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('⊥')">⊥</button><button class="math-symbol-btn" onclick="copySymbol('°')">°</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('℃')">℃</button><button class="math-symbol-btn" onclick="copySymbol('℉')">℉</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('Ω')">Ω</button><button class="math-symbol-btn" onclick="copySymbol('Å')">Å</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('ℏ')">ℏ</button><button class="math-symbol-btn" onclick="copySymbol('π')">π</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('α')">α</button><button class="math-symbol-btn" onclick="copySymbol('β')">β</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('γ')">γ</button><button class="math-symbol-btn" onclick="copySymbol('δ')">δ</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('θ')">θ</button><button class="math-symbol-btn" onclick="copySymbol('λ')">λ</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('μ')">μ</button><button class="math-symbol-btn" onclick="copySymbol('σ')">σ</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('τ')">τ</button><button class="math-symbol-btn" onclick="copySymbol('ω')">ω</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('Δ')">Δ</button><button class="math-symbol-btn" onclick="copySymbol('Σ')">Σ</button>
-                    <button class="math-symbol-btn" onclick="copySymbol('Ω')">Ω</button><button class="math-symbol-btn" onclick="copySymbol('Φ')">Φ</button>
-                </div>
-            </div>
-            
-            <!-- ✨ Custom AI Symbols Container -->
-            <div class="math-category" id="customAiSymbolCategory" style="display:none;">
-                <h5>7. Custom AI Symbols (आपके द्वारा इम्पोर्ट किये गए)</h5>
-                <div class="math-grid-box" id="customAiSymbolsGrid"></div>
-            </div>
-        </div>
-    </div>
-    
     <!-- FULL SCREEN SELECT -->
     <div id="fullScreenSelectModal" class="fs-select-overlay">
         <div class="fs-select-content">
@@ -809,11 +677,12 @@
                 vshorts: Array.from(document.querySelectorAll('#vshortContainer .normal-item-block')).map(b => ({ q: b.querySelector('.normal-text').value, m: b.querySelector('.normal-marks').value })),
                 shorts: Array.from(document.querySelectorAll('#shortContainer .normal-item-block')).map(b => ({ q: b.querySelector('.normal-text').value, m: b.querySelector('.normal-marks').value })),
                 longs: Array.from(document.querySelectorAll('#longContainer .normal-item-block')).map(b => ({ q: b.querySelector('.normal-text').value, m: b.querySelector('.normal-marks').value })),
-                customSymbols: document.getElementById('customAiSymbolsGrid').innerHTML,
                 currentPaperId: currentPaperId 
             };
             const selectStates = {}; document.querySelectorAll('.meta-grid select').forEach(sel => { selectStates[sel.id] = sel.innerHTML; }); data.selectStates = selectStates;
             localStorage.setItem('techAsarDraft', JSON.stringify(data));
+            const hasContent = [...data.mcqs, ...data.vshorts, ...data.shorts, ...data.longs].some(x => (x.q || '').trim());
+            if (hasContent) saveCurrentPaperToVault(true);
         }
 
         let autoSaveTimeout;
@@ -834,10 +703,6 @@
                         });
                         toggleTheme();
                     }
-                    if(data.customSymbols) {
-                        document.getElementById('customAiSymbolsGrid').innerHTML = data.customSymbols;
-                        document.getElementById('customAiSymbolCategory').style.display = 'block';
-                    }
                     document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
                     if(data.mcqs) data.mcqs.forEach(q => createMCQElement(q.q, q.a, q.b, q.c, q.d, q.m, q.layout));
                     if(data.vshorts) data.vshorts.forEach(q => createNormalElement('vshortContainer', 'अति लघु उत्तरीय', q.q, q.m));
@@ -848,11 +713,11 @@
             } return false;
         }
 
-        /* 🗂️ Fixed Manual Save to Vault (Prevents Duplicates) */
-        function saveCurrentPaperToVault() {
+        /* 🗂️ Auto Save to Vault (Prevents Duplicates) */
+        function saveCurrentPaperToVault(silent) {
             if(!currentPaperId) currentPaperId = 'paper_' + Date.now();
             
-            let paperData = { id: currentPaperId, title: `${document.getElementById('className').value} - ${document.getElementById('subjectName').value} (Manual Typ)`, date: new Date().toLocaleDateString('hi-IN'), mcqs: [], vshorts: [], shorts: [], longs: [] };
+            let paperData = { id: currentPaperId, title: `${document.getElementById('className').value} - ${document.getElementById('subjectName').value} (Auto Save)`, date: new Date().toLocaleDateString('hi-IN'), mcqs: [], vshorts: [], shorts: [], longs: [] };
             
             document.querySelectorAll('.mcq-item-block').forEach(b => { paperData.mcqs.push([ b.querySelector('.mcq-text').value, b.querySelector('.mcq-op-a').value, b.querySelector('.mcq-op-b').value, b.querySelector('.mcq-op-c').value, b.querySelector('.mcq-op-d').value, b.querySelector('.mcq-marks').value, b.getAttribute('data-layout') || '' ]); });
             document.querySelectorAll('#vshortContainer .normal-item-block').forEach(b => { paperData.vshorts.push([ b.querySelector('.normal-text').value, b.querySelector('.normal-marks').value ]); });
@@ -866,15 +731,15 @@
             else { allPapers.unshift(paperData); }
             
             localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
-            updateSavedCountBadge(); debouncedAutoSave(); 
-            showToast("✅ पेपर Saved Vault में सेव/अपडेट हो गया है!", "success");
+            updateSavedCountBadge();
+            if (!silent) showToast("✅ पेपर Saved Vault में सेव/अपडेट हो गया है!", "success");
         }
 
         /* CUSTOM DELETE & TEXT PROMPT */
         let deleteActionCallback = null;
         function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; const modal = document.getElementById('customDeleteModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.add('active'); document.getElementById('deletePromptVerify').focus(); }, 10); }
         function closeCustomDeletePrompt() { const modal = document.getElementById('customDeleteModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; deleteActionCallback = null; }, 300); }
-        function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === 'techasar8442') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
+        function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === '8442') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
         document.getElementById('deletePromptVerify').addEventListener('keypress', function(e){ if(e.key === 'Enter') submitCustomDeletePrompt(); });
 
         function showCustomPrompt(title, label, defaultValue, requireVerify, callback) {
@@ -888,7 +753,7 @@
         function closeCustomPrompt() { const modal = document.getElementById('customPromptModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; customPromptCallback = null; }, 300); }
         function submitCustomPrompt() {
             const val = document.getElementById('customPromptInput').value.trim(); if (!val) return showToast("⚠️ कृपया कोई मान दर्ज करें!", "warning");
-            if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== 'techasar8442') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
+            if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== '8442') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
             if (customPromptCallback) { customPromptCallback(val); } closeCustomPrompt();
         }
         document.getElementById('customPromptInput').addEventListener('keypress', function(e){ if(e.key === 'Enter') { if(requiresVerification) document.getElementById('customPromptVerify').focus(); else submitCustomPrompt(); } });
@@ -951,24 +816,6 @@
             if (mcqLayout === '2x2') { mcqGridConfig = 'repeat(2, minmax(0, 1fr))'; } else if (mcqLayout === '1x1') { mcqGridConfig = '1fr'; optColWidth = '100%'; }
             
             styleTag.innerHTML = `@media print { #paperPreview, #paperPreview * { font-family: ${font} !important; } .print-q-text, .print-opt-col, .print-meta-table td, .print-q-marks { line-height: ${spacing} !important; font-size: ${fontSize}px !important; } .print-options-container { display: grid !important; grid-template-columns: ${mcqGridConfig} !important; gap: 8px 15px !important; width: 100% !important; } .print-opt-col { width: ${optColWidth} !important; min-width: 0 !important; word-wrap: break-word !important; white-space: normal !important; } .print-section-heading { font-size: ${parseFloat(fontSize) + 1}px !important; } .print-school { font-size: ${parseFloat(fontSize) + 10}px !important; } .print-exam { font-size: ${parseFloat(fontSize) + 1}px !important; } .two-paper-layout .print-school { font-size: ${parseFloat(fontSize) + 4}px !important; } .two-paper-layout .print-exam { font-size: ${parseFloat(fontSize) - 1}px !important; } .two-paper-layout .print-section-heading { font-size: ${parseFloat(fontSize) - 2}px !important; } .two-paper-layout .print-q-text, .two-paper-layout .print-q-marks, .two-paper-layout .print-meta-table td { font-size: ${parseFloat(fontSize) - 3}px !important; } .two-paper-layout .print-opt-col { font-size: ${parseFloat(fontSize) - 3.5}px !important; } }`;
-        }
-
-        /* 🧮 Math & Symbols Logic */
-        function openMathModal() { document.getElementById('mathModal').style.display = 'flex'; setTimeout(()=>document.getElementById('mathModal').classList.add('active'),10); }
-        function closeMathModal() { document.getElementById('mathModal').classList.remove('active'); setTimeout(()=>document.getElementById('mathModal').style.display = 'none', 300); }
-        function copySymbol(sym) { navigator.clipboard.writeText(sym).then(() => { showToast(`✅ ${sym} कॉपीड!`, 'success'); }); }
-
-        /* ✨ AI Symbol Import Logic */
-        function openAiSymbolModal() { closeMathModal(); setTimeout(()=>{ document.getElementById('aiSymbolModal').style.display = 'flex'; setTimeout(()=>document.getElementById('aiSymbolModal').classList.add('active'),10);},300); }
-        function closeAiSymbolModal() { document.getElementById('aiSymbolModal').classList.remove('active'); setTimeout(()=> {document.getElementById('aiSymbolModal').style.display = 'none'; document.getElementById('aiSymbolImportText').value = '';}, 300); }
-        function addImportedAISymbols() {
-            const rawHtml = document.getElementById('aiSymbolImportText').value.trim();
-            if(!rawHtml) return showToast('⚠️ कृपया HTML कोड पेस्ट करें!', 'warning');
-            const grid = document.getElementById('customAiSymbolsGrid');
-            grid.innerHTML += rawHtml;
-            document.getElementById('customAiSymbolCategory').style.display = 'block';
-            debouncedAutoSave(); closeAiSymbolModal();
-            setTimeout(()=> { openMathModal(); showToast('✅ नए सिंबल सफलता पूर्वक जुड़ गए हैं!', 'success'); }, 350);
         }
 
         /* ⌨️ Keyboard Shortcuts (Ctrl+B, Ctrl+U, Ctrl+2, Ctrl+=, Ctrl+Shift+=) */
@@ -1164,7 +1011,7 @@
         }
 
         function verifyStartupCode() {
-            if (document.getElementById('startupVerifyCode').value.trim() === 'techasar8442') {
+            if (document.getElementById('startupVerifyCode').value.trim() === '8442') {
                 const lockScreen = document.getElementById('mainLockScreen'); lockScreen.style.opacity = '0';
                 const mainContent = document.getElementById('mainAppContent'); mainContent.style.visibility = 'visible'; mainContent.style.opacity = '1';
                 setTimeout(() => { lockScreen.style.display = 'none'; }, 500);
@@ -1179,6 +1026,187 @@
         function proceedExport() {
             closeExportConfirm(); autoSave(); saveCurrentPaperToVault(); 
             if (pendingPrintIsTwoPaper) { generateAndPrintTwoPaper(); } else { generateAndPrintPaper(); }
+        }
+
+        // ===================== 📝 WORD (.docx) EXPORT =====================
+        // बिना इंटरनेट के काम करता है - कोई बाहरी लाइब्रेरी नहीं चाहिए
+        const _crcTable = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; } return t; })();
+        function _crc32(buf) { let c = 0xFFFFFFFF; for (let i = 0; i < buf.length; i++) c = _crcTable[(c ^ buf[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+        function _buildZip(files) {
+            const enc = new TextEncoder(); const chunks = []; const central = []; let offset = 0;
+            const u16 = n => [n & 255, (n >>> 8) & 255]; const u32 = n => [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255];
+            files.forEach(f => {
+                const name = enc.encode(f.name); const data = enc.encode(f.content); const crc = _crc32(data);
+                const local = new Uint8Array([0x50,0x4B,0x03,0x04, ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(crc), ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0)]);
+                chunks.push(local, name, data);
+                central.push({ name, crc, size: data.length, offset });
+                offset += local.length + name.length + data.length;
+            });
+            let cdSize = 0;
+            central.forEach(c => {
+                const h = new Uint8Array([0x50,0x4B,0x01,0x02, ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(c.crc), ...u32(c.size), ...u32(c.size), ...u16(c.name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(c.offset)]);
+                chunks.push(h, c.name); cdSize += h.length + c.name.length;
+            });
+            chunks.push(new Uint8Array([0x50,0x4B,0x05,0x06, ...u16(0), ...u16(0), ...u16(central.length), ...u16(central.length), ...u32(cdSize), ...u32(offset), ...u16(0)]));
+            return new Blob(chunks, { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        }
+
+        function _xe(s) { return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        function buildPaperDocx(twoUp = false, linked = false) {
+            updatePaperFormatting();
+            const html = getSinglePaperHTML(); if (!html) return null;
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const fontPx = parseFloat(document.getElementById('fontSize').value) || 14;
+            const spacing = parseFloat(document.getElementById('lineSpacing').value) || 1.5;
+            const globalLayout = document.getElementById('mcqLayoutOption').value;
+            let fontName = (document.getElementById('paperFont').value.split(',')[0] || '').replace(/['"]/g, '').trim();
+            if (!fontName || fontName === 'Inter') fontName = 'Nirmala UI';
+            const marginIn = parseFloat(document.getElementById('pageMargin')?.value) || 0.5;
+            const marginTw = Math.round(marginIn * 1440);
+            const pageW = twoUp ? 16838 : 11906, pageH = twoUp ? 11906 : 16838, textW = pageW - 2 * marginTw;
+            const gapW = 360; const colW = twoUp ? Math.floor((textW - gapW) / 2) : textW;
+            // 2x में प्रिंट वाले जैसे ही छोटे साइज़
+            const szSchool = twoUp ? fontPx + 4 : fontPx + 10, szExam = twoUp ? fontPx - 1 : fontPx + 1, szHead = twoUp ? fontPx - 2 : fontPx + 1, szQ = twoUp ? fontPx - 3 : fontPx, szOpt = twoUp ? fontPx - 3.5 : fontPx;
+            const hp = px => Math.round(px * 1.5); // px -> half-points (print जैसा ही साइज़)
+            const lineVal = Math.round(spacing * 240);
+
+            const fontXml = `<w:rFonts w:ascii="${_xe(fontName)}" w:hAnsi="${_xe(fontName)}" w:cs="${_xe(fontName)}" w:eastAsia="${_xe(fontName)}"/>`;
+            const runXml = (r, sizePx, forceBold, forceUnderline) => {
+                if (r.br) return '<w:r><w:br/></w:r>';
+                if (r.tab) return '<w:r><w:tab/></w:r>';
+                let pr = fontXml;
+                if (forceBold || r.b) pr += '<w:b/><w:bCs/>';
+                if (r.i) pr += '<w:i/><w:iCs/>';
+                if (forceUnderline || r.u) pr += '<w:u w:val="single"/>';
+                pr += `<w:sz w:val="${hp(sizePx)}"/><w:szCs w:val="${hp(sizePx)}"/>`;
+                if (r.sub) pr += '<w:vertAlign w:val="subscript"/>'; else if (r.sup) pr += '<w:vertAlign w:val="superscript"/>';
+                return `<w:r><w:rPr>${pr}</w:rPr><w:t xml:space="preserve">${_xe(r.t)}</w:t></w:r>`;
+            };
+            const collect = (node, fmt, out) => {
+                node.childNodes.forEach(ch => {
+                    if (ch.nodeType === 3) { if (ch.nodeValue) out.push({ ...fmt, t: ch.nodeValue.replace(/\s*\n\s*/g, ' ') }); }
+                    else if (ch.nodeType === 1) {
+                        const tag = ch.tagName.toLowerCase();
+                        if (tag === 'br') { out.push({ br: true }); return; }
+                        const f = { ...fmt };
+                        if (tag === 'b' || tag === 'strong') f.b = true;
+                        if (tag === 'u') f.u = true;
+                        if (tag === 'i' || tag === 'em') f.i = true;
+                        if (tag === 'sub') f.sub = true;
+                        if (tag === 'sup') f.sup = true;
+                        collect(ch, f, out);
+                    }
+                });
+                return out;
+            };
+            let linkMode = 'none', linkN = 0;
+            const para = (runs, o = {}) => {
+                const sizePx = o.sizePx || fontPx;
+                let ppr = '';
+                if (o.keepNext) ppr += '<w:keepNext/>';
+                if (o.keepLines) ppr += '<w:keepLines/>';
+                if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
+                if (o.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="2" w:color="000000"/></w:pBdr>';
+                ppr += `<w:spacing w:before="${o.before || 0}" w:after="${o.after === undefined ? 40 : o.after}" w:line="${o.line || lineVal}" w:lineRule="auto"/>`;
+                if (o.ind) ppr += `<w:ind w:left="${o.ind}"/>`;
+                if (o.align) ppr += `<w:jc w:val="${o.align}"/>`;
+                let inner = runs.map(r => runXml(r, sizePx, o.bold, o.underline)).join('');
+                if (linkMode !== 'none' && runs.length) {
+                    const id = ++linkN, nm = 'L' + id;
+                    if (linkMode === 'orig') inner = `<w:bookmarkStart w:id="${id}" w:name="${nm}"/>${inner}<w:bookmarkEnd w:id="${id}"/>`;
+                    else inner = `<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> REF ${nm} </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r>${inner}<w:r><w:fldChar w:fldCharType="end"/></w:r>`;
+                }
+                return `<w:p><w:pPr>${ppr}</w:pPr>${inner}</w:p>`;
+            };
+            const noBorders = '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>';
+            const table = (rows, widths, indent, bottomLine) => {
+                const total = widths.reduce((a, b) => a + b, 0);
+                let x = `<w:tbl><w:tblPr><w:tblW w:w="${total}" w:type="dxa"/>${indent ? `<w:tblInd w:w="${indent}" w:type="dxa"/>` : ''}${bottomLine ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>' : noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="40" w:type="dxa"/><w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
+                rows.forEach(cells => { x += '<w:tr><w:trPr><w:cantSplit/></w:trPr>' + cells.map((c, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${c || '<w:p/>'}</w:tc>`).join('') + '</w:tr>'; });
+                return x + '</w:tbl>';
+            };
+
+            const makeBody = () => {
+            linkN = 0; let body = '';
+            // ---- Header ----
+            const school = doc.querySelector('.print-school'); const exam = doc.querySelector('.print-exam');
+            if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
+            if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
+            const metaRows = []; let metaWidths = [];
+            doc.querySelectorAll('.print-meta-table tr').forEach(tr => {
+                const tds = Array.from(tr.querySelectorAll('td'));
+                if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
+                metaRows.push(tds.map(td => { const al = (td.getAttribute('style') || '').includes('right') ? 'right' : ((td.getAttribute('style') || '').includes('center') ? 'center' : 'left'); return para([{ t: td.textContent.replace(/\s+/g, ' ').trim() }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
+            });
+            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true); }
+
+            // ---- Body ----
+            doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
+                if (el.classList.contains('print-section-heading')) {
+                    body += para([{ t: el.textContent }], { align: 'center', bold: true, underline: true, sizePx: szHead, before: twoUp ? 120 : 200, after: 100, keepNext: true, line: 240 });
+                    return;
+                }
+                const qCell = el.querySelector('.print-q-text'); const mCell = el.querySelector('.print-q-marks');
+                const runs = collect(qCell, {}, []);
+                if (mCell) { runs.push({ tab: true }); runs.push({ t: mCell.textContent.trim(), b: true }); }
+                const opts = el.querySelectorAll('.print-opt-col');
+                body += para(runs, { tabRight: colW, keepNext: opts.length > 0, keepLines: true, sizePx: szQ });
+                if (opts.length) {
+                    const st = (el.querySelector('.print-options-container').getAttribute('style') || '');
+                    let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
+                    if (st.includes('repeat(2')) cols = 2; else if (st.includes('1fr')) cols = 1;
+                    const indent = 375; const tw = colW - indent; const cw = Math.floor(tw / cols);
+                    const rows = []; const list = Array.from(opts);
+                    for (let i = 0; i < list.length; i += cols) {
+                        const row = list.slice(i, i + cols).map(o => para(collect(o, {}, []), { after: 20, sizePx: szOpt }));
+                        while (row.length < cols) row.push('');
+                        rows.push(row);
+                    }
+                    body += table(rows, Array(cols).fill(cw), indent, false);
+                    body += para([], { after: 20, line: 120, sizePx: 4 });
+                }
+            });
+            return body; };
+            let body;
+            if (twoUp) {
+                // बाएँ = मूल टेक्स्ट (Bookmark); दाएँ = हर लाइन का REF फ़ील्ड (लिंक्ड कॉपी)
+                linkMode = linked ? 'orig' : 'none'; const leftBody = makeBody();
+                linkMode = linked ? 'ref' : 'none'; const rightBody = makeBody();
+                linkMode = 'none';
+                const tc = (w, content, dashed) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${dashed ? '<w:tcBorders><w:right w:val="dashed" w:sz="8" w:space="0" w:color="000000"/></w:tcBorders>' : ''}</w:tcPr>${content}</w:tc>`;
+                const rowH = pageH - 2 * marginTw - 500;
+                const w2 = colW * 2 + gapW;
+                body = `<w:tbl><w:tblPr><w:tblW w:w="${w2}" w:type="dxa"/>${noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${colW}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${colW}"/></w:tblGrid><w:tr><w:trPr><w:trHeight w:val="${rowH}" w:hRule="atLeast"/></w:trPr>${tc(colW, leftBody)}${tc(gapW / 2, '<w:p/>', true)}${tc(gapW / 2, '<w:p/>')}${tc(colW, rightBody)}</w:tr></w:tbl>` + para([], { after: 0, sizePx: 2, line: 20 });
+            } else {
+                body = makeBody(); body += para([], { after: 0 });
+            }
+
+            const W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
+            const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${body}<w:sectPr><w:pgSz w:w="${pageW}" w:h="${pageH}"${twoUp ? ' w:orient="landscape"' : ''}/><w:pgMar w:top="${marginTw}" w:right="${marginTw}" w:bottom="${marginTw}" w:left="${marginTw}" w:header="400" w:footer="400" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+            const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${W}><w:docDefaults><w:rPrDefault><w:rPr>${fontXml}<w:sz w:val="${hp(fontPx)}"/><w:szCs w:val="${hp(fontPx)}"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="hi-IN"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="40" w:line="${lineVal}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`;
+            const files = [
+                { name: '[Content_Types].xml', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>' },
+                { name: '_rels/.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>' },
+                { name: 'word/_rels/document.xml.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>' },
+                { name: 'word/document.xml', content: documentXml },
+                { name: 'word/styles.xml', content: stylesXml }
+            ];
+            return _buildZip(files);
+        }
+
+        function downloadPaperAsWord(twoUp = false, linked = false) {
+            try {
+                const blob = buildPaperDocx(twoUp, linked);
+                if (!blob) return showToast("⚠️ कृपया Word बनाने से पहले प्रश्न पत्र में सवाल जोड़ें!", "warning");
+                const clsNum = ((document.getElementById('className').value || '').match(/\d+/) || [''])[0];
+                const fname = (twoUp ? (linked ? 'Question_Paper_2x_Linked' : 'Question_Paper_2x') : 'Question_Paper') + (clsNum ? '_Class' + clsNum : '') + '_' + new Date().toISOString().slice(0, 10) + '.docx';
+                const url = URL.createObjectURL(blob); const a = document.createElement('a');
+                a.href = url; a.download = fname; document.body.appendChild(a); a.click();
+                setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+                showToast(linked ? "✅ Linked 2x Word डाउनलोड हो रही है! बाएँ बदलाव के बाद Ctrl+A फिर F9 दबाएँ।" : "✅ Word (.docx) फ़ाइल डाउनलोड हो रही है!", "success");
+            } catch (e) { console.error(e); showToast("❌ Word फ़ाइल बनाने में समस्या आई।", "error"); }
         }
 
         function generateAndPrintPaper() {
