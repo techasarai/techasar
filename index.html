@@ -529,6 +529,16 @@
                         <option value="bold">Bold (सारा बोल्ड) 𝐁</option>
                     </select>
                 </div>
+
+                <!-- 🔢 MARKS STYLE OPTION -->
+                <div class="form-group">
+                    <label>Marks Style (अंक दिखाने का तरीका)</label>
+                    <select id="marksStyle">
+                        <option value="each" selected>हर प्रश्न के आगे [1]</option>
+                        <option value="section">Section में 1×20=20</option>
+                        <option value="none">None (कोई अंक नहीं)</option>
+                    </select>
+                </div>
             </div>
 
             <div id="structuredEditorBox">
@@ -675,7 +685,7 @@
                     time: document.getElementById('timeAllowed').value, marks: document.getElementById('maxMarks').value,
                     font: document.getElementById('paperFont').value, space: document.getElementById('lineSpacing').value,
                     fsize: document.getElementById('fontSize').value, mcqlayout: document.getElementById('mcqLayoutOption').value,
-                    margin: document.getElementById('pageMargin').value, theme: document.getElementById('appTheme').value, bold: document.getElementById('boldAll').value,
+                    margin: document.getElementById('pageMargin').value, theme: document.getElementById('appTheme').value, bold: document.getElementById('boldAll').value, marksstyle: document.getElementById('marksStyle').value,
                 },
                 mcqs: Array.from(document.querySelectorAll('.mcq-item-block')).map(b => ({
                     q: b.querySelector('.mcq-text').value, a: b.querySelector('.mcq-op-a').value, b: b.querySelector('.mcq-op-b').value,
@@ -710,6 +720,7 @@
                             if(data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')]) document.getElementById(id).value = data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')];
                         });
                         if (data.meta.bold) document.getElementById('boldAll').value = data.meta.bold;
+                        if (data.meta.marksstyle) document.getElementById('marksStyle').value = data.meta.marksstyle;
                         toggleTheme(); updatePaperFormatting();
                     }
                     document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
@@ -888,19 +899,31 @@
             }
         });
 
-        function getPrefixes(layout) {
-            const subj = document.getElementById('subjectName').value.toLowerCase(); const isEnglish = subj.includes('english') || subj.includes('अंग्रेज़ी');
+        function getPrefixes(text) {
+            const subj = document.getElementById('subjectName').value.toLowerCase();
+            let isEnglish = subj.includes('english') || subj.includes('अंग्रेज़ी') || subj.includes('अंग्रेजी');
+            /* सब्जेक्ट English न हो, फिर भी अगर प्रश्न/ऑप्शन अंग्रेज़ी (बिना हिंदी) में हैं तो A,B,C,D */
+            if (!isEnglish && text && /[A-Za-z]/.test(text) && !/[\u0900-\u097F]/.test(text)) isEnglish = true;
             return isEnglish ? { a: '(A)', b: '(B)', c: '(C)', d: '(D)' } : { a: '(अ)', b: '(ब)', c: '(स)', d: '(द)' };
         }
 
-        function updateOptionPrefixes() {
-            const prefixes = getPrefixes();
-            document.querySelectorAll('.mcq-item-block').forEach(block => {
-                if(block.getAttribute('data-layout') === '1x1') return; 
-                block.querySelector('.pref-a').innerText = prefixes.a; block.querySelector('.pref-b').innerText = prefixes.b;
-                block.querySelector('.pref-c').innerText = prefixes.c; block.querySelector('.pref-d').innerText = prefixes.d;
-            }); debouncedAutoSave();
+        function updateBlockPrefixes(block, noSave) {
+            const val = sel => { const e = block.querySelector(sel); return e ? e.value : ''; };
+            const text = [val('.mcq-text'), val('.mcq-op-a'), val('.mcq-op-b'), val('.mcq-op-c'), val('.mcq-op-d')].join(' ');
+            const prefixes = getPrefixes(text);
+            ['a','b','c','d'].forEach(k => { const e = block.querySelector('.pref-' + k); if (e && e.innerText !== prefixes[k]) e.innerText = prefixes[k]; });
+            if (!noSave) debouncedAutoSave();
         }
+
+        function updateOptionPrefixes() {
+            document.querySelectorAll('.mcq-item-block').forEach(block => updateBlockPrefixes(block, true));
+            debouncedAutoSave();
+        }
+
+        document.addEventListener('input', (e) => {
+            const blk = e.target.closest ? e.target.closest('.mcq-item-block') : null;
+            if (blk) updateBlockPrefixes(blk);
+        });
 
         function autoAddQuestionMark(element) { /* auto '?' हटा दिया गया */ debouncedAutoSave(); }
         function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { block.classList.add('slide-up-anim'); setTimeout(() => { block.remove(); debouncedAutoSave(); }, 200); } }
@@ -910,10 +933,9 @@
         function createMCQElement(question = '', op1 = '', op2 = '', op3 = '', op4 = '', marks = '1', layout = '') {
             mcqCount++; const container = document.getElementById('mcqContainer'); const div = document.createElement('div'); div.className = 'question-block mcq-item-block'; div.id = `mcq_block_${mcqCount}`; 
             
-            let prefs = getPrefixes();
+            let prefs = getPrefixes([question, op1, op2, op3, op4].join(' '));
             if(layout) { div.setAttribute('data-layout', layout); }
             if(layout === '2x2') div.classList.add('force-2x2-grid');
-            if(layout === '1x1') prefs = { a: '(अ)', b: '(ब)', c: '(स)', d: '(द)' }; 
             
             div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">बहुविकल्पीय प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
             container.appendChild(div); debouncedAutoSave();
@@ -984,11 +1006,23 @@
             else { headerHTML += `<tr><td style="text-align: left; width: 50%;">विषय : <span>${subject}</span></td><td style="text-align: right; width: 50%;">कक्षा : <span>${selectedClass}</span></td></tr><tr><td style="text-align: left;">समय : <span>${timeValue}</span></td><td style="text-align: right;">पूर्णांक : <span>${marks}</span></td></tr>`; }
             headerHTML += `</table></div>`;
 
+            const marksStyle = (document.getElementById('marksStyle') || {}).value || 'each';
+            const fmtN = n => String(Math.round(n * 100) / 100);
+            const secMarks = (blocks, sel) => {
+                if (marksStyle !== 'section') return '';
+                const arr = Array.from(blocks).map(b => parseFloat((b.querySelector(sel).value || '').trim()));
+                if (!arr.length || arr.some(isNaN)) return '';
+                const total = arr.reduce((a, b) => a + b, 0);
+                const expr = arr.every(v => v === arr[0]) ? `${fmtN(arr[0])}×${arr.length}=${fmtN(total)}` : `${isEnglish ? 'Total' : 'कुल अंक'} = ${fmtN(total)}`;
+                return ` (${expr})`;
+            };
+            const qMarksCell = m => `<td class="print-q-marks">${marksStyle === 'each' ? '[' + m + ']' : ''}</td>`;
             let bodyHTML = ''; let globalQNumber = 1;
             const mcqBlocks = document.querySelectorAll('.mcq-item-block');
             if(mcqBlocks.length > 0) {
-                bodyHTML += `<div class="print-section-heading">${isEnglish ? "SECTION A : MULTIPLE CHOICE QUESTIONS" : "बहुविकल्पीय प्रश्न"}</div>`;
+                bodyHTML += `<div class="print-section-heading">${isEnglish ? "SECTION A : MULTIPLE CHOICE QUESTIONS" : "बहुविकल्पीय प्रश्न"}${secMarks(mcqBlocks, '.mcq-marks')}</div>`;
                 mcqBlocks.forEach(block => {
+                    updateBlockPrefixes(block, true);
                     let txt = block.querySelector('.mcq-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>'); 
                     const m = block.querySelector('.mcq-marks').value.trim() || '1'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
                     
@@ -997,7 +1031,7 @@
                     if (customLayout === '2x2') { gridStyle = 'style="grid-template-columns: repeat(2, minmax(0, 1fr)) !important;"'; } 
                     else if (customLayout === '1x1') { gridStyle = 'style="grid-template-columns: 1fr !important;"'; }
 
-                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td><td class="print-q-marks">[${m}]</td></tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').innerText}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').innerText}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').innerText}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').innerText}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
+                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').innerText}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').innerText}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').innerText}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').innerText}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
                     globalQNumber++;
                 });
             }
@@ -1005,11 +1039,11 @@
             const addSection = (selector, title) => {
                 const blocks = document.querySelectorAll(selector);
                 if(blocks.length > 0) {
-                    bodyHTML += `<div class="print-section-heading">${title}</div>`;
+                    bodyHTML += `<div class="print-section-heading">${title}${secMarks(blocks, '.normal-marks')}</div>`;
                     blocks.forEach(block => {
                         let txt = block.querySelector('.normal-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>');
                         const m = block.querySelector('.normal-marks').value.trim() || '0'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
-                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td><td class="print-q-marks">[${m}]</td></tr></table></div>`; globalQNumber++;
+                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
                     });
                 }
             };
@@ -1162,7 +1196,7 @@
                 }
                 const qCell = el.querySelector('.print-q-text'); const mCell = el.querySelector('.print-q-marks');
                 const runs = collect(qCell, {}, []);
-                if (mCell) { runs.push({ tab: true }); runs.push({ t: mCell.textContent.trim(), b: true }); }
+                if (mCell && mCell.textContent.trim()) { runs.push({ tab: true }); runs.push({ t: mCell.textContent.trim(), b: true }); }
                 const opts = el.querySelectorAll('.print-opt-col');
                 body += para(runs, { tabRight: colW, keepNext: opts.length > 0, keepLines: true, sizePx: szQ });
                 if (opts.length) {
