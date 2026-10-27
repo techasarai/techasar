@@ -520,6 +520,15 @@
                         <option value="day">Day Theme ☀️</option>
                     </select>
                 </div>
+
+                <!-- 🅱️ ALL TEXT BOLD OPTION -->
+                <div class="form-group">
+                    <label>Bold Text (सारा टेक्स्ट बोल्ड)</label>
+                    <select id="boldAll" onchange="updatePaperFormatting(); debouncedAutoSave();">
+                        <option value="normal" selected>Normal (सामान्य)</option>
+                        <option value="bold">Bold (सारा बोल्ड) 𝐁</option>
+                    </select>
+                </div>
             </div>
 
             <div id="structuredEditorBox">
@@ -666,7 +675,7 @@
                     time: document.getElementById('timeAllowed').value, marks: document.getElementById('maxMarks').value,
                     font: document.getElementById('paperFont').value, space: document.getElementById('lineSpacing').value,
                     fsize: document.getElementById('fontSize').value, mcqlayout: document.getElementById('mcqLayoutOption').value,
-                    margin: document.getElementById('pageMargin').value, theme: document.getElementById('appTheme').value,
+                    margin: document.getElementById('pageMargin').value, theme: document.getElementById('appTheme').value, bold: document.getElementById('boldAll').value,
                 },
                 mcqs: Array.from(document.querySelectorAll('.mcq-item-block')).map(b => ({
                     q: b.querySelector('.mcq-text').value, a: b.querySelector('.mcq-op-a').value, b: b.querySelector('.mcq-op-b').value,
@@ -700,7 +709,8 @@
                         ['schoolName','subjectName','examName','className','timeAllowed','maxMarks','paperFont','lineSpacing','fontSize','mcqLayoutOption','pageMargin','appTheme'].forEach(id => {
                             if(data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')]) document.getElementById(id).value = data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')];
                         });
-                        toggleTheme();
+                        if (data.meta.bold) document.getElementById('boldAll').value = data.meta.bold;
+                        toggleTheme(); updatePaperFormatting();
                     }
                     document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
                     if(data.mcqs) data.mcqs.forEach(q => createMCQElement(q.q, q.a, q.b, q.c, q.d, q.m, q.layout));
@@ -815,7 +825,8 @@
             let mcqGridConfig = 'repeat(4, minmax(0, 1fr))'; let optColWidth = 'auto';
             if (mcqLayout === '2x2') { mcqGridConfig = 'repeat(2, minmax(0, 1fr))'; } else if (mcqLayout === '1x1') { mcqGridConfig = '1fr'; optColWidth = '100%'; }
             
-            styleTag.innerHTML = `@media print { #paperPreview, #paperPreview * { font-family: ${font} !important; } .print-q-text, .print-opt-col, .print-meta-table td, .print-q-marks { line-height: ${spacing} !important; font-size: ${fontSize}px !important; } .print-options-container { display: grid !important; grid-template-columns: ${mcqGridConfig} !important; gap: 8px 15px !important; width: 100% !important; } .print-opt-col { width: ${optColWidth} !important; min-width: 0 !important; word-wrap: break-word !important; white-space: normal !important; } .print-section-heading { font-size: ${parseFloat(fontSize) + 1}px !important; } .print-school { font-size: ${parseFloat(fontSize) + 10}px !important; } .print-exam { font-size: ${parseFloat(fontSize) + 1}px !important; } .two-paper-layout .print-school { font-size: ${parseFloat(fontSize) + 4}px !important; } .two-paper-layout .print-exam { font-size: ${parseFloat(fontSize) - 1}px !important; } .two-paper-layout .print-section-heading { font-size: ${parseFloat(fontSize) - 2}px !important; } .two-paper-layout .print-q-text, .two-paper-layout .print-q-marks, .two-paper-layout .print-meta-table td { font-size: ${parseFloat(fontSize) - 3}px !important; } .two-paper-layout .print-opt-col { font-size: ${parseFloat(fontSize) - 3.5}px !important; } }`;
+            const boldAllOn = document.getElementById('boldAll') && document.getElementById('boldAll').value === 'bold';
+            styleTag.innerHTML = `@media print { ${boldAllOn ? '#paperPreview, #paperPreview * { font-weight: 700 !important; }' : ''} #paperPreview, #paperPreview * { font-family: ${font} !important; } .print-q-text, .print-opt-col, .print-meta-table td, .print-q-marks { line-height: ${spacing} !important; font-size: ${fontSize}px !important; } .print-options-container { display: grid !important; grid-template-columns: ${mcqGridConfig} !important; gap: 8px 15px !important; width: 100% !important; } .print-opt-col { width: ${optColWidth} !important; min-width: 0 !important; word-wrap: break-word !important; white-space: normal !important; } .print-section-heading { font-size: ${parseFloat(fontSize) + 1}px !important; } .print-school { font-size: ${parseFloat(fontSize) + 10}px !important; } .print-exam { font-size: ${parseFloat(fontSize) + 1}px !important; } .two-paper-layout .print-school { font-size: ${parseFloat(fontSize) + 4}px !important; } .two-paper-layout .print-exam { font-size: ${parseFloat(fontSize) - 1}px !important; } .two-paper-layout .print-section-heading { font-size: ${parseFloat(fontSize) - 2}px !important; } .two-paper-layout .print-q-text, .two-paper-layout .print-q-marks, .two-paper-layout .print-meta-table td { font-size: ${parseFloat(fontSize) - 3}px !important; } .two-paper-layout .print-opt-col { font-size: ${parseFloat(fontSize) - 3.5}px !important; } }`;
         }
 
         /* ⌨️ Keyboard Shortcuts (Ctrl+B, Ctrl+U, Ctrl+2, Ctrl+=, Ctrl+Shift+=) */
@@ -891,7 +902,7 @@
             }); debouncedAutoSave();
         }
 
-        function autoAddQuestionMark(element) { let text = element.value.trim(); if (text.length > 0 && !text.includes('\n') && !text.match(/[?।!.]$/)) element.value = text + '?'; debouncedAutoSave(); }
+        function autoAddQuestionMark(element) { /* auto '?' हटा दिया गया */ debouncedAutoSave(); }
         function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { block.classList.add('slide-up-anim'); setTimeout(() => { block.remove(); debouncedAutoSave(); }, 200); } }
 
         const trashSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
@@ -904,13 +915,13 @@
             if(layout === '2x2') div.classList.add('force-2x2-grid');
             if(layout === '1x1') prefs = { a: '(अ)', b: '(ब)', c: '(स)', d: '(द)' }; 
             
-            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">बहुविकल्पीय प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3" onblur="autoAddQuestionMark(this)">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">बहुविकल्पीय प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
             container.appendChild(div); debouncedAutoSave();
         }
 
         function createNormalElement(containerId, labelPrefix, question = '', marks = '2') {
             let uniqueId = Math.floor(Math.random() * 1000000); const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'question-block normal-item-block'; div.id = `normal_block_${uniqueId}`;
-            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix} प्रश्न</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5" onblur="autoAddQuestionMark(this)">${question}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${marks}"></div>`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix} प्रश्न</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${question}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${marks}"></div>`;
             container.appendChild(div); debouncedAutoSave();
         }
 
@@ -1073,11 +1084,12 @@
             const lineVal = Math.round(spacing * 240);
 
             const fontXml = `<w:rFonts w:ascii="${_xe(fontName)}" w:hAnsi="${_xe(fontName)}" w:cs="${_xe(fontName)}" w:eastAsia="${_xe(fontName)}"/>`;
+            const boldAllDoc = (document.getElementById('boldAll') || {}).value === 'bold';
             const runXml = (r, sizePx, forceBold, forceUnderline) => {
                 if (r.br) return '<w:r><w:br/></w:r>';
                 if (r.tab) return '<w:r><w:tab/></w:r>';
                 let pr = fontXml;
-                if (forceBold || r.b) pr += '<w:b/><w:bCs/>';
+                if (forceBold || r.b || boldAllDoc) pr += '<w:b/><w:bCs/>';
                 if (r.i) pr += '<w:i/><w:iCs/>';
                 if (forceUnderline || r.u) pr += '<w:u w:val="single"/>';
                 pr += `<w:sz w:val="${hp(sizePx)}"/><w:szCs w:val="${hp(sizePx)}"/>`;
