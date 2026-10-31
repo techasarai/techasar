@@ -327,6 +327,114 @@
         .modal-overlay.active { opacity: 1; }
         .modal-content { background: #0f172a; border-radius: 16px; padding: 35px; width: 100%; max-width: 800px; position: relative; border: 1px solid rgba(56, 189, 248, 0.3); max-height: 90vh; overflow-y: auto; transform: scale(0.97); transition: transform 0.2s; color: #f8fafc; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
         .modal-overlay.active .modal-content { transform: scale(1); }
+
+        /* animation-managed modals (JS drives open/close) */
+        .modal-overlay.mx { transition: none !important; }
+        .modal-overlay.mx .modal-content { transition: none !important; transform: none; backface-visibility: hidden; }
+        .modal-overlay.mx.active .modal-content { transform: none; }
+
+        /* ===================== 🧈 SMOOTH UI PACK ===================== */
+        /* fullscreen dropdown (School Name etc.) is JS-animated */
+        .fs-select-overlay.mx { transition: none !important; }
+        .fs-select-overlay.mx .fs-select-content { transition: none !important; transform: none; backface-visibility: hidden; }
+        .fs-select-overlay.mx.active .fs-select-content { transform: none; }
+        .fs-select-overlay.active .fs-option { animation: fsOptIn .38s cubic-bezier(.22,1,.36,1) both; animation-delay: calc(var(--i, 0) * 28ms + 90ms); }
+        @keyframes fsOptIn { from { opacity: 0; transform: translate3d(0, 12px, 0); } to { opacity: 1; transform: none; } }
+        .fs-option { transition: transform .2s cubic-bezier(.22,1,.36,1), background-color .2s ease, color .2s ease; }
+        .fs-option:active { transform: scale(.98); }
+
+        /* dropdown trigger: tactile press + arrow flip */
+        .custom-select-trigger { transition: border-color .2s ease, box-shadow .2s ease, transform .18s cubic-bezier(.22,1,.36,1), background-color .2s ease; -webkit-tap-highlight-color: transparent; }
+        .custom-select-trigger:active { transform: scale(.985); }
+        .custom-select-trigger.is-open { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.18); }
+        .custom-select-trigger .arrow-icon { transition: transform .3s cubic-bezier(.22,1,.36,1); }
+        .custom-select-trigger.is-open .arrow-icon { transform: rotate(180deg); }
+        .custom-select-trigger > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 10px; }
+        input, textarea { transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease; }
+
+        /* entrance: buttons + every field from School Name downward rise in, staggered */
+        @keyframes uiRise { from { opacity: 0; transform: translate3d(0, 18px, 0) scale(.985); } to { opacity: 1; transform: none; } }
+        body.ui-ready .top-action-bar .action-btn { animation: uiRise .55s cubic-bezier(.22,1,.36,1) backwards; }
+        body.ui-ready .top-action-bar .action-btn:nth-child(1) { animation-delay: .02s; } body.ui-ready .top-action-bar .action-btn:nth-child(2) { animation-delay: .06s; }
+        body.ui-ready .top-action-bar .action-btn:nth-child(3) { animation-delay: .10s; } body.ui-ready .top-action-bar .action-btn:nth-child(4) { animation-delay: .14s; }
+        body.ui-ready .top-action-bar .action-btn:nth-child(5) { animation-delay: .18s; } body.ui-ready .top-action-bar .action-btn:nth-child(6) { animation-delay: .22s; }
+        body.ui-ready .top-action-bar .action-btn:nth-child(7) { animation-delay: .26s; }
+        body.ui-ready .meta-grid { animation: uiRise .6s cubic-bezier(.22,1,.36,1) .2s backwards; }
+        body.ui-ready .meta-grid .form-group { animation: uiRise .55s cubic-bezier(.22,1,.36,1) backwards; }
+        body.ui-ready .meta-grid .form-group:nth-child(1) { animation-delay: .30s; } body.ui-ready .meta-grid .form-group:nth-child(2) { animation-delay: .34s; }
+        body.ui-ready .meta-grid .form-group:nth-child(3) { animation-delay: .38s; } body.ui-ready .meta-grid .form-group:nth-child(4) { animation-delay: .42s; }
+        body.ui-ready .meta-grid .form-group:nth-child(5) { animation-delay: .46s; } body.ui-ready .meta-grid .form-group:nth-child(6) { animation-delay: .50s; }
+        body.ui-ready .meta-grid .form-group:nth-child(7) { animation-delay: .54s; } body.ui-ready .meta-grid .form-group:nth-child(8) { animation-delay: .58s; }
+        body.ui-ready .meta-grid .form-group:nth-child(9) { animation-delay: .62s; } body.ui-ready .meta-grid .form-group:nth-child(10) { animation-delay: .66s; }
+        body.ui-ready .meta-grid .form-group:nth-child(11) { animation-delay: .70s; } body.ui-ready .meta-grid .form-group:nth-child(12) { animation-delay: .74s; }
+        body.ui-ready #structuredEditorBox { animation: uiRise .6s cubic-bezier(.22,1,.36,1) .5s backwards; }
+        body.ui-ready .footer-ui { animation: uiRise .6s cubic-bezier(.22,1,.36,1) .7s backwards; }
+
+        /* question cards / sections: pop in & out with spring */
+        .question-block { animation: qPop .42s cubic-bezier(.22,1,.36,1) both; }
+        @keyframes qPop { from { opacity: 0; transform: translate3d(0, 14px, 0) scale(.985); } to { opacity: 1; transform: none; } }
+        .section-box { animation: qPop .45s cubic-bezier(.22,1,.36,1) both; }
+        .slide-up-anim { animation: qOut .22s cubic-bezier(.4,0,1,1) forwards !important; }
+        @keyframes qOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(0, -8px, 0) scale(.97); } }
+        .empty-paper-prompt { animation: qPop .5s cubic-bezier(.22,1,.36,1) both; }
+
+        /* press feedback on all clickable buttons */
+        .action-btn, .add-btn, .remove-btn, .vault-btn, .vault-clear-all, .modal-close, .fs-select-close, .fs-select-action { -webkit-tap-highlight-color: transparent; transition: transform .18s cubic-bezier(.22,1,.36,1), filter .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease; }
+        .remove-btn:active, .add-btn:active, .vault-btn:active, .vault-clear-all:active { transform: scale(.96); }
+        .modal-close:active, .fs-select-close:active { transform: scale(.88); }
+        .remove-btn { transition: transform .18s cubic-bezier(.22,1,.36,1), background-color .2s ease, color .2s ease, border-color .2s ease; }
+
+        /* editor no longer shows (अ)(ब)(A)(B) badges: paper uses text exactly as given */
+        .option-input-wrapper .option-prefix { display: none !important; }
+        .option-input-wrapper input { padding-left: 20px; }
+
+        /* 🍞 toast: auto width, never overlaps edges, smooth in/out */
+        .toast-msg { position: fixed; top: max(14px, env(safe-area-inset-top, 0px)); left: 0; right: 0; margin: 0 auto; width: max-content; max-width: calc(100vw - 28px); display: flex; align-items: center; gap: 10px; color: #fff; padding: 12px 18px; border-radius: 14px; font-weight: 700; z-index: 999999; box-shadow: 0 10px 30px rgba(0,0,0,.35); animation: toastIn .42s cubic-bezier(.22,1,.36,1) both; pointer-events: none; }
+        .toast-msg.toast-out { animation: toastOut .38s cubic-bezier(.4,0,1,1) forwards; }
+        .toast-msg .toast-ico { display: flex; flex: 0 0 auto; }
+        .toast-msg .toast-ico svg { width: 22px; height: 22px; }
+        .toast-msg .toast-txt { font-size: 14.5px; line-height: 1.4; word-break: break-word; }
+        @keyframes toastIn { from { opacity: 0; transform: translate3d(0, -24px, 0) scale(.96); } to { opacity: 1; transform: none; } }
+        @keyframes toastOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(0, -18px, 0) scale(.96); } }
+
+        /* touch devices: no sticky hover jumps */
+        @media (hover: none) { .add-btn:hover, .fs-option:hover, .saved-paper-card:hover { transform: none; } .action-btn:hover { filter: none; } .custom-select-trigger:hover:not(.is-open) { border-color: rgba(255,255,255,0.15); } body.day-theme .custom-select-trigger:hover:not(.is-open) { border-color: #cbd5e1; } }
+
+        /* ===================== 🎬 TECH ASAR CV ANIMATION STYLE ===================== */
+        /* backdrop: fade + soft blur (CV: bg-black/70 + backdrop-blur-sm) */
+        .modal-overlay, .fs-select-overlay { background: rgba(0,0,0,0.7); }
+        @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+            .modal-overlay.active, .fs-select-overlay.active { -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+        }
+
+        /* new question card: slide-down + flash (CV: anim-new-item + anim-flash) */
+        .question-block { animation: slideInDownSmooth .35s cubic-bezier(.2,.8,.2,1) both, flashNew .6s ease-out; transform-origin: top; }
+        @keyframes slideInDownSmooth { 0% { opacity: 0; transform: translateY(-15px) scale(.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes flashNew { 0% { border-color: #6366f1; box-shadow: inset 0 0 0 999px rgba(99,102,241,.22); } 100% { box-shadow: inset 0 0 0 999px rgba(99,102,241,0); } }
+        .section-box { animation: slideInDownSmooth .4s cubic-bezier(.2,.8,.2,1) both; transform-origin: top; }
+
+        /* delete: collapse (CV: anim-collapse-item) */
+        .slide-up-anim { animation: collapseItem .22s cubic-bezier(.4,0,.2,1) forwards !important; overflow: hidden; }
+        @keyframes collapseItem { 0% { opacity: 1; transform: scale(1); max-height: var(--h, 600px); margin-bottom: 25px; } 100% { opacity: 0; transform: scale(.9); max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; border-width: 0; } }
+        .saved-paper-card.slide-up-anim { margin-bottom: 0; }
+
+        /* buttons: CV active:scale-95 */
+        .action-btn:active, .remove-btn:active, .add-btn:active, .vault-btn:active, .vault-clear-all:active { transform: scale(.95); }
+        .custom-select-trigger:active, .fs-option:active { transform: scale(.98); }
+
+        /* gentle float on the empty-state icon (CV: floatFloat) */
+        @keyframes floatFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .empty-paper-prompt > div:first-child { animation: floatFloat 3s ease-in-out infinite; will-change: transform; }
+
+        /* 🍞 glass water-drop toast (CV style) */
+        .toast-msg { border-radius: 999px; padding: 11px 20px; border: 1px solid rgba(255,255,255,.25); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); animation: toastDrop .5s cubic-bezier(.34,1.56,.64,1) both; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+        .toast-msg.toast-success { background: rgba(16,185,129,.86); box-shadow: 0 10px 30px rgba(16,185,129,.4); }
+        .toast-msg.toast-error { background: rgba(239,68,68,.86); box-shadow: 0 10px 30px rgba(239,68,68,.4); }
+        .toast-msg.toast-warning { background: rgba(245,158,11,.88); box-shadow: 0 10px 30px rgba(245,158,11,.4); }
+        .toast-msg.toast-out { animation: toastUp .3s cubic-bezier(.36,0,.66,-.56) forwards; }
+        @keyframes toastDrop { 0% { transform: translateY(-60px) scale(.8); opacity: 0; } 60% { transform: translateY(10px) scale(1.05); opacity: 1; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+        @keyframes toastUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-60px) scale(.8); opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; } }
         .modal-close { position: absolute; top: 20px; right: 25px; background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; font-weight: bold; transition:0.2s;}
         .modal-close:hover { color: #ef4444; transform: scale(1.1); }
         .import-set-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; margin-bottom:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; }
@@ -338,6 +446,37 @@
         .saved-paper-card:hover { border-color: rgba(56, 189, 248, 0.4); transform: translateX(3px); background: rgba(30, 41, 59, 0.8); }
         .saved-info h4 { font-size: 18px; color: #38bdf8; margin-bottom: 6px; }
         .saved-info p { font-size: 13px; color: #94a3b8; }
+
+        /* ===== SAVED VAULT NEW DESIGN ===== */
+        #savedPapersModal .modal-content { max-width: 760px; padding: 26px 24px 22px; background: linear-gradient(180deg, #131c33, #0b1224); border: 1px solid rgba(168,85,247,0.35); }
+        .vault-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-right: 36px; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .vault-title { font-size: 21px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 10px; }
+        .vault-title .vault-count { background: rgba(168,85,247,0.25); color: #e9d5ff; border: 1px solid rgba(168,85,247,0.5); border-radius: 999px; font-size: 13px; font-weight: 800; padding: 2px 11px; }
+        .vault-clear-all { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 11px; background: rgba(127,29,29,0.3); color: #f87171; border: 1px solid rgba(239,68,68,0.6); font-weight: 800; font-size: 13.5px; cursor: pointer; transition: 0.15s; }
+        .vault-clear-all:hover { background: rgba(239,68,68,0.9); color: #fff; }
+        .vault-clear-all:active { transform: scale(0.97); }
+        #savedPapersListContainer { margin-top: 0 !important; display: flex; flex-direction: column; gap: 12px; }
+        .saved-paper-card { margin-bottom: 0; padding: 14px 16px; gap: 12px; flex-wrap: nowrap; background: rgba(30,41,59,0.55); border-left: 4px solid #a855f7; }
+        .saved-paper-card:hover { transform: none; border-color: rgba(168,85,247,0.6); border-left-color: #a855f7; }
+        .saved-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #a855f7, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 22px; flex: 0 0 auto; }
+        .saved-paper-card .saved-info { flex: 1; min-width: 0; }
+        .saved-paper-card .saved-info h4 { font-size: 16px; color: #f1f5f9; margin: 0 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .saved-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+        .saved-meta span { font-size: 12px; color: #cbd5e1; background: rgba(255,255,255,0.07); border-radius: 999px; padding: 2px 10px; }
+        .saved-paper-card .saved-actions { display: flex; gap: 8px; flex: 0 0 auto; }
+        .vault-btn { height: 38px; padding: 0 14px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .vault-btn.load { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+        .vault-btn.del { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.45); }
+        .vault-btn:hover { filter: brightness(1.25); }
+        .vault-empty { text-align: center; padding: 40px 10px; color: #64748b; font-size: 15px; }
+        .vault-empty div { font-size: 42px; margin-bottom: 8px; }
+        @media (max-width: 560px) {
+            #savedPapersModal .modal-content { padding: 20px 14px 16px; }
+            .saved-paper-card { flex-wrap: wrap; }
+            .saved-paper-card .saved-actions { width: 100%; }
+            .vault-btn { flex: 1; justify-content: center; }
+            .vault-clear-all { width: 100%; justify-content: center; }
+        }
         
         
         /* Full Screen Select */
@@ -405,7 +544,7 @@
         }
     </style>
 <style>
-.question-block { content-visibility: auto; contain-intrinsic-size: auto 280px; }
+/* (content-visibility removed: caused scroll jumps & blank boxes) */
 </style>
 </head>
 <body oncontextmenu="return false;"> <!-- Added Right-Click Block Here -->
@@ -705,8 +844,11 @@
     <div id="savedPapersModal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="closeSavedPapersModal()">✕</button>
-            <div class="modal-title">🗂️ सेव्ड पेपर्स (Saved Bank)</div>
-            <div id="savedPapersListContainer" style="margin-top: 20px;"></div>
+            <div class="vault-header">
+                <div class="vault-title">🗂️ Saved Vault <span class="vault-count" id="vaultCountTag">0</span></div>
+                <button type="button" class="vault-clear-all" id="vaultClearAllBtn" onclick="clearAllSavedPapers()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> All Clear</button>
+            </div>
+            <div id="savedPapersListContainer"></div>
         </div>
     </div>
 
@@ -775,15 +917,12 @@
             else if (type === 'error') { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`; bgCol = '#ef4444'; } 
             else { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`; bgCol = '#f59e0b'; }
 
-            notification.innerHTML = `<div style="display:flex; align-items:center; gap:12px;">${svgIcon}<span style="font-size:16px;">${msg}</span></div>`;
-            notification.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); background:${bgCol}; color:white; padding:15px 30px; border-radius:12px; font-weight:bold; z-index:999999; animation: toastFadeInCenter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastFadeOutCenter 0.3s ease 2.7s forwards; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);`;
-            
-            const style = document.createElement('style');
-            style.innerHTML = `@keyframes toastFadeInCenter { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } } @keyframes toastFadeOutCenter { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -20px); } }`;
-            document.head.appendChild(style);
-            
-            document.body.appendChild(notification); 
-            setTimeout(() => { notification.remove(); style.remove(); }, 3000);
+            notification.innerHTML = `<span class="toast-ico">${svgIcon}</span><span class="toast-txt">${msg}</span>`;
+            notification.classList.add('toast-' + (type === 'error' ? 'error' : type === 'success' ? 'success' : 'warning'));
+            document.querySelectorAll('.toast-msg').forEach(t => t.remove());
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.classList.add('toast-out'); }, 2000);
+            setTimeout(() => { notification.remove(); }, 2400);
         }
 
 
@@ -887,8 +1026,69 @@
 
         /* CUSTOM DELETE & TEXT PROMPT */
         let deleteActionCallback = null;
-        function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; const modal = document.getElementById('customDeleteModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.add('active'); document.getElementById('deletePromptVerify').focus(); }, 10); }
-        function closeCustomDeletePrompt() { const modal = document.getElementById('customDeleteModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; deleteActionCallback = null; }, 300); }
+
+        /* ================= 🧈 BUTTERY MODAL ANIMATION ENGINE =================
+           Button se khule -> usi button me wapas band (Android app open/close jaisa) */
+        let _lastPressedBtn = null;
+        document.addEventListener('pointerdown', (e) => { const b = e.target && e.target.closest ? e.target.closest('button, .custom-select-trigger') : null; if (b) _lastPressedBtn = b; }, true);
+        function _collapseOut(el) { if (!el) return; el.style.setProperty('--h', el.offsetHeight + 'px'); el.classList.add('slide-up-anim'); }
+        const _modalState = new WeakMap();
+        const _reduceMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function _usableRect(el) { if (!el || !el.isConnected) return null; const r = el.getBoundingClientRect(); if (!r.width || !r.height) return null; if (r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return null; return r; }
+        const _CENTER_MODALS = ['customDeleteModal', 'customPromptModal'];
+        function _originTransform(originEl, box, centered) {
+            if (centered) return 'translate3d(0, 0, 0) scale(0.95)';
+            const o = _usableRect(originEl); const t = box.getBoundingClientRect();
+            if (!o || !t.width || !t.height) return 'translate3d(0, 24px, 0) scale(0.92)';
+            const dx = (o.left + o.width / 2) - (t.left + t.width / 2), dy = (o.top + o.height / 2) - (t.top + t.height / 2);
+            return `translate3d(${dx}px, ${dy}px, 0) scale(0.15)`;
+        }
+        function _animModal(id, opening, afterClose) {
+            const ov = document.getElementById(id); if (!ov) return; const box = ov.querySelector('.modal-content, .fs-select-content'); if (!box) return;
+            let st = _modalState.get(ov); if (!st) { st = { token: 0, origin: null, open: false }; _modalState.set(ov, st); }
+            if (opening && st.open && ov.classList.contains('active') && ov.style.display === 'flex' && !st.closing) return;
+            if (!opening && !st.open) return;
+            const tk = ++st.token;
+            // current visual state (so interrupted animations never jump)
+            const cs = getComputedStyle(box), os = getComputedStyle(ov);
+            const curT = (ov.style.display === 'flex' && cs.transform !== 'none') ? cs.transform : null;
+            const curBoxOp = ov.style.display === 'flex' ? cs.opacity : '0', curOvOp = ov.style.display === 'flex' ? os.opacity : '0';
+            const running = ov.style.display === 'flex' && (box.getAnimations().length || ov.getAnimations().length);
+            box.getAnimations().forEach(a => a.cancel()); ov.getAnimations().forEach(a => a.cancel());
+            ov.classList.add('mx');
+            const centeredM = _CENTER_MODALS.includes(id);
+            const dur = _reduceMotion() ? 120 : (centeredM ? 300 : (opening ? 400 : 300));
+            if (opening) {
+                st.open = true; st.closing = false;
+                if (!running) st.origin = _lastPressedBtn;
+                ov.style.display = 'flex'; ov.classList.add('active');
+                const centered = _CENTER_MODALS.includes(id);
+                const from = running && curT ? curT : _originTransform(st.origin, box, centered);
+                const bFrom = running ? curBoxOp : '0', oFrom = running ? curOvOp : '0';
+                box.style.willChange = 'transform, opacity'; 
+                ov.animate([{ opacity: oFrom }, { opacity: 1 }], { duration: Math.max(dur, 300), easing: 'ease-out', fill: 'none' });
+                const a = box.animate([
+                    { transform: from, opacity: bFrom },
+                    { transform: 'translate3d(0,0,0) scale(1)', opacity: 1 }
+                ], { duration: dur, easing: centered ? 'ease' : 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'none' });
+                a.onfinish = () => { if (st.token === tk) box.style.willChange = ''; };
+            } else {
+                st.open = false; st.closing = true;
+                const to = _originTransform(st.origin, box, _CENTER_MODALS.includes(id)); // measured with animations cancelled = natural position
+                const bFrom = curT || 'translate3d(0,0,0) scale(1)';
+                box.style.willChange = 'transform, opacity';
+                const done = () => { if (st.token !== tk) return; ov.style.display = 'none'; ov.classList.remove('active'); box.getAnimations().forEach(a => a.cancel()); ov.getAnimations().forEach(a => a.cancel()); box.style.willChange = ''; st.closing = false; if (afterClose) afterClose(); };
+                ov.animate([{ opacity: curOvOp }, { opacity: 0 }], { duration: Math.max(dur, 300), easing: 'ease-in', fill: 'forwards' });
+                const a = box.animate([
+                    { transform: bFrom, opacity: curBoxOp },
+                    { transform: to, opacity: 0 }
+                ], { duration: dur, easing: _CENTER_MODALS.includes(id) ? 'ease' : 'cubic-bezier(0.3, 0, 0.8, 0.2)', fill: 'forwards' });
+                a.onfinish = done; a.oncancel = () => {};
+            }
+        }
+
+        function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; _animModal('customDeleteModal', true); setTimeout(() => { try { document.getElementById('deletePromptVerify').focus({ preventScroll: true }); } catch(e) {} }, 220); }
+        function closeCustomDeletePrompt() { _animModal('customDeleteModal', false, () => { deleteActionCallback = null; }); }
         function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === '0') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
         document.getElementById('deletePromptVerify').addEventListener('keypress', function(e){ if(e.key === 'Enter') submitCustomDeletePrompt(); });
 
@@ -897,10 +1097,10 @@
             const inputEl = document.getElementById('customPromptInput'); inputEl.value = defaultValue;
             requiresVerification = requireVerify; const verifyGroup = document.getElementById('verificationGroup'); const verifyInput = document.getElementById('customPromptVerify'); const errorMsg = document.getElementById('verifyError');
             verifyInput.value = ''; errorMsg.style.display = 'none'; if (requireVerify) { verifyGroup.style.display = 'flex'; } else { verifyGroup.style.display = 'none'; }
-            customPromptCallback = callback; const modal = document.getElementById('customPromptModal'); modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('active'); inputEl.focus(); }, 10);
+            customPromptCallback = callback; _animModal('customPromptModal', true);
+            setTimeout(() => { try { inputEl.focus({ preventScroll: true }); } catch(e) {} }, 220);
         }
-        function closeCustomPrompt() { const modal = document.getElementById('customPromptModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; customPromptCallback = null; }, 300); }
+        function closeCustomPrompt() { _animModal('customPromptModal', false, () => { customPromptCallback = null; }); }
         function submitCustomPrompt() {
             const val = document.getElementById('customPromptInput').value.trim(); if (!val) return showToast("⚠️ कृपया कोई मान दर्ज करें!", "warning");
             if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== '0') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
@@ -947,9 +1147,11 @@
             if (selectedOpt.value !== 'none') { editBtn.style.display = 'flex'; delBtn.style.display = 'flex'; } else { editBtn.style.display = 'none'; delBtn.style.display = 'none'; }
             editBtn.onclick = () => { showCustomPrompt("विकल्प बदलें", "नया मान (New Value):", selectedOpt.text, true, (newVal) => { selectedOpt.text = newVal; selectedOpt.value = newVal; activeTriggerUpdateFn(); selectEl.dispatchEvent(new Event('change')); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave(); }); };
             delBtn.onclick = () => { showCustomDeletePrompt(() => { selectEl.remove(selectEl.selectedIndex); if(selectEl.options.length === 0) { let emptyOpt = document.createElement('option'); emptyOpt.value = 'none'; emptyOpt.text = 'कोई नहीं (None)'; selectEl.appendChild(emptyOpt); } selectEl.selectedIndex = 0; activeTriggerUpdateFn(); selectEl.dispatchEvent(new Event('change')); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave(); }); };
-            const overlay = document.getElementById('fullScreenSelectModal'); overlay.style.display = 'flex'; setTimeout(() => { overlay.classList.add('active'); }, 10);
+            const trg = selectEl.nextElementSibling; if (trg && trg.classList.contains('custom-select-trigger')) { document.querySelectorAll('.custom-select-trigger.is-open').forEach(t => t.classList.remove('is-open')); trg.classList.add('is-open'); _lastPressedBtn = trg; }
+            listContainer.querySelectorAll('.fs-option').forEach((el, i) => el.style.setProperty('--i', Math.min(i, 9)));
+            _animModal('fullScreenSelectModal', true);
         }
-        function closeFullScreenSelect() { const overlay = document.getElementById('fullScreenSelectModal'); overlay.classList.remove('active'); setTimeout(() => { overlay.style.display = 'none'; }, 200); }
+        function closeFullScreenSelect() { _animModal('fullScreenSelectModal', false, () => { document.querySelectorAll('.custom-select-trigger.is-open').forEach(t => t.classList.remove('is-open')); }); const t0 = document.querySelector('.custom-select-trigger.is-open'); if (t0) t0.classList.remove('is-open'); }
 
         function setPrintPageSize(landscape) {
             let marginValue = document.getElementById('pageMargin')?.value || '0.5in'; 
@@ -1081,7 +1283,7 @@
         function refreshSectionBoxes() { updateSectionVisibility(); }
 
         function autoAddQuestionMark(element) { /* auto '?' हटा दिया गया */ debouncedAutoSave(); }
-        function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { block.classList.add('slide-up-anim'); setTimeout(() => { block.remove(); updateSectionVisibility(); debouncedAutoSave(); }, 200); } }
+        function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { _collapseOut(block); setTimeout(() => { block.remove(); updateSectionVisibility(); debouncedAutoSave(); }, 230); } }
 
         const trashSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 
@@ -1104,10 +1306,10 @@
 
         function addMCQField(layout = '') { createMCQElement('', '', '', '', '', '1', layout); }
         function addNormalField(id, label, marks) { createNormalElement(id, label, '', marks); }
-        function clearPaper() { currentPaperId = null; document.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); setTimeout(() => { document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; }); updateSectionVisibility(); debouncedAutoSave(); }, 250); }
+        function clearPaper() { currentPaperId = null; document.querySelectorAll('.question-block').forEach(b => _collapseOut(b)); setTimeout(() => { document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; }); updateSectionVisibility(); debouncedAutoSave(); }, 250); }
 
-        function openImportModal() { document.getElementById('importModal').style.display = 'flex'; setTimeout(()=>document.getElementById('importModal').classList.add('active'),10); }
-        function closeImportModal() { document.getElementById('importModal').classList.remove('active'); setTimeout(()=> {document.getElementById('importModal').style.display = 'none'; document.getElementById('htmlImportText').value = '';}, 300); }
+        function openImportModal() { _animModal('importModal', true); }
+        function closeImportModal() { _animModal('importModal', false, () => { const t = document.getElementById('htmlImportText'); if (t) t.value = ''; }); }
         
         function updateSavedCountBadge() { let saved = localStorage.getItem('mySavedAIPapers'); document.getElementById('savedCountBadge').innerText = saved ? JSON.parse(saved).length : 0; }
         
@@ -1123,8 +1325,8 @@
             try { localStorage.setItem('importSectionSettings', JSON.stringify(st)); } catch(e) {}
         }
         function setAllImportSections(val) { IMPORT_KEYS.forEach(k => { const el = document.getElementById('imp_' + k); if (el) el.checked = val; }); saveImportSettings(); }
-        function openSettingsModal() { syncImportSettingsUI(); const m = document.getElementById('settingsModal'); m.style.display = 'flex'; setTimeout(()=>m.classList.add('active'),10); }
-        function closeSettingsModal() { const m = document.getElementById('settingsModal'); m.classList.remove('active'); setTimeout(()=>{ m.style.display = 'none'; }, 300); }
+        function openSettingsModal() { syncImportSettingsUI(); _animModal('settingsModal', true); }
+        function closeSettingsModal() { _animModal('settingsModal', false); }
 
         // ===================== ⚡ SUPER POWERFUL AI IMPORT PARSER =====================
         function parseUniversalAiInput(rawInput) {
@@ -1218,6 +1420,11 @@
                     qText = qText.replace(/\[\s*\d+(?:\.\d+)?\s*(?:अंक|marks)?\s*\]|\(\s*\d+(?:\.\d+)?\s*(?:अंक|marks)\s*\)/gi, '').trim();
                 }
 
+                // marks written after the last option, e.g. "(D) दक्षिण [1]"
+                if (ops.length) {
+                    const lastIdx = ops.length - 1; const lm = String(ops[lastIdx]).match(/\s*(?:\[\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)?\s*\]|\(\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)\s*\))\s*$/i);
+                    if (lm) { if (!m) m = lm[1] || lm[2]; ops[lastIdx] = String(ops[lastIdx]).replace(lm[0], '').trim(); }
+                }
                 // If options embedded in question text: e.g. (A) ... (B) ... (C) ... (D) ...
                 if (ops.length < 4) {
                     const opMatches = Array.from(qText.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|(?<!\w)([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
@@ -1439,7 +1646,7 @@
             if (allOn) { clearPaper(); }
             else {
                 const map = { mcq:'mcqContainer', vshort:'vshortContainer', short:'shortContainer', long:'longContainer' };
-                IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); } });
+                IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.querySelectorAll('.question-block').forEach(b => _collapseOut(b)); } });
                 setTimeout(() => {
                     IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.innerHTML = ''; if (k === 'mcq') mcqCount = 0; } });
                     refreshSectionBoxes();
@@ -1455,23 +1662,43 @@
             }, 300);
         }
 
-        function openSavedPapersModal() { renderSavedPapersList(); document.getElementById('savedPapersModal').style.display = 'flex'; setTimeout(()=>document.getElementById('savedPapersModal').classList.add('active'),10); }
-        function closeSavedPapersModal() { document.getElementById('savedPapersModal').classList.remove('active'); setTimeout(()=>document.getElementById('savedPapersModal').style.display = 'none', 300); }
+        function openSavedPapersModal() { renderSavedPapersList(); _animModal('savedPapersModal', true); }
+        function closeSavedPapersModal() { _animModal('savedPapersModal', false); }
 
         function renderSavedPapersList() {
             const container = document.getElementById('savedPapersListContainer'); container.innerHTML = '';
             let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
-            if(papers.length === 0) { container.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">अभी तक कोई पेपर सेव नहीं किया गया है।</div>`; return; }
+            const tag = document.getElementById('vaultCountTag'); if (tag) tag.innerText = papers.length;
+            const clr = document.getElementById('vaultClearAllBtn'); if (clr) clr.style.display = papers.length ? 'inline-flex' : 'none';
+            if(papers.length === 0) { container.innerHTML = `<div class="vault-empty"><div>📭</div>अभी तक कोई पेपर सेव नहीं किया गया है।</div>`; return; }
             papers.forEach(paper => {
                 let totalQ = paper.mcqs.length + paper.vshorts.length + paper.shorts.length + paper.longs.length;
-                let card = document.createElement('div'); card.className = 'saved-paper-card';
-                card.innerHTML = `<div class="saved-info"><h4>📄 ${paper.title}</h4><p>तिथि: ${paper.date} | कुल प्रश्न: ${totalQ}</p></div><div class="saved-actions"><button class="btn-edit" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer;" onclick="editSavedPaper('${paper.id}')">✏️ लोड करें</button><button class="remove-btn" style="display:inline-flex;" onclick="deleteSavedPaper('${paper.id}')">${trashSvg} डिलीट</button></div>`;
+                let card = document.createElement('div'); card.className = 'saved-paper-card'; card.dataset.pid = paper.id;
+                card.innerHTML = `<div class="saved-icon">📄</div><div class="saved-info"><h4>${paper.title}</h4><div class="saved-meta"><span>📅 ${paper.date}</span><span>❓ ${totalQ} प्रश्न</span></div></div><div class="saved-actions"><button class="vault-btn load" onclick="editSavedPaper('${paper.id}')">✏️ लोड करें</button><button class="vault-btn del" onclick="deleteSavedPaper('${paper.id}')">${trashSvg} डिलीट</button></div>`;
                 container.appendChild(card);
             });
         }
 
+        function clearAllSavedPapers() {
+            let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
+            if (!papers.length) return showToast("ℹ️ Vault पहले से खाली है।", "success");
+            showCustomDeletePrompt(() => {
+                document.querySelectorAll('.saved-paper-card').forEach(c => _collapseOut(c));
+                setTimeout(() => {
+                    localStorage.setItem('mySavedAIPapers', JSON.stringify([]));
+                    currentPaperId = null;
+                    updateSavedCountBadge(); renderSavedPapersList();
+                    showToast("✅ सभी सेव्ड पेपर्स डिलीट हो गए!", "success");
+                }, 240);
+            });
+        }
+
         function editSavedPaper(id) { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); let paper = papers.find(p => p.id === id); if(paper) { loadPaperIntoEditor(paper); closeSavedPapersModal(); } }
-        function deleteSavedPaper(id) { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); papers = papers.filter(p => p.id !== id); localStorage.setItem('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); renderSavedPapersList(); if(currentPaperId === id) currentPaperId = null; showToast("✅ पेपर डिलीट हो गया!", "success"); }
+        function deleteSavedPaper(id) {
+            const run = () => { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); papers = papers.filter(p => p.id !== id); localStorage.setItem('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); renderSavedPapersList(); if(currentPaperId === id) currentPaperId = null; showToast("✅ पेपर डिलीट हो गया!", "success"); };
+            const card = document.querySelector('.saved-paper-card[data-pid="' + id + '"]');
+            if (card) { _collapseOut(card); setTimeout(run, 230); } else run();
+        }
 
         function getSinglePaperHTML() {
             let schoolValue = document.getElementById('schoolName').value; const school = schoolValue === 'none' ? '' : schoolValue; 
@@ -1727,7 +1954,7 @@
             const splash = document.getElementById("videoSplash");
             if (splash) {
                 setTimeout(() => { 
-                    splash.classList.add("splash-exit"); 
+                    splash.classList.add("splash-exit"); document.body.classList.add("ui-ready"); 
                     setTimeout(() => { splash.style.display = "none"; }, 500); 
                 }, 1000);
             }
