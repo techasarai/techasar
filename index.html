@@ -85,21 +85,7 @@
         .splash-exit { opacity: 0 !important; pointer-events: none; transform: scale(1.05); }
 
 
-        /* 🚀 STARTUP VERIFICATION SCREEN */
-        #mainLockScreen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.98); 
-            z-index: 99999998; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.4s ease-out, visibility 0.4s;
-        }
-        .lock-box { background: rgba(20, 27, 45, 0.8); border: 1px solid rgba(56, 189, 248, 0.5); padding: 40px; border-radius: 20px; box-shadow: 0 0 50px rgba(56, 189, 248, 0.2), inset 0 0 20px rgba(56,189,248,0.1); text-align: center; width: 90%; max-width: 400px;  }
-        .lock-box h2 { color: #38bdf8; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-weight: 900; }
-        .lock-box p { color: #94a3b8; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
-        .lock-input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: #fff; font-size: 18px; text-align: center; letter-spacing: 2px; outline: none; transition: 0.2s; margin-bottom: 15px; }
-        .lock-input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
-        .lock-btn { width: 100%; background: linear-gradient(135deg, #38bdf8, #818cf8); color: #fff; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3); }
-        .lock-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4); }
-        .lock-error { color: #ef4444; font-size: 14px; font-weight: bold; margin-top: 10px; display: none; }
-        .shake-anim { animation: shake 0.3s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+         20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
 
         .app-container { width: 100%; max-width: 95vw; margin: 0 auto; background: transparent; padding: 10px; display: flex; flex-direction: column; min-height: 95vh; position: relative; z-index: 10; contain: content; }
         
@@ -152,14 +138,11 @@
             -webkit-background-clip: text; 
         }
         @keyframes shineSweep { 0% { background-position: -150% center; } 100% { background-position: 150% center; } }
-
-
-        .format-tip-bar { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7; padding: 12px 20px; border-radius: 12px; font-size: clamp(13px, 1.2vw, 16px); font-weight: 500; text-align: center; margin-bottom: 25px; position: relative; overflow: hidden; width: 100%; }
-        .format-tip-bar code { background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 6px; font-family: monospace; font-weight: bold; color: #a7f3d0; }
-        body.day-theme .format-tip-bar { background: #d1fae5; color: #065f46; border-color: #34d399; }
-        body.day-theme .format-tip-bar code { background: rgba(0,0,0,0.1); color: #047857; }
+        body.day-theme
+        body.day-theme
 
         .top-action-bar { display: flex; gap: 1vw; justify-content: space-between; align-items: stretch; margin-bottom: 35px; flex-wrap: wrap; position: relative; z-index: 50; }
+        
         .action-btn { flex: 1 1 auto; min-width: 140px; padding: clamp(10px, 1vw, 16px) clamp(12px, 1.5vw, 24px); border-radius: 12px; font-size: clamp(12px, 1vw, 15px); font-weight: 800; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; overflow: hidden; letter-spacing: 0.5px; white-space: nowrap;  transition: transform 0.1s, filter 0.2s; }
         .action-btn:active { transform: scale(0.97); }
         .action-btn:hover { filter: brightness(1.15); }
@@ -171,7 +154,43 @@
         .action-btn.clear-btn { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.5); }
         body.day-theme .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
 
-        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 35px; background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative;  }
+        /* ===== NEW BUTTON BAR DESIGN ===== */
+        .top-action-bar { display: grid; grid-template-columns: repeat(10, 1fr); gap: 12px; margin-bottom: 30px; }
+        .top-action-bar .action-btn { grid-column: span 2; min-width: 0; height: 46px; padding: 0 14px; border-radius: 12px; font-size: 14px; font-weight: 700; letter-spacing: 0.2px; gap: 9px; border: 1px solid rgba(255,255,255,0.28); box-shadow: 0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18); }
+        .top-action-bar .action-btn svg { flex-shrink: 0; }
+        .top-action-bar .action-btn.import-btn { background: linear-gradient(135deg, #3b82f6, #2563eb); border-color: rgba(147,197,253,0.6); }
+        .top-action-bar .action-btn.saved-btn { background: linear-gradient(135deg, #a855f7, #9333ea); border-color: rgba(216,180,254,0.6); }
+        .top-action-bar .action-btn.print-btn { background: linear-gradient(135deg, #8b95f7, #6d7bf0); border-color: rgba(199,210,254,0.7); }
+        .top-action-bar .action-btn.word-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(147,197,253,0.5); }
+        .top-action-bar .action-btn.two-paper-btn { background: linear-gradient(135deg, #ec4899, #db2777); border-color: rgba(249,168,212,0.6); }
+        .top-action-bar .action-btn.word2-btn { grid-column: span 6; }
+        .top-action-bar .action-btn.clear-btn { grid-column: span 4; background: rgba(127,29,29,0.28); color: #f87171; border: 1px solid rgba(239,68,68,0.55); box-shadow: none; }
+        body.day-theme .top-action-bar .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
+        .count-pill { background: rgba(60,20,110,0.75); color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-left: 4px; }
+        @media (max-width: 760px) {
+            .top-action-bar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .top-action-bar .action-btn, .top-action-bar .action-btn.word2-btn { grid-column: span 1; font-size: 13px; padding: 0 8px; }
+            .top-action-bar .action-btn.clear-btn { grid-column: span 2; }
+        }
+
+        .meta-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 18px; 
+            margin-bottom: 30px; 
+            background: var(--card-bg); 
+            padding: 24px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            position: relative; 
+        }
+        @media (max-width: 900px) {
+            .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 18px; }
+        }
+        @media (max-width: 520px) {
+            .meta-grid { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+        }
         .meta-grid::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, #38bdf8, transparent); background-size: 200% 100%;  border-top-left-radius: 12px; border-top-right-radius: 12px; }
         @keyframes borderLightMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
         
@@ -189,6 +208,71 @@
         .custom-select-trigger:hover { border-color: #38bdf8; }
         body.day-theme .custom-select-trigger:hover { border-color: #3b82f6; }
         .custom-select-trigger .arrow-icon { color: var(--text-muted); }
+
+        
+        /* 🏷️ Box Number Badges */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 900;
+            padding: 6px 20px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .mcq-box .section-badge { background: linear-gradient(135deg, rgba(239, 68, 68, 0.35), rgba(239, 68, 68, 0.15)); border: 1.5px solid #ef4444; color: #fca5a5; }
+        .vshort-box .section-badge { background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(245, 158, 11, 0.15)); border: 1.5px solid #f59e0b; color: #fde047; }
+        .short-box .section-badge { background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(16, 185, 129, 0.15)); border: 1.5px solid #10b981; color: #6ee7b7; }
+        .long-box .section-badge { background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(139, 92, 246, 0.15)); border: 1.5px solid #8b5cf6; color: #c4b5fd; }
+
+        /* 📭 Empty Paper State Card */
+        .empty-paper-prompt {
+            background: rgba(20, 27, 45, 0.5);
+            border: 2px dashed rgba(56, 189, 248, 0.25);
+            border-radius: 16px;
+            padding: 45px 25px;
+            text-align: center;
+            margin: 25px 0;
+            display: none;
+            animation: smoothFadeIn 0.3s ease;
+        }
+        .empty-paper-prompt h3 {
+            color: #38bdf8;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .empty-paper-prompt p {
+            color: #94a3b8;
+            font-size: 15px;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+
+        /* 📊 AI Import Live Preview Bar */
+        .import-preview-badge {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .import-preview-badge .count-tag {
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
 
         .section-head-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 30px; }
         .section-head-row .section-title { margin-bottom: 0; }
@@ -286,7 +370,7 @@
         @media print {
             body { background: white !important; padding: 0 !important; color: #000 !important; }
             .app-container > *:not(#paperPreview) { display: none !important; }
-            .app-header-ui, .editor-ui, .add-btn, .print-btn, .word-btn, .remove-btn, .section-box, .section-title, .top-action-bar, .modal-overlay, .format-tip-bar, .footer-ui, .fs-select-overlay, #mainLockScreen, #videoSplash { display: none !important; }
+            .app-header-ui, .editor-ui, .add-btn, .print-btn, .word-btn, .remove-btn, .section-box, .section-title, .top-action-bar, .modal-overlay, .footer-ui, .fs-select-overlay, #videoSplash { display: none !important; }
             /* 🚫 Hide Toast in PDF */
             .toast-msg { display: none !important; }
             
@@ -342,19 +426,11 @@
         </div>
     </div>
 
-    <!-- Startup Lock Screen -->
-    <div id="mainLockScreen">
-        <div class="lock-box">
-            <h2>Tech Asar Project</h2>
-            <p>सिस्टम तक पहुंचने के लिए सुरक्षा कोड दर्ज करें (Enter Security Code)</p>
-            <input type="password" id="startupVerifyCode" class="lock-input" placeholder="••••••••" autocomplete="new-password">
-            <button class="lock-btn" onclick="verifyStartupCode()">VERIFY & UNLOCK</button>
-            <div id="startupErrorMsg" class="lock-error">❌ गलत कोड (Invalid Code)</div>
-        </div>
+    
     </div>
 
     <!-- Main App Content -->
-    <div class="app-container" id="mainAppContent" style="visibility: hidden; opacity: 0;">
+    <div class="app-container" id="mainAppContent">
         
         <!-- 🎨 ORIGINAL BLUE/PURPLE THEME HEADER RESTORED -->
         <div class="app-header-ui">
@@ -363,9 +439,7 @@
             </div>
         </div>
 
-        <div class="format-tip-bar editor-ui">
-            💡 <strong>Tip:</strong> Bold: <code>Ctrl+B</code> | Underline: <code>Ctrl+U</code> | Subscript (नीचे): <code>Ctrl+=</code> | Superscript (ऊपर): <code>Ctrl+Shift+=</code>
-        </div>
+        
 
         <!-- 🚀 SEPARATED SAVE AND PRINT BUTTONS -->
         <div class="top-action-bar editor-ui">
@@ -375,7 +449,7 @@
             </button>
             <button class="action-btn saved-btn" onclick="openSavedPapersModal()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                Saved Vault <span id="savedCountBadge" style="background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:10px; font-size:12px; margin-left:5px;">0</span>
+                Saved Vault <span id="savedCountBadge" class="count-pill">0</span>
             </button>
             <button class="action-btn print-btn" onclick="generateAndPrintPaper()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
@@ -389,12 +463,9 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20" stroke-dasharray="4 4"></line></svg>
                 2x Print
             </button>
-            <button class="action-btn word-btn" onclick="downloadPaperAsWord(true)">
+            <button class="action-btn word-btn word2-btn" onclick="downloadPaperAsWord(true)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="8 13 10 18 12 14 14 18 16 13"></polyline></svg>
                 2x Word (.docx)
-            </button>
-            <button class="action-btn" style="background: linear-gradient(135deg, rgba(100,116,139,0.8), rgba(51,65,85,1)); color: white; border-color: #64748b;" onclick="openSettingsModal()">
-                ⚙️ Settings
             </button>
             <button class="action-btn clear-btn" onclick="clearPaper()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -409,9 +480,8 @@
                 <div class="form-group">
                     <label>School Name</label>
                     <select id="schoolName">
-                        <option value="विनायक इण्टर कॉलेज, बांकेगंज (खीरी)">विनायक इण्टर कॉलेज, बांकेगंज (खीरी)</option>
-                        <option value="विनायक इण्टर कॉलेज, खजुहा (खीरी)">विनायक इण्टर कॉलेज, खजुहा (खीरी)</option>
-                       <option value="none">कोई नहीं (None)</option>
+                        <option value="विनायक इण्टर कॉलेज, बांकेगंज - खीरी">विनायक इण्टर कॉलेज, बांकेगंज - खीरी</option>
+                        <option value="विनायक इण्टर कॉलेज, खजुहा - खीरी">विनायक इण्टर कॉलेज, खजुहा - खीरी</option>
                     </select>
                 </div>
                 
@@ -435,56 +505,58 @@
                     <select id="examName">
                         <option value="अर्ध वार्षिक परीक्षा">अर्ध वार्षिक परीक्षा</option>
                         <option value="वार्षिक परीक्षा">वार्षिक परीक्षा</option>
-                      <option value="none">कोई नहीं (None)</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label>Class</label>
                     <select id="className">
-                        <option value="NC">NC (Nursery)</option><option value="KG">KG</option><option value="LKG">LKG</option><option value="UKG">UKG</option>
-                        <option value="कक्षा 1">कक्षा 1</option><option value="कक्षा 2">कक्षा 2</option><option value="कक्षा 3">कक्षा 3</option>
-                        <option value="कक्षा 4">कक्षा 4</option><option value="कक्षा 5">कक्षा 5</option><option value="कक्षा 6">कक्षा 6</option>
-                        <option value="कक्षा 7">कक्षा 7</option><option value="कक्षा 8">कक्षा 8</option><option value="कक्षा 9">कक्षा 9</option>
-                        <option value="कक्षा 10" selected>कक्षा 10</option><option value="कक्षा 11">कक्षा 11</option><option value="कक्षा 12">कक्षा 12</option>
-                        <option value="none">कोई नहीं (None)</option>
+                        <option value="N.C">N.C</option>
+                        <option value="KG">KG</option>
+                        <option value="कक्षा 1">कक्षा 1</option>
+                        <option value="कक्षा 2">कक्षा 2</option>
+                        <option value="कक्षा 3">कक्षा 3</option>
+                        <option value="कक्षा 4">कक्षा 4</option>
+                        <option value="कक्षा 5">कक्षा 5</option>
+                        <option value="कक्षा 6">कक्षा 6</option>
+                        <option value="कक्षा 7">कक्षा 7</option>
+                        <option value="कक्षा 8">कक्षा 8</option>
+                        <option value="कक्षा 9">कक्षा 9</option>
+                        <option value="कक्षा 10" selected>कक्षा 10</option>
+                        <option value="कक्षा 11">कक्षा 11</option>
+                        <option value="कक्षा 12">कक्षा 12</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label>Time Allowed</label>
                     <select id="timeAllowed">
-                        <option value="3 घंटे 15 मिनट">3 घंटे 15 मिनट</option>
-                        <option value="3 घंटे">3 घंटे</option>
                         <option value="2 घंटे 30 मिनट">2 घंटे 30 मिनट</option>
-                        <option value="none">कोई नहीं (None)</option>
+                        <option value="3 घंटे 15 मिनट" selected>3 घंटे 15 मिनट</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Max Marks</label>
                     <select id="maxMarks">
-                        <option value=""></option><option value=""></option><option value=""></option><option value=""></option>
-                        <option value="50">50</option><option value=""></option><option value="70" selected>70</option>
-                        <option value=""></option><option value=""></option><option value="100">100</option>
-                        <option value="none">कोई नहीं (None)</option>
+                        <option value="50">50</option>
+                        <option value="70" selected>70</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label>Font Style</label>
                     <select id="paperFont" onchange="updatePaperFormatting()">
-<option value="'Inter', sans-serif">Default (Inter)</option>
-<optgroup label="🇮🇳 हिंदी + English (दोनों के लिए बढ़िया)"><option value="'Noto Sans Devanagari', sans-serif" style="font-family:'Noto Sans Devanagari', sans-serif">Noto Sans Devanagari — साफ़ आधुनिक</option><option value="'Noto Serif Devanagari', serif" style="font-family:'Noto Serif Devanagari', serif">Noto Serif Devanagari — किताबी</option><option value="'Mukta', sans-serif" style="font-family:'Mukta', sans-serif">Mukta — सुंदर पढ़ने लायक</option><option value="'Hind', sans-serif" style="font-family:'Hind', sans-serif">Hind — सरल</option><option value="'Poppins', sans-serif" style="font-family:'Poppins', sans-serif">Poppins — मॉडर्न</option><option value="'Baloo 2', sans-serif" style="font-family:'Baloo 2', sans-serif">Baloo 2 — गोल मुलायम</option><option value="'Tiro Devanagari Hindi', serif" style="font-family:'Tiro Devanagari Hindi', serif">Tiro Devanagari — क्लासिक</option><option value="'Kalam', cursive" style="font-family:'Kalam', cursive">Kalam — हाथ की लिखावट</option><option value="'Martel', serif" style="font-family:'Martel', serif">Martel — मोटा किताबी</option><option value="'Sarala', sans-serif" style="font-family:'Sarala', sans-serif">Sarala — हल्का</option><option value="'Laila', serif" style="font-family:'Laila', serif">Laila — सजावटी</option><option value="'Eczar', serif" style="font-family:'Eczar', serif">Eczar — भारी शीर्षक</option><option value="'Yatra One', cursive" style="font-family:'Yatra One', cursive">Yatra One — शीर्षक स्टाइल</option><option value="'Rajdhani', sans-serif" style="font-family:'Rajdhani', sans-serif">Rajdhani — टेक स्टाइल</option></optgroup>
-<optgroup label="🔤 English"><option value="'Roboto', sans-serif" style="font-family:'Roboto', sans-serif">Roboto</option><option value="'Open Sans', sans-serif" style="font-family:'Open Sans', sans-serif">Open Sans</option><option value="'Lato', sans-serif" style="font-family:'Lato', sans-serif">Lato</option><option value="'Nunito', sans-serif" style="font-family:'Nunito', sans-serif">Nunito</option><option value="'Raleway', sans-serif" style="font-family:'Raleway', sans-serif">Raleway</option><option value="'Montserrat', sans-serif" style="font-family:'Montserrat', sans-serif">Montserrat</option><option value="'Merriweather', serif" style="font-family:'Merriweather', serif">Merriweather</option><option value="'Playfair Display', serif" style="font-family:'Playfair Display', serif">Playfair Display</option><option value="'Source Serif 4', serif" style="font-family:'Source Serif 4', serif">Source Serif 4</option><option value="'Libre Baskerville', serif" style="font-family:'Libre Baskerville', serif">Libre Baskerville</option><option value="'Lora', serif" style="font-family:'Lora', serif">Lora</option><option value="'PT Serif', serif" style="font-family:'PT Serif', serif">PT Serif</option></optgroup>
-<optgroup label="💻 Windows / Word फ़ॉन्ट"><option value="Cambria, serif" style="font-family:Cambria, serif">Cambria</option><option value="Calibri, sans-serif" style="font-family:Calibri, sans-serif">Calibri</option><option value="'Nirmala UI', sans-serif" style="font-family:'Nirmala UI', sans-serif">Nirmala UI</option><option value="Mangal, serif" style="font-family:Mangal, serif">Mangal</option><option value="Kokila, serif" style="font-family:Kokila, serif">Kokila</option><option value="Aparajita, serif" style="font-family:Aparajita, serif">Aparajita</option><option value="Utsaah, serif" style="font-family:Utsaah, serif">Utsaah</option><option value="Arial, sans-serif" style="font-family:Arial, sans-serif">Arial</option><option value="Verdana, sans-serif" style="font-family:Verdana, sans-serif">Verdana</option><option value="Tahoma, sans-serif" style="font-family:Tahoma, sans-serif">Tahoma</option><option value="'Times New Roman', serif" style="font-family:'Times New Roman', serif">Times New Roman</option><option value="Georgia, serif" style="font-family:Georgia, serif">Georgia</option></optgroup>
-</select>
+                        <option value="'Nirmala UI', sans-serif" style="font-family:'Nirmala UI', sans-serif" selected>Nirmala UI</option>
+                        <option value="'Times New Roman', serif" style="font-family:'Times New Roman', serif">Times New Roman</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
                     <label>Line Spacing</label>
                     <select id="lineSpacing" onchange="updatePaperFormatting()">
-                        <option value="1.0">1.0</option><option value="1.15">1.15</option><option value="1.5" selected>1.5</option>
+                        <option value="1.0" selected>1.0</option><option value="1.15">1.15</option><option value="1.5">1.5</option>
                         <option value="2.0">2.0</option><option value="2.5">2.5</option><option value="3.0">3.0</option>
                     </select>
                 </div>
@@ -492,7 +564,7 @@
                 <div class="form-group">
                     <label>Font Size</label>
                     <select id="fontSize" onchange="updatePaperFormatting()">
-                        <option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14" selected>14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+                        <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
                     </select>
                 </div>
                 
@@ -510,19 +582,10 @@
                     <select id="pageMargin" onchange="updatePaperFormatting()">
                         <option value="0.25in">Narrow (0.25 in)</option>
                         <option value="0.5in" selected>Normal (0.5 in)</option>
-                        <option value="0.75in">Moderate (0.75 in)</option>
-                        <option value="1.0in">Wide (1.0 in)</option>
                     </select>
                 </div>
 
-                <!-- 🌓 DAY/NIGHT THEME BUTTON -->
-                <div class="form-group">
-                    <label>App Theme (थीम)</label>
-                    <select id="appTheme" onchange="toggleTheme()">
-                        <option value="night" selected>Night Theme 🌙</option>
-                        <option value="day">Day Theme ☀️</option>
-                    </select>
-                </div>
+                
 
                 <!-- 🅱️ ALL TEXT BOLD OPTION -->
                 <div class="form-group">
@@ -533,37 +596,53 @@
                     </select>
                 </div>
 
-                <!-- 🔢 MARKS STYLE OPTION -->
-                <div class="form-group">
-                    <label>Marks Style (अंक दिखाने का तरीका)</label>
-                    <select id="marksStyle">
-                        <option value="each" selected>हर प्रश्न के आगे [1]</option>
-                        <option value="section">Section में 1×20=20</option>
-                        <option value="none">None (कोई अंक नहीं)</option>
-                    </select>
-                </div>
+                
             </div>
 
             <div id="structuredEditorBox">
-                <!-- MCQ SECTION -->
-                <div class="section-box mcq-box">
-                    <div class="section-head-row"><div class="section-title">बहुविकल्पीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_mcq" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div>
-                    <div id="mcqContainer"></div>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <!-- 1x1 MCQ Button Removed, Single Unified Add Button Left -->
-                        <button type="button" class="add-btn" onclick="addMCQField('')" style="flex:1;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> नया बहुविकल्पीय प्रश्न
-                        </button>
-                    </div>
+                <!-- 📭 Empty state prompt when no questions exist -->
+                <div id="emptyPaperPrompt" class="empty-paper-prompt">
+                    <div style="font-size: 42px; margin-bottom: 12px;">📑</div>
+                    <h3>प्रश्न पत्र में अभी कोई प्रश्न नहीं है</h3>
+                    <p>ऊपर दिए गए <strong style="color:#38bdf8;">AI Code Import</strong> बटन पर क्लिक करके अपना कोड या प्रश्न टेक्स्ट पेस्ट करें।</p>
+                    <button class="action-btn import-btn" onclick="openImportModal()" style="display:inline-flex; width:auto; padding:12px 28px; margin:0 auto; font-size:15px;">
+                        ✨ AI Code Import खोलें
+                    </button>
                 </div>
 
-                <div class="section-box vshort-box"><div class="section-head-row"><div class="section-title">अति लघु उत्तरीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_vshort" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div><div id="vshortContainer"></div><button type="button" class="add-btn" onclick="addNormalField('vshortContainer', 'अति लघु उत्तरीय', '2')">नया अति लघु उत्तरीय प्रश्न जोड़ें</button></div>
-                <div class="section-box short-box"><div class="section-head-row"><div class="section-title">लघु उत्तरीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_short" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div><div id="shortContainer"></div><button type="button" class="add-btn" onclick="addNormalField('shortContainer', 'लघु उत्तरीय', '4')">नया लघु उत्तरीय प्रश्न जोड़ें</button></div>
-                <div class="section-box long-box"><div class="section-head-row"><div class="section-title">दीर्घ उत्तरीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_long" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div><div id="longContainer"></div><button type="button" class="add-btn" onclick="addNormalField('longContainer', 'दीर्घ उत्तरीय', '7')">नया दीर्घ उत्तरीय प्रश्न जोड़ें</button></div>
+                <!-- 1. SECTION 1 (MCQ) -->
+                <div class="section-box mcq-box" id="box_section1" style="display:none;">
+                    <div class="section-head-row">
+                        <div class="section-badge">1.</div>
+                    </div>
+                    <div id="mcqContainer"></div>
+                </div>
+
+                <!-- 2. SECTION 2 (VERY SHORT) -->
+                <div class="section-box vshort-box" id="box_section2" style="display:none;">
+                    <div class="section-head-row">
+                        <div class="section-badge">2.</div>
+                    </div>
+                    <div id="vshortContainer"></div>
+                </div>
+
+                <!-- 3. SECTION 3 (SHORT) -->
+                <div class="section-box short-box" id="box_section3" style="display:none;">
+                    <div class="section-head-row">
+                        <div class="section-badge">3.</div>
+                    </div>
+                    <div id="shortContainer"></div>
+                </div>
+
+                <!-- 4. SECTION 4 (LONG) -->
+                <div class="section-box long-box" id="box_section4" style="display:none;">
+                    <div class="section-head-row">
+                        <div class="section-badge">4.</div>
+                    </div>
+                    <div id="longContainer"></div>
+                </div>
             </div>
-        </div>
-        
-        <div class="footer-ui">
+        </div><div class="footer-ui">
             <div class="created-by-badge"><span class="created-by-text">Created By Asar</span></div>
         </div>
         
@@ -572,12 +651,35 @@
 
     <!-- AI MAGIC IMPORT MODAL (CLEANED UP TEXT) -->
     <div id="importModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content" style="max-width: 650px;">
             <button class="modal-close" onclick="closeImportModal()">✕</button>
-            <div class="modal-title" style="text-align: center;">✨ AI HTML से स्मार्ट पेपर इम्पोर्ट करें</div>
-            <p style="text-align: center; color: #94a3b8; margin-bottom: 25px; font-size: 15px;">अपना AI जनरेटेड HTML कोड नीचे पेस्ट करें।</p>
-            <textarea id="htmlImportText" rows="6" placeholder="AI से मिला HTML कोड यहाँ पेस्ट करें..."></textarea>
-            <button class="action-btn import-btn" style="width: 100%; justify-content: center; font-size: 16px; margin-top: 15px;" onclick="saveAndLoadImportedHTML()">💾 पेपर सेव करें और एडिटर में खोलें</button>
+            <div class="modal-title" style="text-align: center;">⚡ Powerful AI Import (HTML, Text, JSON)</div>
+            <p style="text-align: center; color: #94a3b8; margin-bottom: 15px; font-size: 14px;">ChatGPT, Gemini या किसी भी AI से प्राप्त कोड या सामान्य टेक्स्ट नीचे पेस्ट करें।</p>
+            
+            <div style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                <button type="button" class="action-btn" style="flex:1; padding:8px 12px; font-size:12px; background:rgba(56,189,248,0.15); color:#38bdf8; border-color:rgba(56,189,248,0.4);" onclick="copyAiPrompt()">
+                    📋 AI Prompt कॉपी करें
+                </button>
+                <button type="button" class="action-btn" style="flex:1; padding:8px 12px; font-size:12px; background:rgba(168,85,247,0.15); color:#c084fc; border-color:rgba(168,85,247,0.4);" onclick="loadSampleAiData()">
+                    💡 डेमो प्रश्न लोड करें
+                </button>
+                <button type="button" class="action-btn clear-btn" style="padding:8px 12px; font-size:12px;" onclick="document.getElementById('htmlImportText').value=''; previewImportCounts();">
+                    साफ़ करें
+                </button>
+            </div>
+
+            <textarea id="htmlImportText" rows="8" placeholder="यहाँ AI का आउटपुट पेस्ट करें (HTML कोड, या 1. 2. 3. 4. वाला सादा टेक्स्ट, या JSON)..." oninput="previewImportCounts()" style="font-family:monospace; font-size:13px; line-height:1.4;"></textarea>
+            
+            <!-- Live parsed counts preview -->
+            <div id="importLivePreview" class="import-preview-badge">
+                <span>पहचाने गए प्रश्न:</span>
+                <span class="count-tag" style="background:rgba(239,68,68,0.2); color:#fca5a5;">1.: <span id="cnt_sec1">0</span></span>
+                <span class="count-tag" style="background:rgba(245,158,11,0.2); color:#fde047;">2.: <span id="cnt_sec2">0</span></span>
+                <span class="count-tag" style="background:rgba(16,185,129,0.2); color:#6ee7b7;">3.: <span id="cnt_sec3">0</span></span>
+                <span class="count-tag" style="background:rgba(139,92,246,0.2); color:#c4b5fd;">4.: <span id="cnt_sec4">0</span></span>
+            </div>
+
+            <button class="action-btn import-btn" style="width: 100%; justify-content: center; font-size: 16px; margin-top: 10px;" onclick="saveAndLoadImportedHTML()">💾 पेपर सेव करें और एडिटर में लोड करें</button>
         </div>
     </div>
 
@@ -587,10 +689,10 @@
             <button class="modal-close" onclick="closeSettingsModal()">✕</button>
             <div class="modal-title" style="text-align: center;">⚙️ Settings</div>
             <p style="text-align: center; color: #94a3b8; margin-bottom: 20px; font-size: 14px;">AI Magic Import में कौन-से सेक्शन आएं और अपडेट हों — चुनें। जो सेक्शन बंद (OFF) होगा, वो इम्पोर्ट में नहीं आएगा और एडिटर में जैसा है वैसा ही रहेगा।</p>
-            <div class="import-set-row"><label for="imp_mcq">बहुविकल्पीय प्रश्न</label><input type="checkbox" id="imp_mcq" data-key="mcq" onchange="saveImportSettings()"></div>
-            <div class="import-set-row"><label for="imp_vshort">अति लघु उत्तरीय प्रश्न</label><input type="checkbox" id="imp_vshort" data-key="vshort" onchange="saveImportSettings()"></div>
-            <div class="import-set-row"><label for="imp_short">लघु उत्तरीय प्रश्न</label><input type="checkbox" id="imp_short" data-key="short" onchange="saveImportSettings()"></div>
-            <div class="import-set-row"><label for="imp_long">दीर्घ उत्तरीय प्रश्न</label><input type="checkbox" id="imp_long" data-key="long" onchange="saveImportSettings()"></div>
+            <div class="import-set-row"><label for="imp_mcq">1. (MCQ)</label><input type="checkbox" id="imp_mcq" data-key="mcq" onchange="saveImportSettings()"></div>
+            <div class="import-set-row"><label for="imp_vshort">2.</label><input type="checkbox" id="imp_vshort" data-key="vshort" onchange="saveImportSettings()"></div>
+            <div class="import-set-row"><label for="imp_short">3.</label><input type="checkbox" id="imp_short" data-key="short" onchange="saveImportSettings()"></div>
+            <div class="import-set-row"><label for="imp_long">4.</label><input type="checkbox" id="imp_long" data-key="long" onchange="saveImportSettings()"></div>
             <div style="display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;">
                 <button class="action-btn" style="flex:1; justify-content:center; background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.3);" onclick="setAllImportSections(false)">सब बंद</button>
                 <button class="action-btn" style="flex:1; justify-content:center; background:rgba(16,185,129,0.15); color:#34d399; border-color:rgba(16,185,129,0.3);" onclick="setAllImportSections(true)">सब चालू</button>
@@ -684,13 +786,7 @@
             setTimeout(() => { notification.remove(); style.remove(); }, 3000);
         }
 
-        /* 🌓 Theme Logic */
-        function toggleTheme() {
-            const theme = document.getElementById('appTheme').value;
-            if(theme === 'day') document.body.classList.add('day-theme');
-            else document.body.classList.remove('day-theme');
-            debouncedAutoSave();
-        }
+
 
         /* 💾 Auto-Save & Manual Vault Save Logic */
         let mcqCount = 0; let activeSelectElement = null; let activeTriggerUpdateFn = null; let customPromptCallback = null; let requiresVerification = false;
@@ -701,12 +797,18 @@
         function autoSave() {
             const data = {
                 meta: {
-                    school: document.getElementById('schoolName').value, subject: document.getElementById('subjectName').value,
-                    exam: document.getElementById('examName').value, cls: document.getElementById('className').value,
-                    time: document.getElementById('timeAllowed').value, marks: document.getElementById('maxMarks').value,
-                    font: document.getElementById('paperFont').value, space: document.getElementById('lineSpacing').value,
-                    fsize: document.getElementById('fontSize').value, mcqlayout: document.getElementById('mcqLayoutOption').value,
-                    margin: document.getElementById('pageMargin').value, theme: document.getElementById('appTheme').value, bold: document.getElementById('boldAll').value, marksstyle: document.getElementById('marksStyle').value,
+                    school: document.getElementById('schoolName')?.value || '',
+                    subject: document.getElementById('subjectName')?.value || '',
+                    exam: document.getElementById('examName')?.value || '',
+                    cls: document.getElementById('className')?.value || '',
+                    time: document.getElementById('timeAllowed')?.value || '',
+                    marks: document.getElementById('maxMarks')?.value || '',
+                    font: document.getElementById('paperFont')?.value || "'Nirmala UI', sans-serif",
+                    space: document.getElementById('lineSpacing')?.value || '1.0',
+                    fsize: document.getElementById('fontSize')?.value || '12',
+                    mcqlayout: document.getElementById('mcqLayoutOption')?.value || '1x4',
+                    margin: document.getElementById('pageMargin')?.value || '0.5in',
+                    bold: document.getElementById('boldAll')?.value || 'normal',
                 },
                 mcqs: Array.from(document.querySelectorAll('.mcq-item-block')).map(b => ({
                     q: b.querySelector('.mcq-text').value, a: b.querySelector('.mcq-op-a').value, b: b.querySelector('.mcq-op-b').value,
@@ -736,22 +838,26 @@
                 try {
                     const data = JSON.parse(saved);
                     if(data.currentPaperId) currentPaperId = data.currentPaperId; 
-                    if(data.selectStates) { document.querySelectorAll('.meta-grid select').forEach(sel => { if(data.selectStates[sel.id]) sel.innerHTML = data.selectStates[sel.id]; }); }
+                    // Preserving configured select options across drafts
                     if (data.meta) {
-                        ['schoolName','subjectName','examName','className','timeAllowed','maxMarks','paperFont','lineSpacing','fontSize','mcqLayoutOption','pageMargin','appTheme'].forEach(id => {
-                            if(data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')]) document.getElementById(id).value = data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')];
+                        ['schoolName','subjectName','examName','className','timeAllowed','maxMarks','paperFont','lineSpacing','fontSize','mcqLayoutOption','pageMargin'].forEach(id => {
+                            const valKey = id.replace('Name','').replace('Allowed','').replace('Option','');
+                            const el = document.getElementById(id);
+                            if (el && data.meta[valKey]) {
+                                const optExists = Array.from(el.options).some(o => o.value === data.meta[valKey]);
+                                if (optExists) el.value = data.meta[valKey];
+                            }
                         });
-                        if (data.meta.bold) document.getElementById('boldAll').value = data.meta.bold;
-                        if (data.meta.marksstyle) document.getElementById('marksStyle').value = data.meta.marksstyle;
-                        toggleTheme(); updatePaperFormatting();
+                        if (data.meta.bold && document.getElementById('boldAll')) document.getElementById('boldAll').value = data.meta.bold;
+                        updatePaperFormatting();
                     }
                     document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
                     if(data.mcqs) data.mcqs.forEach(q => createMCQElement(q.q, q.a, q.b, q.c, q.d, q.m, q.layout));
-                    if(data.vshorts) data.vshorts.forEach(q => createNormalElement('vshortContainer', 'अति लघु उत्तरीय', q.q, q.m));
-                    if(data.shorts) data.shorts.forEach(q => createNormalElement('shortContainer', 'लघु उत्तरीय', q.q, q.m));
-                    if(data.longs) data.longs.forEach(q => createNormalElement('longContainer', 'दीर्घ उत्तरीय', q.q, q.m));
+                    if(data.vshorts) data.vshorts.forEach(q => createNormalElement('vshortContainer', '2. प्रश्न', q.q, q.m));
+                    if(data.shorts) data.shorts.forEach(q => createNormalElement('shortContainer', '3. प्रश्न', q.q, q.m));
+                    if(data.longs) data.longs.forEach(q => createNormalElement('longContainer', '4. प्रश्न', q.q, q.m));
                     if(data.secBoxes) Object.keys(data.secBoxes).forEach(id => { const b = document.getElementById(id); if (b && data.secBoxes[id].m === '1') { b.value = data.secBoxes[id].v; b.dataset.manual = '1'; } });
-                    refreshSectionBoxes();
+                    updateSectionVisibility();
                     return true;
                 } catch(e) { console.error("Load error", e); }
             } return false;
@@ -783,7 +889,7 @@
         let deleteActionCallback = null;
         function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; const modal = document.getElementById('customDeleteModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.add('active'); document.getElementById('deletePromptVerify').focus(); }, 10); }
         function closeCustomDeletePrompt() { const modal = document.getElementById('customDeleteModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; deleteActionCallback = null; }, 300); }
-        function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === '8442') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
+        function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === '0') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
         document.getElementById('deletePromptVerify').addEventListener('keypress', function(e){ if(e.key === 'Enter') submitCustomDeletePrompt(); });
 
         function showCustomPrompt(title, label, defaultValue, requireVerify, callback) {
@@ -797,7 +903,7 @@
         function closeCustomPrompt() { const modal = document.getElementById('customPromptModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; customPromptCallback = null; }, 300); }
         function submitCustomPrompt() {
             const val = document.getElementById('customPromptInput').value.trim(); if (!val) return showToast("⚠️ कृपया कोई मान दर्ज करें!", "warning");
-            if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== '8442') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
+            if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== '0') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
             if (customPromptCallback) { customPromptCallback(val); } closeCustomPrompt();
         }
         document.getElementById('customPromptInput').addEventListener('keypress', function(e){ if(e.key === 'Enter') { if(requiresVerification) document.getElementById('customPromptVerify').focus(); else submitCustomPrompt(); } });
@@ -949,32 +1055,33 @@
             if (blk) updateBlockPrefixes(blk);
         });
 
-        /* 🔢 Section heading के आगे वाले बॉक्स: अपने-आप भरते हैं (1×20=20), चाहो तो खुद बदल सकते हो */
-        function refreshSectionBoxes() {
-            const subj = (document.getElementById('subjectName').value || '').toLowerCase();
-            const eng = subj.includes('english') || subj.includes('अंग्रेज़ी') || subj.includes('अंग्रेजी');
-            const fmtN = n => String(Math.round(n * 100) / 100);
-            [['secMarks_mcq', '.mcq-item-block', '.mcq-marks'], ['secMarks_vshort', '#vshortContainer .normal-item-block', '.normal-marks'],
-             ['secMarks_short', '#shortContainer .normal-item-block', '.normal-marks'], ['secMarks_long', '#longContainer .normal-item-block', '.normal-marks']].forEach(([id, sel, mk]) => {
-                const box = document.getElementById(id); if (!box || box.dataset.manual === '1') return;
-                const arr = Array.from(document.querySelectorAll(sel)).map(b => { const e = b.querySelector(mk); return parseFloat((e ? e.value : '').trim()); });
-                let v = '';
-                if (arr.length && !arr.some(isNaN)) {
-                    const total = arr.reduce((a, b) => a + b, 0);
-                    v = arr.every(x => x === arr[0]) ? `${fmtN(arr[0])}×${arr.length}=${fmtN(total)}` : `${eng ? 'Total' : 'कुल अंक'} = ${fmtN(total)}`;
-                }
-                box.value = v;
-            });
+        /* 👁️ Section Visibility: Empty boxes hide automatically */
+        function updateSectionVisibility() {
+            const s1 = document.querySelectorAll('#mcqContainer .question-block').length;
+            const s2 = document.querySelectorAll('#vshortContainer .question-block').length;
+            const s3 = document.querySelectorAll('#shortContainer .question-block').length;
+            const s4 = document.querySelectorAll('#longContainer .question-block').length;
+
+            const b1 = document.getElementById('box_section1');
+            const b2 = document.getElementById('box_section2');
+            const b3 = document.getElementById('box_section3');
+            const b4 = document.getElementById('box_section4');
+
+            if (b1) b1.style.display = s1 > 0 ? 'block' : 'none';
+            if (b2) b2.style.display = s2 > 0 ? 'block' : 'none';
+            if (b3) b3.style.display = s3 > 0 ? 'block' : 'none';
+            if (b4) b4.style.display = s4 > 0 ? 'block' : 'none';
+
+            const emptyPrompt = document.getElementById('emptyPaperPrompt');
+            if (emptyPrompt) {
+                emptyPrompt.style.display = (s1 + s2 + s3 + s4 === 0) ? 'block' : 'none';
+            }
         }
-        document.addEventListener('input', (e) => {
-            const t = e.target;
-            if (t && t.classList && t.classList.contains('section-marks-box')) { t.dataset.manual = t.value.trim() ? '1' : ''; if (!t.dataset.manual) refreshSectionBoxes(); }
-            else refreshSectionBoxes();
-        });
-        document.addEventListener('change', (e) => { if (e.target && e.target.id === 'subjectName') refreshSectionBoxes(); });
+
+        function refreshSectionBoxes() { updateSectionVisibility(); }
 
         function autoAddQuestionMark(element) { /* auto '?' हटा दिया गया */ debouncedAutoSave(); }
-        function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { block.classList.add('slide-up-anim'); setTimeout(() => { block.remove(); refreshSectionBoxes(); debouncedAutoSave(); }, 200); } }
+        function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { block.classList.add('slide-up-anim'); setTimeout(() => { block.remove(); updateSectionVisibility(); debouncedAutoSave(); }, 200); } }
 
         const trashSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 
@@ -985,19 +1092,19 @@
             if(layout) { div.setAttribute('data-layout', layout); }
             if(layout === '2x2') div.classList.add('force-2x2-grid');
             
-            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">बहुविकल्पीय प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">1. प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
             container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
         }
 
         function createNormalElement(containerId, labelPrefix, question = '', marks = '2') {
             let uniqueId = Math.floor(Math.random() * 1000000); const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'question-block normal-item-block'; div.id = `normal_block_${uniqueId}`;
-            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix} प्रश्न</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${question}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${marks}"></div>`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix}</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${question}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${marks}"></div>`;
             container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
         }
 
         function addMCQField(layout = '') { createMCQElement('', '', '', '', '', '1', layout); }
         function addNormalField(id, label, marks) { createNormalElement(id, label, '', marks); }
-        function clearPaper() { currentPaperId = null; document.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); setTimeout(() => { document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; }); refreshSectionBoxes(); debouncedAutoSave(); }, 250); }
+        function clearPaper() { currentPaperId = null; document.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); setTimeout(() => { document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; }); updateSectionVisibility(); debouncedAutoSave(); }, 250); }
 
         function openImportModal() { document.getElementById('importModal').style.display = 'flex'; setTimeout(()=>document.getElementById('importModal').classList.add('active'),10); }
         function closeImportModal() { document.getElementById('importModal').classList.remove('active'); setTimeout(()=> {document.getElementById('importModal').style.display = 'none'; document.getElementById('htmlImportText').value = '';}, 300); }
@@ -1019,23 +1126,310 @@
         function openSettingsModal() { syncImportSettingsUI(); const m = document.getElementById('settingsModal'); m.style.display = 'flex'; setTimeout(()=>m.classList.add('active'),10); }
         function closeSettingsModal() { const m = document.getElementById('settingsModal'); m.classList.remove('active'); setTimeout(()=>{ m.style.display = 'none'; }, 300); }
 
+        // ===================== ⚡ SUPER POWERFUL AI IMPORT PARSER =====================
+        function parseUniversalAiInput(rawInput) {
+            let raw = (rawInput || '').trim();
+            if (!raw) return { mcqs: [], vshorts: [], shorts: [], longs: [] };
+            
+            // Clean markdown code blocks
+            raw = raw.replace(/^```[a-zA-Z]*\n/gm, '').replace(/\n```$/gm, '').replace(/```/g, '').trim();
+
+            let mcqs = [], vshorts = [], shorts = [], longs = [];
+
+            // 1. Check if HTML contains classic .ai-* classes
+            if (raw.includes('ai-mcq') || raw.includes('ai-vshort') || raw.includes('ai-short') || raw.includes('ai-long')) {
+                try {
+                    const doc = new DOMParser().parseFromString(raw, 'text/html');
+                    doc.querySelectorAll('.ai-mcq').forEach(el => {
+                        mcqs.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-o1')?.innerText || '', el.querySelector('.ai-o2')?.innerText || '', el.querySelector('.ai-o3')?.innerText || '', el.querySelector('.ai-o4')?.innerText || '', el.querySelector('.ai-m')?.innerText || '1', '']);
+                    });
+                    doc.querySelectorAll('.ai-vshort').forEach(el => {
+                        vshorts.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-m')?.innerText || '2']);
+                    });
+                    doc.querySelectorAll('.ai-short').forEach(el => {
+                        shorts.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-m')?.innerText || '4']);
+                    });
+                    doc.querySelectorAll('.ai-long').forEach(el => {
+                        longs.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-m')?.innerText || '7']);
+                    });
+                    if (mcqs.length || vshorts.length || shorts.length || longs.length) {
+                        return { mcqs, vshorts, shorts, longs };
+                    }
+                } catch(e) {}
+            }
+
+            // 2. Check JSON
+            if ((raw.startsWith('{') && raw.endsWith('}')) || (raw.startsWith('[') && raw.endsWith(']'))) {
+                try {
+                    const d = JSON.parse(raw);
+                    if (Array.isArray(d)) {
+                        d.forEach(item => {
+                            const q = item.q || item.question || '';
+                            const ops = item.options || [item.a || item.op1 || '', item.b || item.op2 || '', item.c || item.op3 || '', item.d || item.op4 || ''];
+                            const m = String(item.m || item.marks || '1');
+                            if (ops && ops.filter(Boolean).length >= 2) {
+                                while(ops.length < 4) ops.push('');
+                                mcqs.push([q, ops[0]||'', ops[1]||'', ops[2]||'', ops[3]||'', m, '']);
+                            } else {
+                                const sec = item.section || item.box || 2;
+                                if (sec === 2) vshorts.push([q, m]);
+                                else if (sec === 3) shorts.push([q, m]);
+                                else longs.push([q, m]);
+                            }
+                        });
+                        return { mcqs, vshorts, shorts, longs };
+                    } else if (typeof d === 'object') {
+                        const mList = d.mcqs || d.section1 || d['1'] || [];
+                        const vsList = d.vshorts || d.section2 || d['2'] || [];
+                        const sList = d.shorts || d.section3 || d['3'] || [];
+                        const lList = d.longs || d.section4 || d['4'] || [];
+                        mList.forEach(item => {
+                            const q = item.q || item.question || '';
+                            const ops = item.options || [item.a || item.op1 || '', item.b || item.op2 || '', item.c || item.op3 || '', item.d || item.op4 || ''];
+                            const m = String(item.m || item.marks || '1');
+                            while(ops.length < 4) ops.push('');
+                            mcqs.push([q, ops[0]||'', ops[1]||'', ops[2]||'', ops[3]||'', m, '']);
+                        });
+                        vsList.forEach(item => vshorts.push([item.q || item.question || '', String(item.m || item.marks || '2')]));
+                        sList.forEach(item => shorts.push([item.q || item.question || '', String(item.m || item.marks || '4')]));
+                        lList.forEach(item => longs.push([item.q || item.question || '', String(item.m || item.marks || '7')]));
+                        if (mcqs.length || vshorts.length || shorts.length || longs.length) {
+                            return { mcqs, vshorts, shorts, longs };
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            // 3. Universal Line-by-Line & Section Text/Markdown Parser
+            const lines = raw.split(/\r?\n/);
+            let currSec = 1;
+            let currentQ = null;
+
+            function pushQ(qObj) {
+                if (!qObj || !qObj.text.trim()) return;
+                let qText = qObj.text.trim();
+                let m = qObj.marks;
+                let ops = qObj.options || [];
+
+                // Extract marks if in text: e.g. [1], [2 अंक], (4 अंक)
+                const marksM = qText.match(/\[\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)?\s*\]|\(\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)\s*\)/i);
+                if (marksM) {
+                    if (!m) m = marksM[1] || marksM[2];
+                    qText = qText.replace(/\[\s*\d+(?:\.\d+)?\s*(?:अंक|marks)?\s*\]|\(\s*\d+(?:\.\d+)?\s*(?:अंक|marks)\s*\)/gi, '').trim();
+                }
+
+                // If options embedded in question text: e.g. (A) ... (B) ... (C) ... (D) ...
+                if (ops.length < 4) {
+                    const opMatches = Array.from(qText.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|(?<!\w)([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
+                    if (opMatches.length >= 4) {
+                        const mainQ = qText.substring(0, opMatches[0].index).trim();
+                        ops = [opMatches[0][0].trim(), opMatches[1][0].trim(), opMatches[2][0].trim(), opMatches[3][0].trim()];
+                        qText = mainQ;
+                    }
+                }
+
+                // Strip leading question numbering: e.g. "प्रश्न 1.", "Q1.", "1."
+
+                if (ops.length >= 2 || qObj.sec === 1) {
+                    while (ops.length < 4) ops.push('');
+                    mcqs.push([qText, ops[0], ops[1], ops[2], ops[3], m || '1', '']);
+                } else if (qObj.sec === 2) {
+                    vshorts.push([qText, m || '2']);
+                } else if (qObj.sec === 3) {
+                    shorts.push([qText, m || '4']);
+                } else if (qObj.sec === 4) {
+                    longs.push([qText, m || '7']);
+                } else {
+                    if (qText.length < 80) vshorts.push([qText, m || '2']);
+                    else if (qText.length < 180) shorts.push([qText, m || '4']);
+                    else longs.push([qText, m || '7']);
+                }
+            }
+
+            for (let i = 0; i < lines.length; i++) {
+                const s = lines[i].trim();
+                if (!s) continue;
+
+                // Section header match: "1.", "2.", "3.", "4.", "खण्ड 1", "Section 1", "बहुविकल्पीय"
+                const secMatch = s.match(/^(?:(?:खण्ड|खंड|section|part|भाग)\s*([1-4]|[a-d])|([1-4])\s*[\.:\-\)]|(?:बहुविकल्पीय|mcq)|(?:अति\s*लघु)|(?:लघु\s*उत्तरीय)|(?:दीर्घ\s*उत्तरीय))/i);
+                if (secMatch) {
+                    pushQ(currentQ);
+                    currentQ = null;
+                    if (secMatch[1]) {
+                        const v = secMatch[1].toLowerCase();
+                        currSec = {'1':1,'a':1,'2':2,'b':2,'3':3,'c':3,'4':4,'d':4}[v] || 1;
+                    } else if (secMatch[2]) {
+                        currSec = parseInt(secMatch[2]);
+                    } else {
+                        const h = s.toLowerCase();
+                        if (h.includes('अति')) currSec = 2;
+                        else if (h.includes('दीर्घ')) currSec = 4;
+                        else if (h.includes('लघु')) currSec = 3;
+                        else currSec = 1;
+                    }
+                    continue;
+                }
+
+                // Option line match: (A) ... or A. ...
+                const opMatch = s.match(/^(?:\(([a-dA-Dअबसदकखगघ1-4])\)|([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*(.*)$/);
+                if (opMatch && currentQ) {
+                    const multiOps = Array.from(s.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
+                    if (multiOps.length > 1) {
+                        multiOps.forEach(mo => currentQ.options.push(mo[0].trim()));
+                    } else {
+                        currentQ.options.push(s);
+                    }
+                    continue;
+                }
+
+                // Question start match: "प्रश्न 1.", "1.", "Q1."
+                const qStart = s.match(/^(?:Q\.?\s*\d+|प्रश्न\s*\d+|\d+)\s*[\.:\-\)]\s*(.*)$/i);
+                if (qStart && !s.match(/^\([a-dA-D1-4]\)/)) {
+                    pushQ(currentQ);
+                    currentQ = {
+                        sec: currSec,
+                        text: s,
+                        options: [],
+                        marks: null
+                    };
+                } else {
+                    if (currentQ) {
+                        currentQ.text += '\n' + s;
+                    } else {
+                        currentQ = {
+                            sec: currSec,
+                            text: s,
+                            options: [],
+                            marks: null
+                        };
+                    }
+                }
+            }
+            pushQ(currentQ);
+
+            return { mcqs, vshorts, shorts, longs };
+        }
+
+        // Live Question Count Preview in Import Modal
+        function previewImportCounts() {
+            const raw = document.getElementById('htmlImportText').value;
+            const res = parseUniversalAiInput(raw);
+            const c1 = document.getElementById('cnt_sec1');
+            const c2 = document.getElementById('cnt_sec2');
+            const c3 = document.getElementById('cnt_sec3');
+            const c4 = document.getElementById('cnt_sec4');
+            if (c1) c1.innerText = res.mcqs.length;
+            if (c2) c2.innerText = res.vshorts.length;
+            if (c3) c3.innerText = res.shorts.length;
+            if (c4) c4.innerText = res.longs.length;
+        }
+
+        // 📋 Copy prompt tailored for current Class and Subject
+        function copyAiPrompt() {
+            const cls = document.getElementById('className').value || 'कक्षा 10';
+            const subj = document.getElementById('subjectName').value || 'हिन्दी';
+            const promptText = `कृपया ${cls} के विषय "${subj}" के लिए एक संपूर्ण परीक्षा प्रश्न पत्र तैयार करें।
+प्रश्नों को नीचे दिए गए 4 श्रेणियों में दें:
+
+1.
+(4 बहुविकल्पीय प्रश्न, प्रत्येक प्रश्न में 4 विकल्प (A), (B), (C), (D) और [1] अंक)
+प्रश्न 1. ...
+(A) ... (B) ... (C) ... (D) ... [1]
+
+2.
+(4 अति लघु उत्तरीय प्रश्न, प्रत्येक में [2] अंक)
+प्रश्न 1. ... [2]
+
+3.
+(3 लघु उत्तरीय प्रश्न, प्रत्येक में [4] अंक)
+प्रश्न 1. ... [4]
+
+4.
+(2 दीर्घ उत्तरीय प्रश्न, प्रत्येक में [7] अंक)
+प्रश्न 1. ... [7]
+
+(नोट: प्रश्नों के बीच में कोई अतिरिक्त हेडिंग या पेज के बीच में 1. 2. 3. 4. हेडर न डालें, केवल प्रश्न लिखें ताकि प्रिंट और वर्ड फ़ाइल में बीच में कोई नंबरिंग न आए।)`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(promptText).then(() => {
+                    showToast("📋 AI Prompt कॉपी हो गया! इसे ChatGPT/Gemini में पेस्ट करें।", "success");
+                }).catch(() => fallbackCopy(promptText));
+            } else {
+                fallbackCopy(promptText);
+            }
+        }
+
+        function fallbackCopy(txt) {
+            const ta = document.createElement('textarea');
+            ta.value = txt; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); document.body.removeChild(ta);
+            showToast("📋 AI Prompt कॉपी हो गया! इसे ChatGPT/Gemini में पेस्ट करें।", "success");
+        }
+
+        // 💡 Load Sample Data for 1-click test
+        function loadSampleAiData() {
+            const subj = document.getElementById('subjectName').value || 'हिन्दी';
+            const sample = `1.
+प्रश्न 1. सूर्य किस दिशा से उदय होता है?
+(A) पूर्व (B) पश्चिम (C) उत्तर (D) दक्षिण [1]
+
+प्रश्न 2. शुद्ध जल का pH मान कितना होता है?
+(A) 5 (B) 7 (C) 9 (D) 14 [1]
+
+2.
+प्रश्न 1. प्रकाश संश्लेषण की क्रिया क्या है? संक्षेप में बताइए। [2]
+प्रश्न 2. पर्यावरण संरक्षण के दो प्रमुख उपाय लिखिए। [2]
+
+3.
+प्रश्न 1. न्यूटन के गति के नियमों को उदाहरण सहित स्पष्ट कीजिए। [4]
+प्रश्न 2. ऊर्जा के नवीकरणीय और अनवीकरणीय स्रोतों में अंतर स्पष्ट कीजिए। [4]
+
+4.
+प्रश्न 1. मानव हृदय की संरचना तथा उसके कार्यों का सचित्र वर्णन कीजिए। [7]
+प्रश्न 2. भारतीय स्वतंत्रता संग्राम में प्रमुख आंदोलनों की विस्तृत विवेचना कीजिए। [7]`;
+
+            document.getElementById('htmlImportText').value = sample;
+            previewImportCounts();
+            showToast("💡 डेमो प्रश्न लोड हो गए! अब 'पेपर सेव करें' बटन दबाएं।", "success");
+        }
+
         function saveAndLoadImportedHTML() {
-            let rawHtml = document.getElementById('htmlImportText').value; if (!rawHtml.trim()) return showToast('⚠️ कृपया पहले HTML कोड बॉक्स में डालें!', 'warning');
+            const raw = document.getElementById('htmlImportText').value;
+            if (!raw.trim()) return showToast('⚠️ कृपया पहले AI कोड या प्रश्न टेक्स्ट बॉक्स में पेस्ट करें!', 'warning');
+            
             const st = getImportSettings();
-            if (!IMPORT_KEYS.some(k => st[k])) return showToast('⚠️ Settings में सारे सेक्शन बंद हैं! कम से कम एक चालू करें।', 'warning');
-            rawHtml = rawHtml.replace(/```html/g, '').replace(/```/g, '');
-            try {
-                const doc = new DOMParser().parseFromString(rawHtml, 'text/html');
-                const mcqs = st.mcq ? doc.querySelectorAll('.ai-mcq') : []; const vshorts = st.vshort ? doc.querySelectorAll('.ai-vshort') : []; const shorts = st.short ? doc.querySelectorAll('.ai-short') : []; const longs = st.long ? doc.querySelectorAll('.ai-long') : [];
-                currentPaperId = 'paper_' + Date.now(); 
-                let paperData = { id: currentPaperId, title: `${document.getElementById('className').value} - ${document.getElementById('subjectName').value} (AI Paper)`, date: new Date().toLocaleDateString('hi-IN'), mcqs: [], vshorts: [], shorts: [], longs: [] };
-                mcqs.forEach(el => paperData.mcqs.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-o1')?.innerText||'', el.querySelector('.ai-o2')?.innerText||'', el.querySelector('.ai-o3')?.innerText||'', el.querySelector('.ai-o4')?.innerText||'', el.querySelector('.ai-m')?.innerText||'1', '']));
-                vshorts.forEach(el => paperData.vshorts.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-m')?.innerText||'2']));
-                shorts.forEach(el => paperData.shorts.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-m')?.innerText||'4']));
-                longs.forEach(el => paperData.longs.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-m')?.innerText||'7']));
-                let allPapers = localStorage.getItem('mySavedAIPapers'); allPapers = allPapers ? JSON.parse(allPapers) : []; allPapers.unshift(paperData); localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
-                updateSavedCountBadge(); closeImportModal(); loadPaperIntoEditor(paperData, st); showToast('✅ AI पेपर सेव हो गया है!', 'success');
-            } catch(e) { showToast("❌ इम्पोर्ट करने में समस्या आई।", 'error'); }
+            const parsed = parseUniversalAiInput(raw);
+
+            const mcqs = st.mcq ? parsed.mcqs : [];
+            const vshorts = st.vshort ? parsed.vshorts : [];
+            const shorts = st.short ? parsed.shorts : [];
+            const longs = st.long ? parsed.longs : [];
+
+            const total = mcqs.length + vshorts.length + shorts.length + longs.length;
+            if (total === 0) {
+                return showToast('⚠️ कोई प्रश्न नहीं पहचाना जा सका! कृपया 1. 2. 3. 4. फ़ॉर्मेट में पेस्ट करें या डेमो लोड करें।', 'warning');
+            }
+
+            currentPaperId = 'paper_' + Date.now();
+            let paperData = {
+                id: currentPaperId,
+                title: `${document.getElementById('className').value} - ${document.getElementById('subjectName').value} (AI Paper)`,
+                date: new Date().toLocaleDateString('hi-IN'),
+                mcqs: mcqs,
+                vshorts: vshorts,
+                shorts: shorts,
+                longs: longs
+            };
+
+            let allPapers = localStorage.getItem('mySavedAIPapers');
+            allPapers = allPapers ? JSON.parse(allPapers) : [];
+            allPapers.unshift(paperData);
+            localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
+            updateSavedCountBadge();
+
+            closeImportModal();
+            loadPaperIntoEditor(paperData, st);
+            showToast(`✅ कुल ${total} प्रश्न (Box 1: ${mcqs.length}, Box 2: ${vshorts.length}, Box 3: ${shorts.length}, Box 4: ${longs.length}) लोड हो गए!`, 'success');
         }
 
         // only = {mcq,vshort,short,long} booleans; jo section false hai, uska editor content bilkul nahi chhua jata
@@ -1044,20 +1438,20 @@
             const allOn = IMPORT_KEYS.every(k => on[k]);
             if (allOn) { clearPaper(); }
             else {
-                const map = { mcq:['mcqContainer','secMarks_mcq'], vshort:['vshortContainer','secMarks_vshort'], short:['shortContainer','secMarks_short'], long:['longContainer','secMarks_long'] };
-                IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k][0]); c.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); } });
+                const map = { mcq:'mcqContainer', vshort:'vshortContainer', short:'shortContainer', long:'longContainer' };
+                IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); } });
                 setTimeout(() => {
-                    IMPORT_KEYS.forEach(k => { if (on[k]) { document.getElementById(map[k][0]).innerHTML = ''; const mb = document.getElementById(map[k][1]); if (mb) mb.dataset.manual = ''; if (k === 'mcq') mcqCount = 0; } });
+                    IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.innerHTML = ''; if (k === 'mcq') mcqCount = 0; } });
                     refreshSectionBoxes();
                 }, 250);
             }
             currentPaperId = paper.id;
             setTimeout(() => {
                 if (on.mcq) paper.mcqs.forEach(q => createMCQElement(q[0], q[1], q[2], q[3], q[4], q[5], q[6]));
-                if (on.vshort) paper.vshorts.forEach(q => createNormalElement('vshortContainer', 'अति लघु उत्तरीय', q[0], q[1]));
-                if (on.short) paper.shorts.forEach(q => createNormalElement('shortContainer', 'लघु उत्तरीय', q[0], q[1]));
-                if (on.long) paper.longs.forEach(q => createNormalElement('longContainer', 'दीर्घ उत्तरीय', q[0], q[1]));
-                debouncedAutoSave();
+                if (on.vshort) paper.vshorts.forEach(q => createNormalElement('vshortContainer', '2. प्रश्न', q[0], q[1]));
+                if (on.short) paper.shorts.forEach(q => createNormalElement('shortContainer', '3. प्रश्न', q[0], q[1]));
+                if (on.long) paper.longs.forEach(q => createNormalElement('longContainer', '4. प्रश्न', q[0], q[1]));
+                debouncedAutoSave(); updateSectionVisibility();
             }, 300);
         }
 
@@ -1093,18 +1487,14 @@
             headerHTML += `</table></div>`;
 
             refreshSectionBoxes();
-            const marksStyle = (document.getElementById('marksStyle') || {}).value || 'each';
+            const marksStyle = 'each';
             const fmtN = n => String(Math.round(n * 100) / 100);
-            const secMarks = (boxId) => {
-                if (marksStyle !== 'section') return '';
-                const box = document.getElementById(boxId); const v = box ? box.value.trim() : '';
-                return v ? ` (${v})` : '';
-            };
+
             const qMarksCell = m => `<td class="print-q-marks">${marksStyle === 'each' ? '[' + m + ']' : ''}</td>`;
             let bodyHTML = ''; let globalQNumber = 1;
             const mcqBlocks = document.querySelectorAll('.mcq-item-block');
             if(mcqBlocks.length > 0) {
-                bodyHTML += `<div class="print-section-heading">${isEnglish ? "SECTION A : MULTIPLE CHOICE QUESTIONS" : "बहुविकल्पीय प्रश्न"}${secMarks('secMarks_mcq')}</div>`;
+                
                 mcqBlocks.forEach(block => {
                     updateBlockPrefixes(block, true);
                     let txt = block.querySelector('.mcq-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>'); 
@@ -1115,46 +1505,27 @@
                     if (customLayout === '2x2') { gridStyle = 'style="grid-template-columns: repeat(2, minmax(0, 1fr)) !important;"'; } 
                     else if (customLayout === '1x1') { gridStyle = 'style="grid-template-columns: 1fr !important;"'; }
 
-                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').innerText}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').innerText}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').innerText}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').innerText}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
+                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text">${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col">${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col">${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col">${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col">${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
                     globalQNumber++;
                 });
             }
 
-            const addSection = (selector, title, boxId) => {
+            const addSection = (selector) => {
                 const blocks = document.querySelectorAll(selector);
                 if(blocks.length > 0) {
-                    bodyHTML += `<div class="print-section-heading">${title}${secMarks(boxId)}</div>`;
                     blocks.forEach(block => {
                         let txt = block.querySelector('.normal-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>');
                         const m = block.querySelector('.normal-marks').value.trim() || '0'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
-                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
+                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text">${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
                     });
                 }
             };
 
-            addSection('#vshortContainer .normal-item-block', isEnglish ? "SECTION B : VERY SHORT ANSWER" : "अति लघु उत्तरीय प्रश्न", 'secMarks_vshort');
-            addSection('#shortContainer .normal-item-block', isEnglish ? "SECTION C : SHORT ANSWER" : "लघु उत्तरीय प्रश्न", 'secMarks_short');
-            addSection('#longContainer .normal-item-block', isEnglish ? "SECTION D : LONG ANSWER" : "दीर्घ उत्तरीय प्रश्न", 'secMarks_long');
+            addSection('#vshortContainer .normal-item-block');
+            addSection('#shortContainer .normal-item-block');
+            addSection('#longContainer .normal-item-block');
 
             if(globalQNumber === 1) return null; return `<div class="single-paper-content">${headerHTML}${bodyHTML}</div>`;
-        }
-
-        function verifyStartupCode() {
-            if (document.getElementById('startupVerifyCode').value.trim() === '8442') {
-                const lockScreen = document.getElementById('mainLockScreen'); lockScreen.style.opacity = '0';
-                const mainContent = document.getElementById('mainAppContent'); mainContent.style.visibility = 'visible'; mainContent.style.opacity = '1';
-                setTimeout(() => { lockScreen.style.display = 'none'; }, 500);
-            } else {
-                const errorMsg = document.getElementById('startupErrorMsg'); errorMsg.style.display = 'block'; errorMsg.classList.remove('shake-anim'); void errorMsg.offsetWidth; errorMsg.classList.add('shake-anim');
-            }
-        }
-
-        let pendingPrintIsTwoPaper = false;
-        function openExportConfirm(isTwoPaper) { pendingPrintIsTwoPaper = isTwoPaper; document.getElementById('exportConfirmModal').style.display = 'flex'; setTimeout(() => { document.getElementById('exportConfirmModal').classList.add('active'); }, 10); }
-        function closeExportConfirm() { document.getElementById('exportConfirmModal').classList.remove('active'); setTimeout(() => { document.getElementById('exportConfirmModal').style.display = 'none'; }, 300); }
-        function proceedExport() {
-            closeExportConfirm(); autoSave(); saveCurrentPaperToVault(); 
-            if (pendingPrintIsTwoPaper) { generateAndPrintTwoPaper(); } else { generateAndPrintPaper(); }
         }
 
         // ===================== 📝 WORD (.docx) EXPORT =====================
@@ -1187,8 +1558,8 @@
             updatePaperFormatting();
             const html = getSinglePaperHTML(); if (!html) return null;
             const doc = new DOMParser().parseFromString(html, 'text/html');
-            const fontPx = parseFloat(document.getElementById('fontSize').value) || 14;
-            const spacing = parseFloat(document.getElementById('lineSpacing').value) || 1.5;
+            const fontPx = parseFloat(document.getElementById('fontSize').value) || 12;
+            const spacing = parseFloat(document.getElementById('lineSpacing').value) || 1.0;
             const globalLayout = document.getElementById('mcqLayoutOption').value;
             let fontName = (document.getElementById('paperFont').value.split(',')[0] || '').replace(/['"]/g, '').trim();
             if (!fontName || fontName === 'Inter') fontName = 'Nirmala UI';
@@ -1352,18 +1723,17 @@
         }
 
         window.onload = function() {
-            // 🌟 3 Seconds Splash Screen 
-            setTimeout(() => { 
-                const splash = document.getElementById("videoSplash"); 
-                splash.classList.add("splash-exit"); 
+            // 🌟 Smooth Splash Screen Exit
+            const splash = document.getElementById("videoSplash");
+            if (splash) {
                 setTimeout(() => { 
-                    splash.style.display = "none"; 
-                    document.getElementById('startupVerifyCode').focus(); 
-                }, 500); 
-            }, 3000); 
+                    splash.classList.add("splash-exit"); 
+                    setTimeout(() => { splash.style.display = "none"; }, 500); 
+                }, 1000);
+            }
 
-            if (!loadAutoSave()) { addMCQField(); } 
-            setupFullScreenSelects(); updateSavedCountBadge(); updatePaperFormatting();
+            loadAutoSave(); 
+            setupFullScreenSelects(); updateSavedCountBadge(); updatePaperFormatting(); updateSectionVisibility();
         };
     </script>
 </body>
