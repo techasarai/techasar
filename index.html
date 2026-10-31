@@ -152,26 +152,29 @@
         .action-btn.word-btn { background: linear-gradient(135deg, rgba(37, 99, 235, 0.85), rgba(29, 78, 216, 1)); color: white; border-color: #2563eb; }
         .action-btn.two-paper-btn { background: linear-gradient(135deg, rgba(236, 72, 153, 0.8), rgba(219, 39, 119, 1)); color: white; border-color: #ec4899; }
         .action-btn.clear-btn { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.5); }
-        body.day-theme .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
 
-        /* ===== NEW BUTTON BAR DESIGN ===== */
-        .top-action-bar { display: grid; grid-template-columns: repeat(10, 1fr); gap: 12px; margin-bottom: 30px; }
-        .top-action-bar .action-btn { grid-column: span 2; min-width: 0; height: 46px; padding: 0 14px; border-radius: 12px; font-size: 14px; font-weight: 700; letter-spacing: 0.2px; gap: 9px; border: 1px solid rgba(255,255,255,0.28); box-shadow: 0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18); }
-        .top-action-bar .action-btn svg { flex-shrink: 0; }
-        .top-action-bar .action-btn.import-btn { background: linear-gradient(135deg, #3b82f6, #2563eb); border-color: rgba(147,197,253,0.6); }
-        .top-action-bar .action-btn.saved-btn { background: linear-gradient(135deg, #a855f7, #9333ea); border-color: rgba(216,180,254,0.6); }
-        .top-action-bar .action-btn.print-btn { background: linear-gradient(135deg, #8b95f7, #6d7bf0); border-color: rgba(199,210,254,0.7); }
-        .top-action-bar .action-btn.word-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(147,197,253,0.5); }
-        .top-action-bar .action-btn.two-paper-btn { background: linear-gradient(135deg, #ec4899, #db2777); border-color: rgba(249,168,212,0.6); }
-        .top-action-bar .action-btn.word2-btn { grid-column: span 6; }
-        .top-action-bar .action-btn.clear-btn { grid-column: span 4; background: rgba(127,29,29,0.28); color: #f87171; border: 1px solid rgba(239,68,68,0.55); box-shadow: none; }
-        body.day-theme .top-action-bar .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
-        .count-pill { background: rgba(60,20,110,0.75); color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-left: 4px; }
+        /* ===== TOP ACTION BAR – glass gradient buttons (image design) ===== */
+        .top-action-bar { display: grid; grid-template-columns: repeat(10, 1fr); gap: 12px; align-items: stretch; margin-bottom: 35px; position: relative; z-index: 50; }
+        .top-action-bar > .action-btn { grid-column: span 2; min-width: 0; min-height: 46px; padding: 12px 14px; border-radius: 14px; font-size: 14px; font-weight: 700; letter-spacing: 0.2px; border: 1px solid rgba(255,255,255,0.28); box-shadow: 0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18); color: #fff; }
+        .top-action-bar > .action-btn:nth-child(6) { grid-column: span 6; }
+        .top-action-bar > .action-btn:nth-child(7) { grid-column: span 4; }
+        .top-action-bar > .action-btn.import-btn { background: linear-gradient(135deg, #3b82f6, #2563eb); border-color: rgba(147,197,253,0.55); }
+        .top-action-bar > .action-btn.saved-btn { background: linear-gradient(135deg, #a855f7, #9333ea); border-color: rgba(216,180,254,0.55); }
+        .top-action-bar > .action-btn.print-btn { background: linear-gradient(135deg, #8b95f9, #6f7bf0); border-color: rgba(199,210,254,0.65); }
+        .top-action-bar > .action-btn.word-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(147,197,253,0.45); }
+        .top-action-bar > .action-btn.two-paper-btn { background: linear-gradient(135deg, #ec4899, #d1306f); border-color: rgba(249,168,212,0.55); }
+        .top-action-bar > .action-btn.settings-btn { background: linear-gradient(135deg, #566176, #3b475b); border-color: rgba(203,213,225,0.35); color: #e2e8f0; }
+        .top-action-bar > .action-btn.clear-btn { background: rgba(127,29,29,0.28); color: #f87171; border: 1px solid rgba(239,68,68,0.5); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+        body.day-theme .top-action-bar > .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
+        .top-action-bar > .action-btn svg { flex-shrink: 0; }
+        .saved-count-badge { background: rgba(76,29,149,0.85); padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; margin-left: 6px; line-height: 1.4; }
         @media (max-width: 760px) {
             .top-action-bar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .top-action-bar .action-btn, .top-action-bar .action-btn.word2-btn { grid-column: span 1; font-size: 13px; padding: 0 8px; }
-            .top-action-bar .action-btn.clear-btn { grid-column: span 2; }
+            .top-action-bar > .action-btn, .top-action-bar > .action-btn:nth-child(6) { grid-column: span 1; font-size: 13px; padding: 12px 8px; }
+            .top-action-bar > .action-btn:nth-child(7) { grid-column: span 2; font-size: 13px; padding: 12px 8px; }
         }
+
+        body.day-theme .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
 
         .meta-grid { 
             display: grid; 
@@ -323,118 +326,10 @@
         .add-btn:hover { background: rgba(255,255,255,0.06); color: #38bdf8; border-color: #38bdf8; transform: translateY(-2px); }
 
         /* Modals - Reduced Lag Version */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; opacity: 0; transition: opacity 0.2s;}
-        .modal-overlay.active { opacity: 1; }
-        .modal-content { background: #0f172a; border-radius: 16px; padding: 35px; width: 100%; max-width: 800px; position: relative; border: 1px solid rgba(56, 189, 248, 0.3); max-height: 90vh; overflow-y: auto; transform: scale(0.97); transition: transform 0.2s; color: #f8fafc; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
-        .modal-overlay.active .modal-content { transform: scale(1); }
-
-        /* animation-managed modals (JS drives open/close) */
-        .modal-overlay.mx { transition: none !important; }
-        .modal-overlay.mx .modal-content { transition: none !important; transform: none; backface-visibility: hidden; }
-        .modal-overlay.mx.active .modal-content { transform: none; }
-
-        /* ===================== 🧈 SMOOTH UI PACK ===================== */
-        /* fullscreen dropdown (School Name etc.) is JS-animated */
-        .fs-select-overlay.mx { transition: none !important; }
-        .fs-select-overlay.mx .fs-select-content { transition: none !important; transform: none; backface-visibility: hidden; }
-        .fs-select-overlay.mx.active .fs-select-content { transform: none; }
-        .fs-select-overlay.active .fs-option { animation: fsOptIn .38s cubic-bezier(.22,1,.36,1) both; animation-delay: calc(var(--i, 0) * 28ms + 90ms); }
-        @keyframes fsOptIn { from { opacity: 0; transform: translate3d(0, 12px, 0); } to { opacity: 1; transform: none; } }
-        .fs-option { transition: transform .2s cubic-bezier(.22,1,.36,1), background-color .2s ease, color .2s ease; }
-        .fs-option:active { transform: scale(.98); }
-
-        /* dropdown trigger: tactile press + arrow flip */
-        .custom-select-trigger { transition: border-color .2s ease, box-shadow .2s ease, transform .18s cubic-bezier(.22,1,.36,1), background-color .2s ease; -webkit-tap-highlight-color: transparent; }
-        .custom-select-trigger:active { transform: scale(.985); }
-        .custom-select-trigger.is-open { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.18); }
-        .custom-select-trigger .arrow-icon { transition: transform .3s cubic-bezier(.22,1,.36,1); }
-        .custom-select-trigger.is-open .arrow-icon { transform: rotate(180deg); }
-        .custom-select-trigger > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 10px; }
-        input, textarea { transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease; }
-
-        /* entrance: buttons + every field from School Name downward rise in, staggered */
-        @keyframes uiRise { from { opacity: 0; transform: translate3d(0, 18px, 0) scale(.985); } to { opacity: 1; transform: none; } }
-        body.ui-ready .top-action-bar .action-btn { animation: uiRise .55s cubic-bezier(.22,1,.36,1) backwards; }
-        body.ui-ready .top-action-bar .action-btn:nth-child(1) { animation-delay: .02s; } body.ui-ready .top-action-bar .action-btn:nth-child(2) { animation-delay: .06s; }
-        body.ui-ready .top-action-bar .action-btn:nth-child(3) { animation-delay: .10s; } body.ui-ready .top-action-bar .action-btn:nth-child(4) { animation-delay: .14s; }
-        body.ui-ready .top-action-bar .action-btn:nth-child(5) { animation-delay: .18s; } body.ui-ready .top-action-bar .action-btn:nth-child(6) { animation-delay: .22s; }
-        body.ui-ready .top-action-bar .action-btn:nth-child(7) { animation-delay: .26s; }
-        body.ui-ready .meta-grid { animation: uiRise .6s cubic-bezier(.22,1,.36,1) .2s backwards; }
-        body.ui-ready .meta-grid .form-group { animation: uiRise .55s cubic-bezier(.22,1,.36,1) backwards; }
-        body.ui-ready .meta-grid .form-group:nth-child(1) { animation-delay: .30s; } body.ui-ready .meta-grid .form-group:nth-child(2) { animation-delay: .34s; }
-        body.ui-ready .meta-grid .form-group:nth-child(3) { animation-delay: .38s; } body.ui-ready .meta-grid .form-group:nth-child(4) { animation-delay: .42s; }
-        body.ui-ready .meta-grid .form-group:nth-child(5) { animation-delay: .46s; } body.ui-ready .meta-grid .form-group:nth-child(6) { animation-delay: .50s; }
-        body.ui-ready .meta-grid .form-group:nth-child(7) { animation-delay: .54s; } body.ui-ready .meta-grid .form-group:nth-child(8) { animation-delay: .58s; }
-        body.ui-ready .meta-grid .form-group:nth-child(9) { animation-delay: .62s; } body.ui-ready .meta-grid .form-group:nth-child(10) { animation-delay: .66s; }
-        body.ui-ready .meta-grid .form-group:nth-child(11) { animation-delay: .70s; } body.ui-ready .meta-grid .form-group:nth-child(12) { animation-delay: .74s; }
-        body.ui-ready #structuredEditorBox { animation: uiRise .6s cubic-bezier(.22,1,.36,1) .5s backwards; }
-        body.ui-ready .footer-ui { animation: uiRise .6s cubic-bezier(.22,1,.36,1) .7s backwards; }
-
-        /* question cards / sections: pop in & out with spring */
-        .question-block { animation: qPop .42s cubic-bezier(.22,1,.36,1) both; }
-        @keyframes qPop { from { opacity: 0; transform: translate3d(0, 14px, 0) scale(.985); } to { opacity: 1; transform: none; } }
-        .section-box { animation: qPop .45s cubic-bezier(.22,1,.36,1) both; }
-        .slide-up-anim { animation: qOut .22s cubic-bezier(.4,0,1,1) forwards !important; }
-        @keyframes qOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(0, -8px, 0) scale(.97); } }
-        .empty-paper-prompt { animation: qPop .5s cubic-bezier(.22,1,.36,1) both; }
-
-        /* press feedback on all clickable buttons */
-        .action-btn, .add-btn, .remove-btn, .vault-btn, .vault-clear-all, .modal-close, .fs-select-close, .fs-select-action { -webkit-tap-highlight-color: transparent; transition: transform .18s cubic-bezier(.22,1,.36,1), filter .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease; }
-        .remove-btn:active, .add-btn:active, .vault-btn:active, .vault-clear-all:active { transform: scale(.96); }
-        .modal-close:active, .fs-select-close:active { transform: scale(.88); }
-        .remove-btn { transition: transform .18s cubic-bezier(.22,1,.36,1), background-color .2s ease, color .2s ease, border-color .2s ease; }
-
-        /* editor no longer shows (अ)(ब)(A)(B) badges: paper uses text exactly as given */
-        .option-input-wrapper .option-prefix { display: none !important; }
-        .option-input-wrapper input { padding-left: 20px; }
-
-        /* 🍞 toast: auto width, never overlaps edges, smooth in/out */
-        .toast-msg { position: fixed; top: max(14px, env(safe-area-inset-top, 0px)); left: 0; right: 0; margin: 0 auto; width: max-content; max-width: calc(100vw - 28px); display: flex; align-items: center; gap: 10px; color: #fff; padding: 12px 18px; border-radius: 14px; font-weight: 700; z-index: 999999; box-shadow: 0 10px 30px rgba(0,0,0,.35); animation: toastIn .42s cubic-bezier(.22,1,.36,1) both; pointer-events: none; }
-        .toast-msg.toast-out { animation: toastOut .38s cubic-bezier(.4,0,1,1) forwards; }
-        .toast-msg .toast-ico { display: flex; flex: 0 0 auto; }
-        .toast-msg .toast-ico svg { width: 22px; height: 22px; }
-        .toast-msg .toast-txt { font-size: 14.5px; line-height: 1.4; word-break: break-word; }
-        @keyframes toastIn { from { opacity: 0; transform: translate3d(0, -24px, 0) scale(.96); } to { opacity: 1; transform: none; } }
-        @keyframes toastOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(0, -18px, 0) scale(.96); } }
-
-        /* touch devices: no sticky hover jumps */
-        @media (hover: none) { .add-btn:hover, .fs-option:hover, .saved-paper-card:hover { transform: none; } .action-btn:hover { filter: none; } .custom-select-trigger:hover:not(.is-open) { border-color: rgba(255,255,255,0.15); } body.day-theme .custom-select-trigger:hover:not(.is-open) { border-color: #cbd5e1; } }
-
-        /* ===================== 🎬 TECH ASAR CV ANIMATION STYLE ===================== */
-        /* backdrop: fade + soft blur (CV: bg-black/70 + backdrop-blur-sm) */
-        .modal-overlay, .fs-select-overlay { background: rgba(0,0,0,0.7); }
-        @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-            .modal-overlay.active, .fs-select-overlay.active { -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
-        }
-
-        /* new question card: slide-down + flash (CV: anim-new-item + anim-flash) */
-        .question-block { animation: slideInDownSmooth .35s cubic-bezier(.2,.8,.2,1) both, flashNew .6s ease-out; transform-origin: top; }
-        @keyframes slideInDownSmooth { 0% { opacity: 0; transform: translateY(-15px) scale(.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes flashNew { 0% { border-color: #6366f1; box-shadow: inset 0 0 0 999px rgba(99,102,241,.22); } 100% { box-shadow: inset 0 0 0 999px rgba(99,102,241,0); } }
-        .section-box { animation: slideInDownSmooth .4s cubic-bezier(.2,.8,.2,1) both; transform-origin: top; }
-
-        /* delete: collapse (CV: anim-collapse-item) */
-        .slide-up-anim { animation: collapseItem .22s cubic-bezier(.4,0,.2,1) forwards !important; overflow: hidden; }
-        @keyframes collapseItem { 0% { opacity: 1; transform: scale(1); max-height: var(--h, 600px); margin-bottom: 25px; } 100% { opacity: 0; transform: scale(.9); max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; border-width: 0; } }
-        .saved-paper-card.slide-up-anim { margin-bottom: 0; }
-
-        /* buttons: CV active:scale-95 */
-        .action-btn:active, .remove-btn:active, .add-btn:active, .vault-btn:active, .vault-clear-all:active { transform: scale(.95); }
-        .custom-select-trigger:active, .fs-option:active { transform: scale(.98); }
-
-        /* gentle float on the empty-state icon (CV: floatFloat) */
-        @keyframes floatFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .empty-paper-prompt > div:first-child { animation: floatFloat 3s ease-in-out infinite; will-change: transform; }
-
-        /* 🍞 glass water-drop toast (CV style) */
-        .toast-msg { border-radius: 999px; padding: 11px 20px; border: 1px solid rgba(255,255,255,.25); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); animation: toastDrop .5s cubic-bezier(.34,1.56,.64,1) both; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-        .toast-msg.toast-success { background: rgba(16,185,129,.86); box-shadow: 0 10px 30px rgba(16,185,129,.4); }
-        .toast-msg.toast-error { background: rgba(239,68,68,.86); box-shadow: 0 10px 30px rgba(239,68,68,.4); }
-        .toast-msg.toast-warning { background: rgba(245,158,11,.88); box-shadow: 0 10px 30px rgba(245,158,11,.4); }
-        .toast-msg.toast-out { animation: toastUp .3s cubic-bezier(.36,0,.66,-.56) forwards; }
-        @keyframes toastDrop { 0% { transform: translateY(-60px) scale(.8); opacity: 0; } 60% { transform: translateY(10px) scale(1.05); opacity: 1; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
-        @keyframes toastUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-60px) scale(.8); opacity: 0; } }
-        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; } }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; overscroll-behavior: contain; }
+        .modal-overlay::before, .fs-select-overlay::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.72); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+        .modal-overlay.active::before, .fs-select-overlay.active::before { opacity: 1; }
+        .modal-content { background: #0f172a; border-radius: 16px; padding: 35px; width: 100%; max-width: 800px; position: relative; border: 1px solid rgba(56, 189, 248, 0.3); max-height: 90vh; max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; color: #f8fafc; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
         .modal-close { position: absolute; top: 20px; right: 25px; background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; font-weight: bold; transition:0.2s;}
         .modal-close:hover { color: #ef4444; transform: scale(1.1); }
         .import-set-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; margin-bottom:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; }
@@ -442,48 +337,45 @@
         .import-set-row input[type=checkbox] { width:22px; height:22px; accent-color:#3b82f6; cursor:pointer; flex:0 0 auto; }
         .modal-title { font-size: 24px; font-weight: 800; color: #f8fafc; margin-bottom: 15px; }
         
-        .saved-paper-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: transform 0.2s, border-color 0.2s; }
-        .saved-paper-card:hover { border-color: rgba(56, 189, 248, 0.4); transform: translateX(3px); background: rgba(30, 41, 59, 0.8); }
-        .saved-info h4 { font-size: 18px; color: #38bdf8; margin-bottom: 6px; }
-        .saved-info p { font-size: 13px; color: #94a3b8; }
-
-        /* ===== SAVED VAULT NEW DESIGN ===== */
-        #savedPapersModal .modal-content { max-width: 760px; padding: 26px 24px 22px; background: linear-gradient(180deg, #131c33, #0b1224); border: 1px solid rgba(168,85,247,0.35); }
-        .vault-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-right: 36px; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .vault-title { font-size: 21px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 10px; }
-        .vault-title .vault-count { background: rgba(168,85,247,0.25); color: #e9d5ff; border: 1px solid rgba(168,85,247,0.5); border-radius: 999px; font-size: 13px; font-weight: 800; padding: 2px 11px; }
-        .vault-clear-all { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 11px; background: rgba(127,29,29,0.3); color: #f87171; border: 1px solid rgba(239,68,68,0.6); font-weight: 800; font-size: 13.5px; cursor: pointer; transition: 0.15s; }
-        .vault-clear-all:hover { background: rgba(239,68,68,0.9); color: #fff; }
-        .vault-clear-all:active { transform: scale(0.97); }
-        #savedPapersListContainer { margin-top: 0 !important; display: flex; flex-direction: column; gap: 12px; }
-        .saved-paper-card { margin-bottom: 0; padding: 14px 16px; gap: 12px; flex-wrap: nowrap; background: rgba(30,41,59,0.55); border-left: 4px solid #a855f7; }
-        .saved-paper-card:hover { transform: none; border-color: rgba(168,85,247,0.6); border-left-color: #a855f7; }
-        .saved-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #a855f7, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 22px; flex: 0 0 auto; }
-        .saved-paper-card .saved-info { flex: 1; min-width: 0; }
-        .saved-paper-card .saved-info h4 { font-size: 16px; color: #f1f5f9; margin: 0 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* ===== SAVED VAULT – new design ===== */
+        #savedPapersModal .modal-content.vault-modal { max-width: 760px; padding: 26px 26px 22px; display: flex; flex-direction: column; overflow: hidden; background: linear-gradient(180deg, #131c33, #0b1224); border: 1px solid rgba(168,85,247,0.35); box-shadow: 0 25px 60px rgba(0,0,0,0.55); }
+        .vault-header { display: flex; align-items: center; gap: 12px; padding-right: 36px; margin-bottom: 16px; flex-wrap: wrap; }
+        .vault-header .modal-title { margin: 0; font-size: 22px; }
+        .vault-count-pill { background: rgba(76,29,149,0.85); color: #fff; padding: 3px 12px; border-radius: 999px; font-size: 13px; font-weight: 800; border: 1px solid rgba(216,180,254,0.4); }
+        .vault-toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .vault-btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 11px 14px; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; color: #fff; border: 1px solid rgba(255,255,255,0.28); box-shadow: 0 4px 14px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18); transition: transform 0.1s, filter 0.2s; font-family: inherit; }
+        .vault-btn:hover { filter: brightness(1.15); }
+        .vault-btn:active { transform: scale(0.97); }
+        .vault-btn.save { background: linear-gradient(135deg, #10b981, #059669); border-color: rgba(110,231,183,0.55); }
+        .vault-btn.clearall { background: rgba(127,29,29,0.28); color: #f87171; border: 1px solid rgba(239,68,68,0.5); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+        #savedPapersListContainer { max-height: 58vh; overflow-y: auto; padding-right: 4px; margin-top: 0 !important; }
+        .saved-paper-card { background: linear-gradient(135deg, rgba(30,41,59,0.75), rgba(15,23,42,0.75)); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; transition: transform 0.2s, border-color 0.2s, background 0.2s; }
+        .saved-paper-card:hover { border-color: rgba(168,85,247,0.5); background: linear-gradient(135deg, rgba(40,52,76,0.9), rgba(15,23,42,0.9)); }
+        .saved-num { flex: 0 0 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #fff; background: linear-gradient(135deg, #a855f7, #6366f1); box-shadow: 0 3px 10px rgba(99,102,241,0.4); }
+        .saved-info { flex: 1; min-width: 0; }
+        .saved-info h4 { font-size: 16px; color: #e2e8f0; margin: 0 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .saved-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-        .saved-meta span { font-size: 12px; color: #cbd5e1; background: rgba(255,255,255,0.07); border-radius: 999px; padding: 2px 10px; }
-        .saved-paper-card .saved-actions { display: flex; gap: 8px; flex: 0 0 auto; }
-        .vault-btn { height: 38px; padding: 0 14px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-        .vault-btn.load { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
-        .vault-btn.del { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.45); }
-        .vault-btn:hover { filter: brightness(1.25); }
-        .vault-empty { text-align: center; padding: 40px 10px; color: #64748b; font-size: 15px; }
-        .vault-empty div { font-size: 42px; margin-bottom: 8px; }
+        .saved-chip { font-size: 12px; font-weight: 600; color: #a5b4fc; background: rgba(99,102,241,0.14); border: 1px solid rgba(99,102,241,0.3); padding: 2px 10px; border-radius: 999px; }
+        .saved-actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .saved-actions .v-load, .saved-actions .v-del { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 11px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: filter 0.2s, transform 0.1s; }
+        .saved-actions .v-load { background: rgba(16,185,129,0.16); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+        .saved-actions .v-del { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.4); }
+        .saved-actions button:hover { filter: brightness(1.25); }
+        .saved-actions button:active { transform: scale(0.96); }
+        .vault-empty { text-align: center; padding: 40px 20px; color: #64748b; font-size: 15px; line-height: 1.7; }
+        .vault-empty .big { font-size: 40px; display: block; margin-bottom: 8px; }
         @media (max-width: 560px) {
-            #savedPapersModal .modal-content { padding: 20px 14px 16px; }
+            #savedPapersModal .modal-content.vault-modal { padding: 20px 14px 16px; }
             .saved-paper-card { flex-wrap: wrap; }
-            .saved-paper-card .saved-actions { width: 100%; }
-            .vault-btn { flex: 1; justify-content: center; }
-            .vault-clear-all { width: 100%; justify-content: center; }
+            .saved-info { flex-basis: calc(100% - 52px); }
+            .saved-actions { width: 100%; }
+            .saved-actions button { flex: 1; justify-content: center; }
         }
         
         
         /* Full Screen Select */
-        .fs-select-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); z-index: 100000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; }
-        .fs-select-overlay.active { opacity: 1; }
-        .fs-select-content { background: rgba(15, 23, 42, 0.95); width: 90%; max-width: 500px; max-height: 80vh; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; transform: scale(0.97); transition: transform 0.2s; box-shadow: 0 25px 50px rgba(0,0,0,0.8);}
-        .fs-select-overlay.active .fs-select-content { transform: scale(1); }
+        .fs-select-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 100000; display: none; align-items: center; justify-content: center; overscroll-behavior: contain; }
+        .fs-select-content { background: rgba(15, 23, 42, 0.98); width: 90%; max-width: 500px; max-height: 80vh; max-height: 80dvh; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.8);}
         .fs-select-header { padding: 20px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); }
         .fs-select-header h3 { font-size: 20px; color: #38bdf8; margin: 0; }
         .fs-header-actions { display: flex; gap: 10px; align-items: center; }
@@ -542,9 +434,87 @@
             .two-paper-layout .print-q-item { margin-bottom: 4px; }
             .two-paper-layout .print-options-container { margin-top: 2px; }
         }
+    
+        /* =====================================================================
+           🧈 BUTTERY SMOOTH ANIMATION SYSTEM (Android-style origin open/close)
+           Sirf transform + opacity use hota hai => GPU par chalta hai, lag nahi.
+           ===================================================================== */
+        @keyframes popInOrigin {
+            0%   { opacity: 0; transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0) scale(0.15); }
+            40%  { opacity: 1; }
+            100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+        }
+        @keyframes popOutOrigin {
+            0%   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+            55%  { opacity: 0.85; }
+            100% { opacity: 0; transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0) scale(0.15); }
+        }
+        .pop-in  { animation: popInOrigin 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards; will-change: transform, opacity; }
+        .pop-out { animation: popOutOrigin 0.3s cubic-bezier(0.4, 0, 0.8, 0.2) forwards; will-change: transform, opacity; pointer-events: none; }
+
+        @keyframes optIn   { from { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.98); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+        @keyframes qIn     { from { opacity: 0; transform: translate3d(0, -14px, 0) scale(0.97); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+
+        /* Dropdown options + vault cards: ek ke baad ek smooth aate hain */
+        .fs-option { animation: optIn 0.36s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 24ms + 90ms); transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease, color 0.2s ease; }
+        .fs-option:active { transform: scale(0.98); }
+        .saved-paper-card { animation: optIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 40ms + 120ms); }
+        .vault-toolbar .vault-btn, .vault-header { animation: optIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: 80ms; }
+
+        /* Select box (School Name se neeche tak) */
+        .custom-select-trigger { transition: border-color 0.2s ease, box-shadow 0.25s ease, background-color 0.2s ease, transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .custom-select-trigger:active { transform: scale(0.985); }
+        .custom-select-trigger.open { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18); }
+        .custom-select-trigger .arrow-icon { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease; }
+        .custom-select-trigger.open .arrow-icon { transform: rotate(180deg); color: #38bdf8; }
+        input, textarea { transition: border-color 0.2s ease, box-shadow 0.25s ease, background-color 0.2s ease; }
+
+        /* Buttons: smooth lift + press */
+        .action-btn, .add-btn, .vault-btn, .remove-btn { transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease, box-shadow 0.25s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .top-action-bar > .action-btn:hover, .vault-btn:hover { transform: translate3d(0, -2px, 0); }
+        .action-btn:active, .add-btn:active, .vault-btn:active, .remove-btn:active { transform: scale(0.96) !important; transition-duration: 0.08s; }
+
+        /* Question blocks / sections: smooth aana */
+        .question-block { animation: qIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; transform-origin: top center; }
+        .section-box.sec-in, .empty-paper-prompt.sec-in { animation: qIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+
+        /* Page load: buttons aur meta fields ek ke baad ek */
+        body.enter .top-action-bar > .action-btn, body.enter .meta-grid .form-group { animation: optIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 45ms); }
+        body.enter .meta-grid { animation: optIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+
+        /* Mobile fixes */
+        @media (max-width: 560px) {
+            .modal-overlay { padding: 12px; }
+            .modal-content { padding: 22px 16px; border-radius: 18px; }
+            .modal-close { top: 14px; right: 16px; }
+            .fs-select-content { width: 94%; border-radius: 18px; }
+            .fs-select-header { padding: 16px 18px; }
+            .fs-option { padding: 13px 16px; margin: 4px 6px; font-size: 15px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .pop-in, .pop-out, .fs-option, .saved-paper-card, .question-block, body.enter * { animation-duration: 0.01ms !important; animation-delay: 0s !important; }
+        }
+    
+        /* ===== PERFORMANCE + SMOOTH FIXES (PC lag) ===== */
+        .question-block { content-visibility: auto; contain-intrinsic-size: auto 280px; }
+        .saved-paper-card { content-visibility: auto; contain-intrinsic-size: auto 78px; }
+        .section-box.sec-in, .empty-paper-prompt.sec-in { animation: fadeOnly 0.35s ease backwards; }
+        @keyframes fadeOnly { from { opacity: 0; } to { opacity: 1; } }
+        #savedPapersListContainer, .fs-select-list { overscroll-behavior: contain; }
+        #savedPapersListContainer.no-stagger .saved-paper-card { animation: none; }
+
+        /* Clear button: sirf dikhne wale blocks smooth hat'te hain (GPU only) */
+        @keyframes clearOut { from { opacity: 1; transform: translate3d(0,0,0) scale(1); } to { opacity: 0; transform: translate3d(0,-12px,0) scale(0.95); } }
+        .question-block.clear-out { animation: clearOut 0.28s cubic-bezier(0.4, 0, 0.2, 1) both !important; animation-delay: var(--d, 0ms) !important; }
+        @keyframes cardOut { from { opacity: 1; transform: translate3d(0,0,0); } to { opacity: 0; transform: translate3d(36px,0,0) scale(0.97); } }
+        .saved-paper-card.card-out { animation: cardOut 0.26s cubic-bezier(0.4, 0, 0.2, 1) both !important; animation-delay: var(--d, 0ms) !important; }
+
+        /* Toast: keyframes ek hi baar CSS me (pehle har baar <style> inject hoti thi = lag) */
+        @keyframes toastFadeInCenter { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        @keyframes toastFadeOutCenter { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -20px); } }
     </style>
 <style>
-/* (content-visibility removed: caused scroll jumps & blank boxes) */
+.question-block { content-visibility: auto; contain-intrinsic-size: auto 280px; }
 </style>
 </head>
 <body oncontextmenu="return false;"> <!-- Added Right-Click Block Here -->
@@ -588,7 +558,7 @@
             </button>
             <button class="action-btn saved-btn" onclick="openSavedPapersModal()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                Saved Vault <span id="savedCountBadge" class="count-pill">0</span>
+                Saved Vault <span id="savedCountBadge" class="saved-count-badge">0</span>
             </button>
             <button class="action-btn print-btn" onclick="generateAndPrintPaper()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
@@ -602,7 +572,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20" stroke-dasharray="4 4"></line></svg>
                 2x Print
             </button>
-            <button class="action-btn word-btn word2-btn" onclick="downloadPaperAsWord(true)">
+            <button class="action-btn word-btn" onclick="downloadPaperAsWord(true)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="8 13 10 18 12 14 14 18 16 13"></polyline></svg>
                 2x Word (.docx)
             </button>
@@ -735,6 +705,15 @@
                     </select>
                 </div>
 
+                <!-- 🔢 MARKS YES / NO OPTION -->
+                <div class="form-group">
+                    <label>Marks (प्रश्नों के अंक)</label>
+                    <select id="showMarks" onchange="debouncedAutoSave();">
+                        <option value="yes" selected>Yes (अंक दिखाएं)</option>
+                        <option value="no">No (अंक छुपाएं)</option>
+                    </select>
+                </div>
+
                 
             </div>
 
@@ -842,11 +821,18 @@
 
     <!-- SAVED PAPERS MODAL -->
     <div id="savedPapersModal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="modal-content vault-modal">
             <button class="modal-close" onclick="closeSavedPapersModal()">✕</button>
             <div class="vault-header">
-                <div class="vault-title">🗂️ Saved Vault <span class="vault-count" id="vaultCountTag">0</span></div>
-                <button type="button" class="vault-clear-all" id="vaultClearAllBtn" onclick="clearAllSavedPapers()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> All Clear</button>
+                <div class="modal-title">🗂️ सेव्ड पेपर्स (Saved Bank)</div>
+                <span class="vault-count-pill" id="vaultCountPill">0 पेपर</span>
+            </div>
+            <div class="vault-toolbar">
+                <button type="button" class="vault-btn save" onclick="vaultSaveCurrentPaper()">💾 Save Paper</button>
+                <button type="button" class="vault-btn clearall" onclick="vaultClearAll()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Clear All
+                </button>
             </div>
             <div id="savedPapersListContainer"></div>
         </div>
@@ -917,12 +903,12 @@
             else if (type === 'error') { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`; bgCol = '#ef4444'; } 
             else { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`; bgCol = '#f59e0b'; }
 
-            notification.innerHTML = `<span class="toast-ico">${svgIcon}</span><span class="toast-txt">${msg}</span>`;
-            notification.classList.add('toast-' + (type === 'error' ? 'error' : type === 'success' ? 'success' : 'warning'));
+            notification.innerHTML = `<div style="display:flex; align-items:center; gap:12px;">${svgIcon}<span style="font-size:16px;">${msg}</span></div>`;
+            notification.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); background:${bgCol}; color:white; padding:15px 30px; border-radius:12px; font-weight:bold; z-index:999999; animation: toastFadeInCenter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastFadeOutCenter 0.3s ease 2.7s forwards; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);`;
+            
             document.querySelectorAll('.toast-msg').forEach(t => t.remove());
-            document.body.appendChild(notification);
-            setTimeout(() => { notification.classList.add('toast-out'); }, 2000);
-            setTimeout(() => { notification.remove(); }, 2400);
+            document.body.appendChild(notification); 
+            setTimeout(() => { notification.remove(); }, 3000);
         }
 
 
@@ -948,6 +934,7 @@
                     mcqlayout: document.getElementById('mcqLayoutOption')?.value || '1x4',
                     margin: document.getElementById('pageMargin')?.value || '0.5in',
                     bold: document.getElementById('boldAll')?.value || 'normal',
+                showMarks: document.getElementById('showMarks')?.value || 'yes',
                 },
                 mcqs: Array.from(document.querySelectorAll('.mcq-item-block')).map(b => ({
                     q: b.querySelector('.mcq-text').value, a: b.querySelector('.mcq-op-a').value, b: b.querySelector('.mcq-op-b').value,
@@ -967,7 +954,7 @@
         }
 
         let autoSaveTimeout;
-        function debouncedAutoSave() { clearTimeout(autoSaveTimeout); autoSaveTimeout = setTimeout(autoSave, 1200); }
+        function debouncedAutoSave() { clearTimeout(autoSaveTimeout); autoSaveTimeout = setTimeout(() => { if (window.requestIdleCallback) requestIdleCallback(autoSave, { timeout: 2000 }); else autoSave(); }, 1200); }
         document.addEventListener('input', (e) => { if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') debouncedAutoSave(); });
         document.addEventListener('change', (e) => { if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') debouncedAutoSave(); });
 
@@ -988,6 +975,7 @@
                             }
                         });
                         if (data.meta.bold && document.getElementById('boldAll')) document.getElementById('boldAll').value = data.meta.bold;
+                        if (data.meta.showMarks && document.getElementById('showMarks')) document.getElementById('showMarks').value = data.meta.showMarks;
                         updatePaperFormatting();
                     }
                     document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
@@ -1024,71 +1012,89 @@
             if (!silent) showToast("✅ पेपर Saved Vault में सेव/अपडेट हो गया है!", "success");
         }
 
+        /* 🧈 ORIGIN-BASED OPEN/CLOSE (Android style): jis button se khule, usi me wapas band */
+        const ANIM = { lastEl: null, lastRect: null };
+        document.addEventListener('click', function(e) {
+            const el = e.target.closest ? e.target.closest('button, [onclick], .custom-select-trigger, .add-btn, .fs-option') : null;
+            if (el) { const r = el.getBoundingClientRect(); ANIM.lastEl = el; ANIM.lastRect = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+        }, true);
+
+        function originFor(el, saved) {
+            let r = null;
+            if (el && el.isConnected) { const b = el.getBoundingClientRect(); if (b.width > 0 && b.height > 0) r = { x: b.left + b.width / 2, y: b.top + b.height / 2 }; }
+            r = r || saved;
+            if (!r) return { tx: '0px', ty: '0px' };
+            return { tx: (r.x - window.innerWidth / 2) + 'px', ty: (r.y - window.innerHeight / 2) + 'px' };
+        }
+        function boxOf(ov) { return ov.querySelector('.modal-content, .fs-select-content'); }
+        function syncScrollLock() { /* body overflow ab touch nahi hota (relayout lag hata diya) */ }
+        function canScrollEl(el) { const st = getComputedStyle(el); return /(auto|scroll)/.test(st.overflowY) && el.scrollHeight > el.clientHeight + 1; }
+        function guardScroll(e) {
+            let el = e.target;
+            while (el && el.nodeType === 1 && !(el.classList && (el.classList.contains('modal-overlay') || el.classList.contains('fs-select-overlay')))) { if (canScrollEl(el)) return; el = el.parentElement; }
+            e.preventDefault();
+        }
+        document.querySelectorAll('.modal-overlay, .fs-select-overlay').forEach(ov => { ov.addEventListener('wheel', guardScroll, { passive: false }); ov.addEventListener('touchmove', guardScroll, { passive: false }); });
+
+        /* returns true agar fresh open hua, false agar pehle se khula tha */
+        function openOverlay(id) {
+            const ov = document.getElementById(id); if (!ov) return false;
+            if (ov._open) return false;
+            clearTimeout(ov._t); clearTimeout(ov._t2);
+            const box = boxOf(ov);
+            ov._originEl = ANIM.lastEl; ov._originRect = ANIM.lastRect;
+            const o = originFor(ov._originEl, ov._originRect);
+            box.style.setProperty('--tx', o.tx); box.style.setProperty('--ty', o.ty);
+            box.classList.remove('pop-out'); box.classList.add('pop-in');
+            ov.style.display = 'flex'; ov._open = true;
+            void ov.offsetWidth;
+            ov.classList.add('active');
+            ov._t2 = setTimeout(() => box.classList.remove('pop-in'), 470);
+            syncScrollLock();
+            return true;
+        }
+        function closeOverlay(id, cb) {
+            const ov = document.getElementById(id);
+            if (!ov || !ov._open) { if (cb) cb(); return; }
+            ov._open = false; clearTimeout(ov._t); clearTimeout(ov._t2);
+            const box = boxOf(ov);
+            const o = originFor(ov._originEl, ov._originRect);
+            box.style.setProperty('--tx', o.tx); box.style.setProperty('--ty', o.ty);
+            box.classList.remove('pop-in'); box.classList.add('pop-out');
+            ov.classList.remove('active');
+            ov._t = setTimeout(() => { ov.style.display = 'none'; box.classList.remove('pop-out'); syncScrollLock(); if (cb) cb(); }, 300);
+        }
+        function focusAfterOpen(id) { setTimeout(() => { const el = document.getElementById(id); if (el && el.offsetParent !== null) { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } } }, 340); }
+
+        /* Section box smooth show */
+        function setBoxVisible(b, show) {
+            if (!b) return;
+            if (show) {
+                if (getComputedStyle(b).display === 'none') { b.style.display = 'block'; b.classList.remove('sec-in'); void b.offsetWidth; b.classList.add('sec-in'); setTimeout(() => b.classList.remove('sec-in'), 520); }
+            } else { b.style.display = 'none'; b.classList.remove('sec-in'); }
+        }
+        /* Smooth collapse (height + fade + scale) */
+        function collapseEl(el, done) {
+            const h = el.offsetHeight;
+            el.style.animation = 'none'; el.style.height = h + 'px'; el.style.overflow = 'hidden'; el.style.willChange = 'height, opacity, transform';
+            el.style.transition = 'height 0.34s cubic-bezier(0.4,0,0.2,1), opacity 0.24s ease, transform 0.32s cubic-bezier(0.4,0,0.2,1), margin 0.34s cubic-bezier(0.4,0,0.2,1), padding 0.34s cubic-bezier(0.4,0,0.2,1), border-width 0.34s ease';
+            void el.offsetHeight;
+            el.style.height = '0px'; el.style.opacity = '0'; el.style.transform = 'scale(0.96)';
+            el.style.marginTop = '0'; el.style.marginBottom = '0'; el.style.paddingTop = '0'; el.style.paddingBottom = '0'; el.style.borderWidth = '0';
+            setTimeout(() => done && done(), 360);
+        }
+        function resetCollapsed(el) { ['height','opacity','transform','transition','overflow','willChange','animation','marginTop','marginBottom','paddingTop','paddingBottom','borderWidth'].forEach(k => el.style[k] = ''); }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            const order = [['customDeleteModal', closeCustomDeletePrompt], ['customPromptModal', closeCustomPrompt], ['fullScreenSelectModal', closeFullScreenSelect], ['savedPapersModal', closeSavedPapersModal], ['settingsModal', closeSettingsModal], ['importModal', closeImportModal]];
+            for (const [id, fn] of order) { const o = document.getElementById(id); if (o && o._open) { fn(); break; } }
+        });
+
         /* CUSTOM DELETE & TEXT PROMPT */
         let deleteActionCallback = null;
-
-        /* ================= 🧈 BUTTERY MODAL ANIMATION ENGINE =================
-           Button se khule -> usi button me wapas band (Android app open/close jaisa) */
-        let _lastPressedBtn = null;
-        document.addEventListener('pointerdown', (e) => { const b = e.target && e.target.closest ? e.target.closest('button, .custom-select-trigger') : null; if (b) _lastPressedBtn = b; }, true);
-        function _collapseOut(el) { if (!el) return; el.style.setProperty('--h', el.offsetHeight + 'px'); el.classList.add('slide-up-anim'); }
-        const _modalState = new WeakMap();
-        const _reduceMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        function _usableRect(el) { if (!el || !el.isConnected) return null; const r = el.getBoundingClientRect(); if (!r.width || !r.height) return null; if (r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return null; return r; }
-        const _CENTER_MODALS = ['customDeleteModal', 'customPromptModal'];
-        function _originTransform(originEl, box, centered) {
-            if (centered) return 'translate3d(0, 0, 0) scale(0.95)';
-            const o = _usableRect(originEl); const t = box.getBoundingClientRect();
-            if (!o || !t.width || !t.height) return 'translate3d(0, 24px, 0) scale(0.92)';
-            const dx = (o.left + o.width / 2) - (t.left + t.width / 2), dy = (o.top + o.height / 2) - (t.top + t.height / 2);
-            return `translate3d(${dx}px, ${dy}px, 0) scale(0.15)`;
-        }
-        function _animModal(id, opening, afterClose) {
-            const ov = document.getElementById(id); if (!ov) return; const box = ov.querySelector('.modal-content, .fs-select-content'); if (!box) return;
-            let st = _modalState.get(ov); if (!st) { st = { token: 0, origin: null, open: false }; _modalState.set(ov, st); }
-            if (opening && st.open && ov.classList.contains('active') && ov.style.display === 'flex' && !st.closing) return;
-            if (!opening && !st.open) return;
-            const tk = ++st.token;
-            // current visual state (so interrupted animations never jump)
-            const cs = getComputedStyle(box), os = getComputedStyle(ov);
-            const curT = (ov.style.display === 'flex' && cs.transform !== 'none') ? cs.transform : null;
-            const curBoxOp = ov.style.display === 'flex' ? cs.opacity : '0', curOvOp = ov.style.display === 'flex' ? os.opacity : '0';
-            const running = ov.style.display === 'flex' && (box.getAnimations().length || ov.getAnimations().length);
-            box.getAnimations().forEach(a => a.cancel()); ov.getAnimations().forEach(a => a.cancel());
-            ov.classList.add('mx');
-            const centeredM = _CENTER_MODALS.includes(id);
-            const dur = _reduceMotion() ? 120 : (centeredM ? 300 : (opening ? 400 : 300));
-            if (opening) {
-                st.open = true; st.closing = false;
-                if (!running) st.origin = _lastPressedBtn;
-                ov.style.display = 'flex'; ov.classList.add('active');
-                const centered = _CENTER_MODALS.includes(id);
-                const from = running && curT ? curT : _originTransform(st.origin, box, centered);
-                const bFrom = running ? curBoxOp : '0', oFrom = running ? curOvOp : '0';
-                box.style.willChange = 'transform, opacity'; 
-                ov.animate([{ opacity: oFrom }, { opacity: 1 }], { duration: Math.max(dur, 300), easing: 'ease-out', fill: 'none' });
-                const a = box.animate([
-                    { transform: from, opacity: bFrom },
-                    { transform: 'translate3d(0,0,0) scale(1)', opacity: 1 }
-                ], { duration: dur, easing: centered ? 'ease' : 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'none' });
-                a.onfinish = () => { if (st.token === tk) box.style.willChange = ''; };
-            } else {
-                st.open = false; st.closing = true;
-                const to = _originTransform(st.origin, box, _CENTER_MODALS.includes(id)); // measured with animations cancelled = natural position
-                const bFrom = curT || 'translate3d(0,0,0) scale(1)';
-                box.style.willChange = 'transform, opacity';
-                const done = () => { if (st.token !== tk) return; ov.style.display = 'none'; ov.classList.remove('active'); box.getAnimations().forEach(a => a.cancel()); ov.getAnimations().forEach(a => a.cancel()); box.style.willChange = ''; st.closing = false; if (afterClose) afterClose(); };
-                ov.animate([{ opacity: curOvOp }, { opacity: 0 }], { duration: Math.max(dur, 300), easing: 'ease-in', fill: 'forwards' });
-                const a = box.animate([
-                    { transform: bFrom, opacity: curBoxOp },
-                    { transform: to, opacity: 0 }
-                ], { duration: dur, easing: _CENTER_MODALS.includes(id) ? 'ease' : 'cubic-bezier(0.3, 0, 0.8, 0.2)', fill: 'forwards' });
-                a.onfinish = done; a.oncancel = () => {};
-            }
-        }
-
-        function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; _animModal('customDeleteModal', true); setTimeout(() => { try { document.getElementById('deletePromptVerify').focus({ preventScroll: true }); } catch(e) {} }, 220); }
-        function closeCustomDeletePrompt() { _animModal('customDeleteModal', false, () => { deleteActionCallback = null; }); }
+        function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; openOverlay('customDeleteModal'); focusAfterOpen('deletePromptVerify'); }
+        function closeCustomDeletePrompt() { const ref = deleteActionCallback; closeOverlay('customDeleteModal', () => { if (deleteActionCallback === ref) deleteActionCallback = null; }); }
         function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === '0') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
         document.getElementById('deletePromptVerify').addEventListener('keypress', function(e){ if(e.key === 'Enter') submitCustomDeletePrompt(); });
 
@@ -1097,10 +1103,9 @@
             const inputEl = document.getElementById('customPromptInput'); inputEl.value = defaultValue;
             requiresVerification = requireVerify; const verifyGroup = document.getElementById('verificationGroup'); const verifyInput = document.getElementById('customPromptVerify'); const errorMsg = document.getElementById('verifyError');
             verifyInput.value = ''; errorMsg.style.display = 'none'; if (requireVerify) { verifyGroup.style.display = 'flex'; } else { verifyGroup.style.display = 'none'; }
-            customPromptCallback = callback; _animModal('customPromptModal', true);
-            setTimeout(() => { try { inputEl.focus({ preventScroll: true }); } catch(e) {} }, 220);
+            customPromptCallback = callback; openOverlay('customPromptModal'); focusAfterOpen('customPromptInput');
         }
-        function closeCustomPrompt() { _animModal('customPromptModal', false, () => { customPromptCallback = null; }); }
+        function closeCustomPrompt() { const ref = customPromptCallback; closeOverlay('customPromptModal', () => { if (customPromptCallback === ref) customPromptCallback = null; }); }
         function submitCustomPrompt() {
             const val = document.getElementById('customPromptInput').value.trim(); if (!val) return showToast("⚠️ कृपया कोई मान दर्ज करें!", "warning");
             if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== '0') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
@@ -1128,12 +1133,12 @@
             activeSelectElement = selectEl; activeTriggerUpdateFn = updateCallback;
             document.getElementById('fsSelectTitle').innerText = title; const listContainer = document.getElementById('fsSelectList'); listContainer.innerHTML = ''; 
             Array.from(selectEl.options).forEach((option, index) => {
-                const optDiv = document.createElement('div'); optDiv.className = 'fs-option'; if (option.selected) optDiv.classList.add('selected'); optDiv.innerText = option.text;
+                const optDiv = document.createElement('div'); optDiv.className = 'fs-option'; if (option.selected) optDiv.classList.add('selected'); optDiv.innerText = option.text; optDiv.style.setProperty('--i', Math.min(index, 12));
                 optDiv.addEventListener('click', () => { selectEl.selectedIndex = index; selectEl.dispatchEvent(new Event('change')); activeTriggerUpdateFn(); closeFullScreenSelect(); debouncedAutoSave(); });
                 listContainer.appendChild(optDiv);
             });
             
-            const addBtnDiv = document.createElement('div'); addBtnDiv.className = 'fs-option';
+            const addBtnDiv = document.createElement('div'); addBtnDiv.className = 'fs-option'; addBtnDiv.style.setProperty('--i', Math.min(selectEl.options.length, 12));
             addBtnDiv.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:10px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> नया विकल्प जोड़ें (Add New)`;
             addBtnDiv.style.color = '#34d399'; addBtnDiv.style.fontWeight = 'bold'; addBtnDiv.style.borderTop = '1px dashed rgba(255,255,255,0.1)'; addBtnDiv.style.marginTop = '10px'; addBtnDiv.style.justifyContent = 'center';
             addBtnDiv.addEventListener('click', () => {
@@ -1147,11 +1152,12 @@
             if (selectedOpt.value !== 'none') { editBtn.style.display = 'flex'; delBtn.style.display = 'flex'; } else { editBtn.style.display = 'none'; delBtn.style.display = 'none'; }
             editBtn.onclick = () => { showCustomPrompt("विकल्प बदलें", "नया मान (New Value):", selectedOpt.text, true, (newVal) => { selectedOpt.text = newVal; selectedOpt.value = newVal; activeTriggerUpdateFn(); selectEl.dispatchEvent(new Event('change')); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave(); }); };
             delBtn.onclick = () => { showCustomDeletePrompt(() => { selectEl.remove(selectEl.selectedIndex); if(selectEl.options.length === 0) { let emptyOpt = document.createElement('option'); emptyOpt.value = 'none'; emptyOpt.text = 'कोई नहीं (None)'; selectEl.appendChild(emptyOpt); } selectEl.selectedIndex = 0; activeTriggerUpdateFn(); selectEl.dispatchEvent(new Event('change')); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave(); }); };
-            const trg = selectEl.nextElementSibling; if (trg && trg.classList.contains('custom-select-trigger')) { document.querySelectorAll('.custom-select-trigger.is-open').forEach(t => t.classList.remove('is-open')); trg.classList.add('is-open'); _lastPressedBtn = trg; }
-            listContainer.querySelectorAll('.fs-option').forEach((el, i) => el.style.setProperty('--i', Math.min(i, 9)));
-            _animModal('fullScreenSelectModal', true);
+            const overlay = document.getElementById('fullScreenSelectModal');
+            const fresh = openOverlay('fullScreenSelectModal');
+            if (fresh) { const t = ANIM.lastEl; if (t && t.classList && t.classList.contains('custom-select-trigger')) { t.classList.add('open'); overlay._trg = t; } }
+            const selEl = listContainer.querySelector('.fs-option.selected'); if (selEl) listContainer.scrollTop = Math.max(0, selEl.offsetTop - listContainer.offsetTop - 70);
         }
-        function closeFullScreenSelect() { _animModal('fullScreenSelectModal', false, () => { document.querySelectorAll('.custom-select-trigger.is-open').forEach(t => t.classList.remove('is-open')); }); const t0 = document.querySelector('.custom-select-trigger.is-open'); if (t0) t0.classList.remove('is-open'); }
+        function closeFullScreenSelect() { const ov = document.getElementById('fullScreenSelectModal'); if (ov._trg) { ov._trg.classList.remove('open'); ov._trg = null; } closeOverlay('fullScreenSelectModal'); }
 
         function setPrintPageSize(landscape) {
             let marginValue = document.getElementById('pageMargin')?.value || '0.5in'; 
@@ -1269,24 +1275,32 @@
             const b3 = document.getElementById('box_section3');
             const b4 = document.getElementById('box_section4');
 
-            if (b1) b1.style.display = s1 > 0 ? 'block' : 'none';
-            if (b2) b2.style.display = s2 > 0 ? 'block' : 'none';
-            if (b3) b3.style.display = s3 > 0 ? 'block' : 'none';
-            if (b4) b4.style.display = s4 > 0 ? 'block' : 'none';
+            setBoxVisible(b1, s1 > 0);
+            setBoxVisible(b2, s2 > 0);
+            setBoxVisible(b3, s3 > 0);
+            setBoxVisible(b4, s4 > 0);
 
             const emptyPrompt = document.getElementById('emptyPaperPrompt');
             if (emptyPrompt) {
-                emptyPrompt.style.display = (s1 + s2 + s3 + s4 === 0) ? 'block' : 'none';
+                setBoxVisible(emptyPrompt, (s1 + s2 + s3 + s4 === 0));
             }
         }
 
         function refreshSectionBoxes() { updateSectionVisibility(); }
 
         function autoAddQuestionMark(element) { /* auto '?' हटा दिया गया */ debouncedAutoSave(); }
-        function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { _collapseOut(block); setTimeout(() => { block.remove(); updateSectionVisibility(); debouncedAutoSave(); }, 230); } }
+        function removeBlock(blockId) {
+            const block = document.getElementById(blockId); if (!block || block._removing) return; block._removing = true;
+            const box = block.closest('.section-box');
+            const isLast = box && box.querySelectorAll('.question-block').length === 1;
+            if (isLast) { collapseEl(box, () => { block.remove(); resetCollapsed(box); updateSectionVisibility(); debouncedAutoSave(); }); }
+            else { collapseEl(block, () => { block.remove(); updateSectionVisibility(); debouncedAutoSave(); }); }
+        }
 
         const trashSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 
+        let _qBurst = 0, _qBurstT;
+        function markNewBlock(div) { _qBurst++; clearTimeout(_qBurstT); _qBurstT = setTimeout(() => { _qBurst = 0; }, 150); if (_qBurst > 4) div.style.animation = 'none'; }
         function createMCQElement(question = '', op1 = '', op2 = '', op3 = '', op4 = '', marks = '1', layout = '') {
             mcqCount++; const container = document.getElementById('mcqContainer'); const div = document.createElement('div'); div.className = 'question-block mcq-item-block'; div.id = `mcq_block_${mcqCount}`; 
             
@@ -1295,21 +1309,35 @@
             if(layout === '2x2') div.classList.add('force-2x2-grid');
             
             div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">1. प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
-            container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
+            markNewBlock(div); container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
         }
 
         function createNormalElement(containerId, labelPrefix, question = '', marks = '2') {
             let uniqueId = Math.floor(Math.random() * 1000000); const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'question-block normal-item-block'; div.id = `normal_block_${uniqueId}`;
             div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix}</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${question}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${marks}"></div>`;
-            container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
+            markNewBlock(div); container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
         }
 
         function addMCQField(layout = '') { createMCQElement('', '', '', '', '', '1', layout); }
         function addNormalField(id, label, marks) { createNormalElement(id, label, '', marks); }
-        function clearPaper() { currentPaperId = null; document.querySelectorAll('.question-block').forEach(b => _collapseOut(b)); setTimeout(() => { document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; }); updateSectionVisibility(); debouncedAutoSave(); }, 250); }
+        let _clearing = false;
+        function clearPaper() {
+            if (_clearing) return; _clearing = true; currentPaperId = null;
+            const vh = window.innerHeight; const vis = [];
+            document.querySelectorAll('.question-block').forEach(b => { const r = b.getBoundingClientRect(); if (r.bottom > -40 && r.top < vh + 40) vis.push(b); });
+            vis.slice(0, 6).forEach((b, i) => { b.style.setProperty('--d', (i * 35) + 'ms'); b.classList.add('clear-out'); });
+            const wait = vis.length ? 300 + Math.min(vis.length, 6) * 35 : 0;
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    ['mcqContainer', 'vshortContainer', 'shortContainer', 'longContainer'].forEach(id => document.getElementById(id).replaceChildren());
+                    mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; });
+                    updateSectionVisibility(); debouncedAutoSave(); _clearing = false;
+                });
+            }, wait);
+        }
 
-        function openImportModal() { _animModal('importModal', true); }
-        function closeImportModal() { _animModal('importModal', false, () => { const t = document.getElementById('htmlImportText'); if (t) t.value = ''; }); }
+        function openImportModal() { openOverlay('importModal'); }
+        function closeImportModal() { closeOverlay('importModal', () => { const t = document.getElementById('htmlImportText'); if (t) t.value = ''; }); }
         
         function updateSavedCountBadge() { let saved = localStorage.getItem('mySavedAIPapers'); document.getElementById('savedCountBadge').innerText = saved ? JSON.parse(saved).length : 0; }
         
@@ -1325,8 +1353,8 @@
             try { localStorage.setItem('importSectionSettings', JSON.stringify(st)); } catch(e) {}
         }
         function setAllImportSections(val) { IMPORT_KEYS.forEach(k => { const el = document.getElementById('imp_' + k); if (el) el.checked = val; }); saveImportSettings(); }
-        function openSettingsModal() { syncImportSettingsUI(); _animModal('settingsModal', true); }
-        function closeSettingsModal() { _animModal('settingsModal', false); }
+        function openSettingsModal() { syncImportSettingsUI(); openOverlay('settingsModal'); }
+        function closeSettingsModal() { closeOverlay('settingsModal'); }
 
         // ===================== ⚡ SUPER POWERFUL AI IMPORT PARSER =====================
         function parseUniversalAiInput(rawInput) {
@@ -1420,22 +1448,18 @@
                     qText = qText.replace(/\[\s*\d+(?:\.\d+)?\s*(?:अंक|marks)?\s*\]|\(\s*\d+(?:\.\d+)?\s*(?:अंक|marks)\s*\)/gi, '').trim();
                 }
 
-                // marks written after the last option, e.g. "(D) दक्षिण [1]"
-                if (ops.length) {
-                    const lastIdx = ops.length - 1; const lm = String(ops[lastIdx]).match(/\s*(?:\[\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)?\s*\]|\(\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)\s*\))\s*$/i);
-                    if (lm) { if (!m) m = lm[1] || lm[2]; ops[lastIdx] = String(ops[lastIdx]).replace(lm[0], '').trim(); }
-                }
                 // If options embedded in question text: e.g. (A) ... (B) ... (C) ... (D) ...
                 if (ops.length < 4) {
                     const opMatches = Array.from(qText.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|(?<!\w)([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
                     if (opMatches.length >= 4) {
                         const mainQ = qText.substring(0, opMatches[0].index).trim();
-                        ops = [opMatches[0][0].trim(), opMatches[1][0].trim(), opMatches[2][0].trim(), opMatches[3][0].trim()];
+                        ops = [opMatches[0][3].trim(), opMatches[1][3].trim(), opMatches[2][3].trim(), opMatches[3][3].trim()];
                         qText = mainQ;
                     }
                 }
 
                 // Strip leading question numbering: e.g. "प्रश्न 1.", "Q1.", "1."
+                qText = qText.replace(/^(?:Q\.?\s*\d+|प्रश्न\s*\d+|\d+)\s*[\.:\-\)]\s*/i, '').trim();
 
                 if (ops.length >= 2 || qObj.sec === 1) {
                     while (ops.length < 4) ops.push('');
@@ -1482,9 +1506,9 @@
                 if (opMatch && currentQ) {
                     const multiOps = Array.from(s.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
                     if (multiOps.length > 1) {
-                        multiOps.forEach(mo => currentQ.options.push(mo[0].trim()));
+                        multiOps.forEach(mo => currentQ.options.push(mo[3].trim()));
                     } else {
-                        currentQ.options.push(s);
+                        currentQ.options.push(opMatch[3].trim());
                     }
                     continue;
                 }
@@ -1495,7 +1519,7 @@
                     pushQ(currentQ);
                     currentQ = {
                         sec: currSec,
-                        text: s,
+                        text: qStart[1] ? qStart[1].trim() : s,
                         options: [],
                         marks: null
                     };
@@ -1646,7 +1670,7 @@
             if (allOn) { clearPaper(); }
             else {
                 const map = { mcq:'mcqContainer', vshort:'vshortContainer', short:'shortContainer', long:'longContainer' };
-                IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.querySelectorAll('.question-block').forEach(b => _collapseOut(b)); } });
+                IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); } });
                 setTimeout(() => {
                     IMPORT_KEYS.forEach(k => { if (on[k]) { const c = document.getElementById(map[k]); if (c) c.innerHTML = ''; if (k === 'mcq') mcqCount = 0; } });
                     refreshSectionBoxes();
@@ -1662,42 +1686,59 @@
             }, 300);
         }
 
-        function openSavedPapersModal() { renderSavedPapersList(); _animModal('savedPapersModal', true); }
-        function closeSavedPapersModal() { _animModal('savedPapersModal', false); }
+        function openSavedPapersModal() { renderSavedPapersList(); openOverlay('savedPapersModal'); }
+        function closeSavedPapersModal() { closeOverlay('savedPapersModal'); }
 
-        function renderSavedPapersList() {
-            const container = document.getElementById('savedPapersListContainer'); container.innerHTML = '';
+        function renderSavedPapersList(stagger = true) {
+            const container = document.getElementById('savedPapersListContainer'); container.innerHTML = ''; container.classList.toggle('no-stagger', !stagger);
             let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
-            const tag = document.getElementById('vaultCountTag'); if (tag) tag.innerText = papers.length;
-            const clr = document.getElementById('vaultClearAllBtn'); if (clr) clr.style.display = papers.length ? 'inline-flex' : 'none';
-            if(papers.length === 0) { container.innerHTML = `<div class="vault-empty"><div>📭</div>अभी तक कोई पेपर सेव नहीं किया गया है।</div>`; return; }
-            papers.forEach(paper => {
+            const pill = document.getElementById('vaultCountPill'); if (pill) pill.innerText = papers.length + ' पेपर';
+            if(papers.length === 0) { container.innerHTML = `<div class="vault-empty"><span class="big">📭</span>अभी तक कोई पेपर सेव नहीं किया गया है।<br>ऊपर <b>Save Paper</b> दबाकर current पेपर सेव करें।</div>`; return; }
+            papers.forEach((paper, idx) => {
                 let totalQ = paper.mcqs.length + paper.vshorts.length + paper.shorts.length + paper.longs.length;
-                let card = document.createElement('div'); card.className = 'saved-paper-card'; card.dataset.pid = paper.id;
-                card.innerHTML = `<div class="saved-icon">📄</div><div class="saved-info"><h4>${paper.title}</h4><div class="saved-meta"><span>📅 ${paper.date}</span><span>❓ ${totalQ} प्रश्न</span></div></div><div class="saved-actions"><button class="vault-btn load" onclick="editSavedPaper('${paper.id}')">✏️ लोड करें</button><button class="vault-btn del" onclick="deleteSavedPaper('${paper.id}')">${trashSvg} डिलीट</button></div>`;
+                let card = document.createElement('div'); card.className = 'saved-paper-card'; card.dataset.id = paper.id; card.style.setProperty('--i', Math.min(idx, 10));
+                card.innerHTML = `<div class="saved-num">${idx + 1}</div><div class="saved-info"><h4>📄 ${paper.title}</h4><div class="saved-meta"><span class="saved-chip">📅 ${paper.date}</span><span class="saved-chip">❓ कुल प्रश्न: ${totalQ}</span></div></div><div class="saved-actions"><button class="v-load" onclick="editSavedPaper('${paper.id}')">✏️ लोड करें</button><button class="v-del" onclick="deleteSavedPaper('${paper.id}')">${trashSvg} डिलीट</button></div>`;
                 container.appendChild(card);
             });
         }
 
-        function clearAllSavedPapers() {
+        function vaultSaveCurrentPaper() {
+            const hasContent = Array.from(document.querySelectorAll('.mcq-text, .normal-text')).some(el => (el.value || '').trim());
+            if (!hasContent) { showToast("⚠️ एडिटर में कोई प्रश्न नहीं है, पहले पेपर बनाएँ।", "error"); return; }
+            saveCurrentPaperToVault(false);
+            renderSavedPapersList(false);
+        }
+
+        function vaultClearAll() {
             let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
-            if (!papers.length) return showToast("ℹ️ Vault पहले से खाली है।", "success");
+            if (papers.length === 0) { showToast("ℹ️ Vault पहले से खाली है।", "error"); return; }
             showCustomDeletePrompt(() => {
-                document.querySelectorAll('.saved-paper-card').forEach(c => _collapseOut(c));
-                setTimeout(() => {
-                    localStorage.setItem('mySavedAIPapers', JSON.stringify([]));
+                const cards = Array.from(document.querySelectorAll('#savedPapersListContainer .saved-paper-card')).slice(0, 7);
+                cards.forEach((c, i) => { c.style.setProperty('--d', (i * 35) + 'ms'); c.classList.add('card-out'); });
+                /* heavy kaam popup band hone ke BAAD, taaki animation me atke nahi */
+                setTimeout(() => requestAnimationFrame(() => {
+                    localStorage.setItem('mySavedAIPapers', '[]');
                     currentPaperId = null;
-                    updateSavedCountBadge(); renderSavedPapersList();
+                    updateSavedCountBadge();
+                    renderSavedPapersList(false);
                     showToast("✅ सभी सेव्ड पेपर्स डिलीट हो गए!", "success");
-                }, 240);
+                }), 340 + cards.length * 35);
             });
         }
 
         function editSavedPaper(id) { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); let paper = papers.find(p => p.id === id); if(paper) { loadPaperIntoEditor(paper); closeSavedPapersModal(); } }
         function deleteSavedPaper(id) {
-            const run = () => { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); papers = papers.filter(p => p.id !== id); localStorage.setItem('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); renderSavedPapersList(); if(currentPaperId === id) currentPaperId = null; showToast("✅ पेपर डिलीट हो गया!", "success"); };
-            const card = document.querySelector('.saved-paper-card[data-pid="' + id + '"]');
-            if (card) { _collapseOut(card); setTimeout(run, 230); } else run();
+            let papers = JSON.parse(localStorage.getItem('mySavedAIPapers') || '[]'); papers = papers.filter(p => p.id !== id);
+            localStorage.setItem('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); if (currentPaperId === id) currentPaperId = null;
+            const card = Array.from(document.querySelectorAll('#savedPapersListContainer .saved-paper-card')).find(c => c.dataset.id === id);
+            const finish = () => {
+                if (card) card.remove();
+                document.querySelectorAll('#savedPapersListContainer .saved-num').forEach((n, i) => { n.textContent = i + 1; });
+                const pill = document.getElementById('vaultCountPill'); if (pill) pill.innerText = papers.length + ' पेपर';
+                if (!papers.length) renderSavedPapersList(false);
+            };
+            if (card && !card._removing) { card._removing = true; collapseEl(card, finish); } else if (!card) finish();
+            showToast("✅ पेपर डिलीट हो गया!", "success");
         }
 
         function getSinglePaperHTML() {
@@ -1717,7 +1758,8 @@
             const marksStyle = 'each';
             const fmtN = n => String(Math.round(n * 100) / 100);
 
-            const qMarksCell = m => `<td class="print-q-marks">${marksStyle === 'each' ? '[' + m + ']' : ''}</td>`;
+            const marksOn = ((document.getElementById('showMarks') || {}).value || 'yes') !== 'no';
+            const qMarksCell = m => !marksOn ? '' :  `<td class="print-q-marks">${marksStyle === 'each' ? '[' + m + ']' : ''}</td>`;
             let bodyHTML = ''; let globalQNumber = 1;
             const mcqBlocks = document.querySelectorAll('.mcq-item-block');
             if(mcqBlocks.length > 0) {
@@ -1732,7 +1774,7 @@
                     if (customLayout === '2x2') { gridStyle = 'style="grid-template-columns: repeat(2, minmax(0, 1fr)) !important;"'; } 
                     else if (customLayout === '1x1') { gridStyle = 'style="grid-template-columns: 1fr !important;"'; }
 
-                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text">${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col">${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col">${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col">${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col">${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
+                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').innerText}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').innerText}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').innerText}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').innerText}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
                     globalQNumber++;
                 });
             }
@@ -1743,7 +1785,7 @@
                     blocks.forEach(block => {
                         let txt = block.querySelector('.normal-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>');
                         const m = block.querySelector('.normal-marks').value.trim() || '0'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
-                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text">${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
+                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
                     });
                 }
             };
@@ -1924,15 +1966,22 @@
             return _buildZip(files);
         }
 
-        function downloadPaperAsWord(twoUp = false, linked = false) {
+        async function downloadPaperAsWord(twoUp = false, linked = false) {
             try {
                 const blob = buildPaperDocx(twoUp, linked);
                 if (!blob) return showToast("⚠️ कृपया Word बनाने से पहले प्रश्न पत्र में सवाल जोड़ें!", "warning");
                 const clsNum = ((document.getElementById('className').value || '').match(/\d+/) || [''])[0];
                 const fname = (twoUp ? (linked ? 'Question_Paper_2x_Linked' : 'Question_Paper_2x') : 'Question_Paper') + (clsNum ? '_Class' + clsNum : '') + '_' + new Date().toISOString().slice(0, 10) + '.docx';
-                const url = URL.createObjectURL(blob); const a = document.createElement('a');
-                a.href = url; a.download = fname; document.body.appendChild(a); a.click();
-                setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+                let _saved = false;
+                try {
+                    const _dl = (window.claude && window.claude.use) ? await window.claude.use('downloads') : null;
+                    if (_dl) { await _dl.save({ filename: fname, data: blob }); _saved = true; }
+                } catch (err) { if (err && err.code === 'declined') return; }
+                if (!_saved) {
+                    const url = URL.createObjectURL(blob); const a = document.createElement('a');
+                    a.href = url; a.download = fname; document.body.appendChild(a); a.click();
+                    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+                }
                 showToast(linked ? "✅ Linked 2x Word डाउनलोड हो रही है! बाएँ बदलाव के बाद Ctrl+A फिर F9 दबाएँ।" : "✅ Word (.docx) फ़ाइल डाउनलोड हो रही है!", "success");
             } catch (e) { console.error(e); showToast("❌ Word फ़ाइल बनाने में समस्या आई।", "error"); }
         }
@@ -1954,11 +2003,14 @@
             const splash = document.getElementById("videoSplash");
             if (splash) {
                 setTimeout(() => { 
-                    splash.classList.add("splash-exit"); document.body.classList.add("ui-ready"); 
+                    splash.classList.add("splash-exit"); 
                     setTimeout(() => { splash.style.display = "none"; }, 500); 
                 }, 1000);
             }
 
+            document.querySelectorAll('.top-action-bar > .action-btn').forEach((b, i) => b.style.setProperty('--i', i));
+            document.querySelectorAll('.meta-grid .form-group').forEach((g, i) => g.style.setProperty('--i', i + 3));
+            setTimeout(() => { document.body.classList.add('enter'); setTimeout(() => document.body.classList.remove('enter'), 1400); }, 900);
             loadAutoSave(); 
             setupFullScreenSelects(); updateSavedCountBadge(); updatePaperFormatting(); updateSectionVisibility();
         };
