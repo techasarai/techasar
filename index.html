@@ -35,6 +35,11 @@
         /* 🚀 ANTI-THEFT & JITTER OPTIMIZATIONS (Lag Fixes) */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; scrollbar-width: none; -ms-overflow-style: none; user-select: none; -webkit-user-select: none; -moz-user-select: none; }
         input, textarea { user-select: text; -webkit-user-select: text; -moz-user-select: text; }
+
+        /* 🔧 FIX: click/tap par aane wali halki flash/highlight hatao */
+        * { -webkit-tap-highlight-color: transparent !important; }
+        button, .action-btn, .add-btn, .vault-btn, .remove-btn, .fs-option, .custom-select-trigger, .saved-actions button, [onclick] { -webkit-tap-highlight-color: transparent; outline: none; touch-action: manipulation; -webkit-touch-callout: none; }
+        button:focus, button:focus-visible, .custom-select-trigger:focus, .fs-option:focus, [onclick]:focus { outline: none; }
         ::-webkit-scrollbar { width: 0px; background: transparent; display: none; }
 
         /* Smooth UI Transitions (Lag optimized, removed 'will-change') */
@@ -471,9 +476,16 @@
 
         /* Buttons: smooth lift + press */
         .action-btn, .add-btn, .vault-btn, .remove-btn { transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease, box-shadow 0.25s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
-        .top-action-bar > .action-btn:hover, .vault-btn:hover { transform: translate3d(0, -2px, 0); }
+        @media (hover: hover) { .top-action-bar > .action-btn:hover, .vault-btn:hover { transform: translate3d(0, -2px, 0); } }
         .action-btn:active, .add-btn:active, .vault-btn:active, .remove-btn:active { transform: scale(0.96) !important; transition-duration: 0.08s; }
 
+        /* 🔧 FIX: touch screen par hover "chipak" jaata hai -> halki light/flash. Touch par hover band */
+        @media (hover: none) {
+            .action-btn:hover, .vault-btn:hover, .saved-actions button:hover { filter: none; }
+            .remove-btn:hover, .add-btn:hover, .modal-close:hover, .fs-select-close:hover { transform: none; }
+            .fs-option:hover { transform: none; background: transparent; }
+            .saved-paper-card:hover, .custom-select-trigger:hover { transition: none; }
+        }
         /* Question blocks / sections: smooth aana */
         .question-block { animation: qIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; transform-origin: top center; }
         .section-box.sec-in, .empty-paper-prompt.sec-in { animation: qIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
