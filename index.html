@@ -1261,7 +1261,7 @@
             const val = sel => { const e = block.querySelector(sel); return e ? e.value : ''; };
             const text = [val('.mcq-text'), val('.mcq-op-a'), val('.mcq-op-b'), val('.mcq-op-c'), val('.mcq-op-d')].join(' ');
             const prefixes = getPrefixes(text);
-            ['a','b','c','d'].forEach(k => { const e = block.querySelector('.pref-' + k); if (e && e.innerText !== prefixes[k]) e.innerText = prefixes[k]; });
+            ['a','b','c','d'].forEach(k => { const e = block.querySelector('.pref-' + k); if (e && e.textContent !== prefixes[k]) e.textContent = prefixes[k]; });
             if (!noSave) debouncedAutoSave();
         }
 
@@ -1786,7 +1786,7 @@
                     if (customLayout === '2x2') { gridStyle = 'style="grid-template-columns: repeat(2, minmax(0, 1fr)) !important;"'; } 
                     else if (customLayout === '1x1') { gridStyle = 'style="grid-template-columns: 1fr !important;"'; }
 
-                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').innerText}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').innerText}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').innerText}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').innerText}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
+                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').textContent}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').textContent}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').textContent}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').textContent}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
                     globalQNumber++;
                 });
             }
