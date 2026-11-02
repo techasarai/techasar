@@ -1969,8 +1969,8 @@
             const noBorders = '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>';
             const table = (rows, widths, indent, bottomLine, noMar) => {
                 const total = widths.reduce((a, b) => a + b, 0);
-                let x = `<w:tbl><w:tblPr><w:tblW w:w="${total}" w:type="dxa"/>${indent ? `<w:tblInd w:w="${indent}" w:type="dxa"/>` : ''}${bottomLine ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>' : noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="${noMar ? 0 : 40}" w:type="dxa"/><w:right w:w="${noMar ? 0 : 40}" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
-                rows.forEach(cells => { x += '<w:tr><w:trPr><w:cantSplit/></w:trPr>' + cells.map((c, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${c || '<w:p/>'}</w:tc>`).join('') + '</w:tr>'; });
+                let x = `<w:tbl><w:tblPr><w:tblW w:w="${total}" w:type="dxa"/>${indent ? `<w:tblInd w:w="${indent}" w:type="dxa"/>` : ''}${bottomLine ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>' : noBorders}<w:tblLayout w:type="autofit"/><w:tblCellMar><w:left w:w="${noMar ? 0 : 40}" w:type="dxa"/><w:right w:w="${noMar ? 0 : 40}" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
+                rows.forEach(cells => { x += '<w:tr>' + cells.map((c, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${c || '<w:p/>'}</w:tc>`).join('') + '</w:tr>'; });
                 return x + '</w:tbl>';
             };
 
@@ -2016,7 +2016,7 @@
                 const runs = collect(qCell, {}, []);
                 if (mCell && mCell.textContent.trim()) { runs.push({ tab: true }); runs.push({ t: mCell.textContent.trim(), b: true }); }
                 const opts = el.querySelectorAll('.print-opt-col');
-                body += para(runs, { tabRight: colW, keepNext: opts.length > 0, keepLines: true, sizePx: szQ });
+                body += para(runs, { tabRight: colW, keepNext: opts.length > 0, sizePx: szQ });
                 if (opts.length) {
                     const st = (el.querySelector('.print-options-container').getAttribute('style') || '');
                     let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
@@ -2029,7 +2029,7 @@
                         rows.push(row);
                     }
                     body += table(rows, Array(cols).fill(cw), indent, false);
-                    body += para([], { after: 20, line: 120, sizePx: 4 });
+                    body += para([], { after: 0, line: 240, sizePx: 6 });
                 }
             });
             return body; };
@@ -2042,7 +2042,7 @@
                 const tc = (w, content, dashed) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${dashed ? '<w:tcBorders><w:right w:val="dashed" w:sz="8" w:space="0" w:color="000000"/></w:tcBorders>' : ''}</w:tcPr>${content}</w:tc>`;
                 const rowH = pageH - 2 * marginTw - 500;
                 const w2 = colW * 2 + gapW;
-                body = `<w:tbl><w:tblPr><w:tblW w:w="${w2}" w:type="dxa"/>${noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${colW}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${colW}"/></w:tblGrid><w:tr><w:trPr><w:trHeight w:val="${rowH}" w:hRule="atLeast"/></w:trPr>${tc(colW, leftBody)}${tc(gapW / 2, '<w:p/>', true)}${tc(gapW / 2, '<w:p/>')}${tc(colW, rightBody)}</w:tr></w:tbl>` + para([], { after: 0, sizePx: 2, line: 20 });
+                body = para([], { after: 0, sizePx: 8, line: 240 }) + `<w:tbl><w:tblPr><w:tblW w:w="${w2}" w:type="dxa"/>${noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${colW}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${colW}"/></w:tblGrid><w:tr><w:trPr><w:trHeight w:val="${rowH}" w:hRule="atLeast"/></w:trPr>${tc(colW, leftBody)}${tc(gapW / 2, '<w:p/>', true)}${tc(gapW / 2, '<w:p/>')}${tc(colW, rightBody)}</w:tr></w:tbl>` + para([], { after: 0, sizePx: 8, line: 240 });
             } else {
                 body = makeBody(); body += para([], { after: 0 });
             }
@@ -2051,11 +2051,12 @@
             const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${body}<w:sectPr><w:pgSz w:w="${pageW}" w:h="${pageH}"${twoUp ? ' w:orient="landscape"' : ''}/><w:pgMar w:top="${marginTw}" w:right="${marginTw}" w:bottom="${marginTw}" w:left="${marginTw}" w:header="400" w:footer="400" w:gutter="0"/></w:sectPr></w:body></w:document>`;
             const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${W}><w:docDefaults><w:rPrDefault><w:rPr>${fontXml}<w:sz w:val="${hp(fontPx)}"/><w:szCs w:val="${hp(fontPx)}"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="hi-IN"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="40" w:line="${lineVal}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`;
             const files = [
-                { name: '[Content_Types].xml', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>' },
+                { name: '[Content_Types].xml', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/settings.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"/></Types>' },
                 { name: '_rels/.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>' },
-                { name: 'word/_rels/document.xml.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>' },
+                { name: 'word/_rels/document.xml.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/></Relationships>' },
                 { name: 'word/document.xml', content: documentXml },
-                { name: 'word/styles.xml', content: stylesXml }
+                { name: 'word/styles.xml', content: stylesXml },
+                { name: 'word/settings.xml', content: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:settings ${W}><w:zoom w:percent="100"/><w:defaultTabStop w:val="720"/><w:characterSpacingControl w:val="doNotCompress"/><w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat></w:settings>` }
             ];
             return _buildZip(files);
         }
