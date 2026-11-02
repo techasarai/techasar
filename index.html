@@ -1816,7 +1816,7 @@
             let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table" style="table-layout:auto;width:100%;">`;
             // Left: कक्षा (ऊपर) + विषय (नीचे) -> bilkul left | Right: पूर्णांक (ऊपर) + समय (नीचे) -> bilkul right
             // Label aur colon upar-niche barabar; beech ki khali jagah sirf ek hi (c2) column leta hai
-            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0.5em;';
+            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0.28em;';
             const _gap = 'text-align:left;vertical-align:top;width:100%;padding-right:1em;';
             const _val = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;';
             const _timeLabel = timeValue === 'none' ? '' : 'समय';
@@ -1980,9 +1980,13 @@
             const _mTxt = td => td.textContent.replace(/\s+/g, ' ').trim();
             if (_mTr.length && _mTr[0].length === 4) {
                 // 4 columns: label | : value (free space) | label | : value  -> left bilkul left, right bilkul right
-                const _tw = ch => Math.ceil(ch * szQ * 15 * 0.62) + 90; // chars -> twips (safe estimate)
-                const mx = c => Math.max(...(_mTr.map(r => (_mTxt(r[c]) || '').length)), 1);
-                let w1 = _tw(mx(0)), w3 = _tw(mx(2)), w4 = _tw(mx(3));
+                // Asli text ki chaudai napo (bold, wahi font/size) -> label aur colon ke beech sirf single space
+                let _ctx = null; try { _ctx = document.createElement('canvas').getContext('2d'); _ctx.font = 'bold ' + szQ + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
+                const _mw = t => _ctx ? _ctx.measureText(t).width : t.length * szQ * 0.62;
+                const _tw = t => Math.ceil(_mw(t) * 15 * 1.04) + 110; // px -> twips, + cell margin + safety
+                const mxw = c => Math.max(...(_mTr.map(r => _tw(_mTxt(r[c]) || ' '))), 0);
+                const _sp = Math.ceil(_mw(' ') * 15);
+                let w1 = mxw(0) + _sp, w3 = mxw(2) + _sp, w4 = mxw(3);
                 let w2 = colW - w1 - w3 - w4;
                 if (w2 < Math.round(colW * 0.08)) { const k = (colW - Math.round(colW * 0.08)) / (w1 + w3 + w4); w1 = Math.floor(w1 * k); w3 = Math.floor(w3 * k); w4 = Math.floor(w4 * k); w2 = colW - w1 - w3 - w4; }
                 metaWidths = [w1, w2, w3, w4];
