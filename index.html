@@ -1816,13 +1816,13 @@
             let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table" style="table-layout:auto;width:100%;">`;
             // Left: कक्षा (ऊपर) + विषय (नीचे) -> bilkul left | Right: पूर्णांक (ऊपर) + समय (नीचे) -> bilkul right
             // Label aur colon upar-niche barabar; beech ki khali jagah sirf ek hi (c2) column leta hai
-            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0.28em;';
+            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0;';
             const _gap = 'text-align:left;vertical-align:top;width:100%;padding-right:1em;';
             const _val = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;';
-            const _timeLabel = timeValue === 'none' ? '' : 'समय';
+            const _timeLabel = timeValue === 'none' ? '' : 'समय&nbsp;';
             const _timeVal = timeValue === 'none' ? '' : `: <span>${timeValue}</span>`;
-            headerHTML += `<tr><td style="${_lab}">कक्षा</td><td style="${_gap}">: <span>${selectedClass}</span></td><td style="${_lab}">पूर्णांक</td><td style="${_val}">: <span>${marks}</span></td></tr>`;
-            headerHTML += `<tr><td style="${_lab}">विषय</td><td style="${_gap}">: <span>${subject}</span></td><td style="${_lab}">${_timeLabel}</td><td style="${_val}">${_timeVal}</td></tr>`;
+            headerHTML += `<tr><td style="${_lab}">कक्षा&nbsp;</td><td style="${_gap}">: <span>${selectedClass}</span></td><td style="${_lab}">पूर्णांक&nbsp;</td><td style="${_val}">: <span>${marks}</span></td></tr>`;
+            headerHTML += `<tr><td style="${_lab}">विषय&nbsp;</td><td style="${_gap}">: <span>${subject}</span></td><td style="${_lab}">${_timeLabel}</td><td style="${_val}">${_timeVal}</td></tr>`;
             headerHTML += `</table></div>`;
 
             refreshSectionBoxes();
@@ -1962,9 +1962,9 @@
                 return `<w:p><w:pPr>${ppr}</w:pPr>${inner}</w:p>`;
             };
             const noBorders = '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>';
-            const table = (rows, widths, indent, bottomLine) => {
+            const table = (rows, widths, indent, bottomLine, noMar) => {
                 const total = widths.reduce((a, b) => a + b, 0);
-                let x = `<w:tbl><w:tblPr><w:tblW w:w="${total}" w:type="dxa"/>${indent ? `<w:tblInd w:w="${indent}" w:type="dxa"/>` : ''}${bottomLine ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>' : noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="40" w:type="dxa"/><w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
+                let x = `<w:tbl><w:tblPr><w:tblW w:w="${total}" w:type="dxa"/>${indent ? `<w:tblInd w:w="${indent}" w:type="dxa"/>` : ''}${bottomLine ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>' : noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="${noMar ? 0 : 40}" w:type="dxa"/><w:right w:w="${noMar ? 0 : 40}" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
                 rows.forEach(cells => { x += '<w:tr><w:trPr><w:cantSplit/></w:trPr>' + cells.map((c, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${c || '<w:p/>'}</w:tc>`).join('') + '</w:tr>'; });
                 return x + '</w:tbl>';
             };
@@ -1983,7 +1983,7 @@
                 // Asli text ki chaudai napo (bold, wahi font/size) -> label aur colon ke beech sirf single space
                 let _ctx = null; try { _ctx = document.createElement('canvas').getContext('2d'); _ctx.font = 'bold ' + szQ + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
                 const _mw = t => _ctx ? _ctx.measureText(t).width : t.length * szQ * 0.62;
-                const _tw = t => Math.ceil(_mw(t) * 15 * 1.04) + 110; // px -> twips, + cell margin + safety
+                const _tw = t => Math.ceil(_mw(t) * 15 * 1.02) + 20; // px -> twips (+ tiny safety, cell margin ab 0)
                 const mxw = c => Math.max(...(_mTr.map(r => _tw(_mTxt(r[c]) || ' '))), 0);
                 const _sp = Math.ceil(_mw(' ') * 15);
                 let w1 = mxw(0) + _sp, w3 = mxw(2) + _sp, w4 = mxw(3);
@@ -1995,7 +1995,7 @@
                 if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
                 metaRows.push(tds.map(td => { const st = td.getAttribute('style') || ''; const al = st.includes('text-align: right') || st.includes('text-align:right') ? 'right' : (st.includes('center') ? 'center' : 'left'); return para([{ t: _mTxt(td) }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
             });
-            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true); }
+            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true, true); }
 
             // ---- Body ----
             doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
