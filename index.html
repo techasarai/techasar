@@ -929,9 +929,50 @@
         let mcqCount = 0; let activeSelectElement = null; let activeTriggerUpdateFn = null; let customPromptCallback = null; let requiresVerification = false;
 
 
+
+        /* 🛡️ STRONG STORAGE: localStorage + IndexedDB mirror + persistent permission */
+        const Store = (function () {
+            const DB = 'techAsarDB', ST = 'kv', KEYS = ['techAsarDraft', 'mySavedAIPapers', 'importSectionSettings'];
+            let dbp = null;
+            function db() {
+                if (dbp) return dbp;
+                dbp = new Promise((res, rej) => {
+                    try {
+                        const r = indexedDB.open(DB, 1);
+                        r.onupgradeneeded = () => r.result.createObjectStore(ST);
+                        r.onsuccess = () => res(r.result);
+                        r.onerror = () => rej(r.error);
+                    } catch (e) { rej(e); }
+                });
+                return dbp;
+            }
+            const _last = {}, _t = {};
+            function idbSet(k, v) { clearTimeout(_t[k]); _t[k] = setTimeout(() => { db().then(d => { try { d.transaction(ST, 'readwrite').objectStore(ST).put(v, k); } catch (e) {} }).catch(() => {}); }, 1500); }
+            function idbGet(k) { return db().then(d => new Promise(res => { try { const q = d.transaction(ST).objectStore(ST).get(k); q.onsuccess = () => res(q.result); q.onerror = () => res(undefined); } catch (e) { res(undefined); } })).catch(() => undefined); }
+            return {
+                get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set(k, v) { if (_last[k] === v) return; _last[k] = v; try { localStorage.setItem(k, v); } catch (e) {} idbSet(k, v); },
+                async restore() {
+                    for (const k of KEYS) {
+                        let cur = null; try { cur = localStorage.getItem(k); } catch (e) {}
+                        if (cur === null || cur === undefined || cur === '') {
+                            const v = await idbGet(k);
+                            if (typeof v === 'string' && v) { try { localStorage.setItem(k, v); } catch (e) {} }
+                        }
+                    }
+                },
+                persist() { try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {} }
+            };
+        })();
+        Store.persist();
+
         let currentPaperId = null; 
+        let _vaultDirty = false, _vaultTimer = null;
+        function flushVault() { clearTimeout(_vaultTimer); if (!_vaultDirty) return; _vaultDirty = false; try { saveCurrentPaperToVault(true); } catch (e) {} }
+        let _autoReady = false; // load hone se pehle autosave khali data se overwrite na kare
 
         function autoSave() {
+            if (!_autoReady) return;
             const data = {
                 meta: {
                     school: document.getElementById('schoolName')?.value || '',
@@ -959,37 +1000,47 @@
                 currentPaperId: currentPaperId 
             };
             const selectStates = {}; document.querySelectorAll('.meta-grid select').forEach(sel => { selectStates[sel.id] = sel.innerHTML; }); data.selectStates = selectStates;
+            data.vals = {}; document.querySelectorAll('.meta-grid select').forEach(sel => { data.vals[sel.id] = sel.value; });
             data.secBoxes = {}; document.querySelectorAll('.section-marks-box').forEach(b => { data.secBoxes[b.id] = { v: b.value, m: b.dataset.manual || '' }; });
-            localStorage.setItem('techAsarDraft', JSON.stringify(data));
+            Store.set('techAsarDraft', JSON.stringify(data));
             const hasContent = [...data.mcqs, ...data.vshorts, ...data.shorts, ...data.longs].some(x => (x.q || '').trim());
-            if (hasContent) saveCurrentPaperToVault(true);
+            if (hasContent) { _vaultDirty = true; clearTimeout(_vaultTimer); _vaultTimer = setTimeout(flushVault, 5000); }
         }
 
         let autoSaveTimeout;
-        function debouncedAutoSave() { clearTimeout(autoSaveTimeout); autoSaveTimeout = setTimeout(() => { if (window.requestIdleCallback) requestIdleCallback(autoSave, { timeout: 2000 }); else autoSave(); }, 1200); }
+        function debouncedAutoSave() { clearTimeout(autoSaveTimeout); autoSaveTimeout = setTimeout(() => { if (window.requestIdleCallback) requestIdleCallback(autoSave, { timeout: 1500 }); else autoSave(); }, 900); }
+        function flushAutoSave() { clearTimeout(autoSaveTimeout); try { autoSave(); } catch (e) {} flushVault(); }
+        window.addEventListener('pagehide', flushAutoSave);
+        window.addEventListener('beforeunload', flushAutoSave);
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushAutoSave(); });
         document.addEventListener('input', (e) => { if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') debouncedAutoSave(); });
         document.addEventListener('change', (e) => { if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') debouncedAutoSave(); });
 
         function loadAutoSave() {
-            const saved = localStorage.getItem('techAsarDraft');
+            const saved = Store.get('techAsarDraft');
             if (saved) {
                 try {
                     const data = JSON.parse(saved);
                     if(data.currentPaperId) currentPaperId = data.currentPaperId; 
-                    // Preserving configured select options across drafts
-                    if (data.meta) {
-                        ['schoolName','subjectName','examName','className','timeAllowed','maxMarks','paperFont','lineSpacing','fontSize','mcqLayoutOption','pageMargin'].forEach(id => {
-                            const valKey = id.replace('Name','').replace('Allowed','').replace('Option','');
-                            const el = document.getElementById(id);
-                            if (el && data.meta[valKey]) {
-                                const optExists = Array.from(el.options).some(o => o.value === data.meta[valKey]);
-                                if (optExists) el.value = data.meta[valKey];
-                            }
+                    // 1) Custom / edited / deleted dropdown options pehle wapas lao
+                    if (data.selectStates) {
+                        Object.keys(data.selectStates).forEach(id => {
+                            const sel = document.getElementById(id);
+                            if (sel && data.selectStates[id]) sel.innerHTML = data.selectStates[id];
                         });
-                        if (data.meta.bold && document.getElementById('boldAll')) document.getElementById('boldAll').value = data.meta.bold;
-                        if (data.meta.showMarks && document.getElementById('showMarks')) document.getElementById('showMarks').value = data.meta.showMarks;
-                        updatePaperFormatting();
                     }
+                    // 2) Phir har dropdown ki chuni hui value (Formatting sahit)
+                    const idMap = { schoolName:'school', subjectName:'subject', examName:'exam', className:'cls', timeAllowed:'time', maxMarks:'marks', paperFont:'font', lineSpacing:'space', fontSize:'fsize', mcqLayoutOption:'mcqlayout', pageMargin:'margin', boldAll:'bold', showMarks:'showMarks' };
+                    Object.keys(idMap).forEach(id => {
+                        const el = document.getElementById(id); if (!el) return;
+                        let v = (data.vals && data.vals[id] !== undefined) ? data.vals[id] : (data.meta ? data.meta[idMap[id]] : undefined);
+                        if (v === undefined || v === null || v === '') return;
+                        if (!Array.from(el.options).some(o => o.value === v)) {
+                            const o = document.createElement('option'); o.value = v; o.text = v; o.setAttribute('data-custom', 'true'); el.appendChild(o);
+                        }
+                        el.value = v;
+                    });
+                    updatePaperFormatting();
                     document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
                     if(data.mcqs) data.mcqs.forEach(q => createMCQElement(q.q, q.a, q.b, q.c, q.d, q.m, q.layout));
                     if(data.vshorts) data.vshorts.forEach(q => createNormalElement('vshortContainer', '2. प्रश्न', q.q, q.m));
@@ -997,6 +1048,7 @@
                     if(data.longs) data.longs.forEach(q => createNormalElement('longContainer', '4. प्रश्न', q.q, q.m));
                     if(data.secBoxes) Object.keys(data.secBoxes).forEach(id => { const b = document.getElementById(id); if (b && data.secBoxes[id].m === '1') { b.value = data.secBoxes[id].v; b.dataset.manual = '1'; } });
                     updateSectionVisibility();
+                    try { updateOptionPrefixes(); } catch (e) {}
                     return true;
                 } catch(e) { console.error("Load error", e); }
             } return false;
@@ -1013,13 +1065,13 @@
             document.querySelectorAll('#shortContainer .normal-item-block').forEach(b => { paperData.shorts.push([ b.querySelector('.normal-text').value, b.querySelector('.normal-marks').value ]); });
             document.querySelectorAll('#longContainer .normal-item-block').forEach(b => { paperData.longs.push([ b.querySelector('.normal-text').value, b.querySelector('.normal-marks').value ]); });
             
-            let allPapers = localStorage.getItem('mySavedAIPapers'); allPapers = allPapers ? JSON.parse(allPapers) : []; 
+            let allPapers = Store.get('mySavedAIPapers'); allPapers = allPapers ? JSON.parse(allPapers) : []; 
             
             const existingIndex = allPapers.findIndex(p => p.id === currentPaperId);
             if(existingIndex !== -1) { allPapers[existingIndex] = paperData; } 
             else { allPapers.unshift(paperData); }
             
-            localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
+            Store.set('mySavedAIPapers', JSON.stringify(allPapers));
             updateSavedCountBadge();
             if (!silent) showToast("✅ पेपर Saved Vault में सेव/अपडेट हो गया है!", "success");
         }
@@ -1351,18 +1403,18 @@
         function openImportModal() { openOverlay('importModal'); }
         function closeImportModal() { closeOverlay('importModal', () => { const t = document.getElementById('htmlImportText'); if (t) t.value = ''; }); }
         
-        function updateSavedCountBadge() { let saved = localStorage.getItem('mySavedAIPapers'); document.getElementById('savedCountBadge').innerText = saved ? JSON.parse(saved).length : 0; }
+        function updateSavedCountBadge() { let saved = Store.get('mySavedAIPapers'); document.getElementById('savedCountBadge').innerText = saved ? JSON.parse(saved).length : 0; }
         
         const IMPORT_KEYS = ['mcq','vshort','short','long'];
         function getImportSettings() {
             let st = {mcq:true, vshort:true, short:true, long:true};
-            try { const raw = localStorage.getItem('importSectionSettings'); if (raw) st = Object.assign(st, JSON.parse(raw)); } catch(e) {}
+            try { const raw = Store.get('importSectionSettings'); if (raw) st = Object.assign(st, JSON.parse(raw)); } catch(e) {}
             return st;
         }
         function syncImportSettingsUI() { const st = getImportSettings(); IMPORT_KEYS.forEach(k => { const el = document.getElementById('imp_' + k); if (el) el.checked = !!st[k]; }); }
         function saveImportSettings() {
             const st = {}; IMPORT_KEYS.forEach(k => { const el = document.getElementById('imp_' + k); st[k] = el ? el.checked : true; });
-            try { localStorage.setItem('importSectionSettings', JSON.stringify(st)); } catch(e) {}
+            try { Store.set('importSectionSettings', JSON.stringify(st)); } catch(e) {}
         }
         function setAllImportSections(val) { IMPORT_KEYS.forEach(k => { const el = document.getElementById('imp_' + k); if (el) el.checked = val; }); saveImportSettings(); }
         function openSettingsModal() { syncImportSettingsUI(); openOverlay('settingsModal'); }
@@ -1664,10 +1716,10 @@
                 longs: longs
             };
 
-            let allPapers = localStorage.getItem('mySavedAIPapers');
+            let allPapers = Store.get('mySavedAIPapers');
             allPapers = allPapers ? JSON.parse(allPapers) : [];
             allPapers.unshift(paperData);
-            localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
+            Store.set('mySavedAIPapers', JSON.stringify(allPapers));
             updateSavedCountBadge();
 
             closeImportModal();
@@ -1698,12 +1750,12 @@
             }, 300);
         }
 
-        function openSavedPapersModal() { renderSavedPapersList(); openOverlay('savedPapersModal'); }
+        function openSavedPapersModal() { flushAutoSave(); renderSavedPapersList(); openOverlay('savedPapersModal'); }
         function closeSavedPapersModal() { closeOverlay('savedPapersModal'); }
 
         function renderSavedPapersList(stagger = true) {
             const container = document.getElementById('savedPapersListContainer'); container.innerHTML = ''; container.classList.toggle('no-stagger', !stagger);
-            let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
+            let saved = Store.get('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
             const pill = document.getElementById('vaultCountPill'); if (pill) pill.innerText = papers.length + ' पेपर';
             if(papers.length === 0) { container.innerHTML = `<div class="vault-empty"><span class="big">📭</span>अभी तक कोई पेपर सेव नहीं किया गया है।<br>ऊपर <b>Save Paper</b> दबाकर current पेपर सेव करें।</div>`; return; }
             papers.forEach((paper, idx) => {
@@ -1722,14 +1774,14 @@
         }
 
         function vaultClearAll() {
-            let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
+            let saved = Store.get('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
             if (papers.length === 0) { showToast("ℹ️ Vault पहले से खाली है।", "error"); return; }
             showCustomDeletePrompt(() => {
                 const cards = Array.from(document.querySelectorAll('#savedPapersListContainer .saved-paper-card')).slice(0, 7);
                 cards.forEach((c, i) => { c.style.setProperty('--d', (i * 35) + 'ms'); c.classList.add('card-out'); });
                 /* heavy kaam popup band hone ke BAAD, taaki animation me atke nahi */
                 setTimeout(() => requestAnimationFrame(() => {
-                    localStorage.setItem('mySavedAIPapers', '[]');
+                    Store.set('mySavedAIPapers', '[]');
                     currentPaperId = null;
                     updateSavedCountBadge();
                     renderSavedPapersList(false);
@@ -1738,10 +1790,10 @@
             });
         }
 
-        function editSavedPaper(id) { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); let paper = papers.find(p => p.id === id); if(paper) { loadPaperIntoEditor(paper); closeSavedPapersModal(); } }
+        function editSavedPaper(id) { let papers = JSON.parse(Store.get('mySavedAIPapers')); let paper = papers.find(p => p.id === id); if(paper) { loadPaperIntoEditor(paper); closeSavedPapersModal(); } }
         function deleteSavedPaper(id) {
-            let papers = JSON.parse(localStorage.getItem('mySavedAIPapers') || '[]'); papers = papers.filter(p => p.id !== id);
-            localStorage.setItem('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); if (currentPaperId === id) currentPaperId = null;
+            let papers = JSON.parse(Store.get('mySavedAIPapers') || '[]'); papers = papers.filter(p => p.id !== id);
+            Store.set('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); if (currentPaperId === id) currentPaperId = null;
             const card = Array.from(document.querySelectorAll('#savedPapersListContainer .saved-paper-card')).find(c => c.dataset.id === id);
             const finish = () => {
                 if (card) card.remove();
@@ -1761,9 +1813,16 @@
             const timeValue = document.getElementById('timeAllowed').value;
             let marksValue = document.getElementById('maxMarks').value; const marks = marksValue === 'none' ? '________' : marksValue;
             const isEnglish = subject.toLowerCase().includes('english') || subject.includes('अंग्रेज़ी');
-            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table">`;
-            if (timeValue === 'none') { headerHTML += `<tr><td style="text-align: left; width: 33%;">विषय : <span>${subject}</span></td><td style="text-align: center; width: 34%;">कक्षा : <span>${selectedClass}</span></td><td style="text-align: right; width: 33%;">पूर्णांक : <span>${marks}</span></td></tr>`; } 
-            else { headerHTML += `<tr><td style="text-align: left; width: 50%;">विषय : <span>${subject}</span></td><td style="text-align: right; width: 50%;">कक्षा : <span>${selectedClass}</span></td></tr><tr><td style="text-align: left;">समय : <span>${timeValue}</span></td><td style="text-align: right;">पूर्णांक : <span>${marks}</span></td></tr>`; }
+            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table" style="table-layout:auto;width:100%;">`;
+            // Left: कक्षा (ऊपर) + विषय (नीचे) -> bilkul left | Right: पूर्णांक (ऊपर) + समय (नीचे) -> bilkul right
+            // Label aur colon upar-niche barabar; beech ki khali jagah sirf ek hi (c2) column leta hai
+            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0.5em;';
+            const _gap = 'text-align:left;vertical-align:top;width:100%;padding-right:1em;';
+            const _val = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;';
+            const _timeLabel = timeValue === 'none' ? '' : 'समय';
+            const _timeVal = timeValue === 'none' ? '' : `: <span>${timeValue}</span>`;
+            headerHTML += `<tr><td style="${_lab}">कक्षा</td><td style="${_gap}">: <span>${selectedClass}</span></td><td style="${_lab}">पूर्णांक</td><td style="${_val}">: <span>${marks}</span></td></tr>`;
+            headerHTML += `<tr><td style="${_lab}">विषय</td><td style="${_gap}">: <span>${subject}</span></td><td style="${_lab}">${_timeLabel}</td><td style="${_val}">${_timeVal}</td></tr>`;
             headerHTML += `</table></div>`;
 
             refreshSectionBoxes();
@@ -1917,10 +1976,20 @@
             if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
             if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
             const metaRows = []; let metaWidths = [];
-            doc.querySelectorAll('.print-meta-table tr').forEach(tr => {
-                const tds = Array.from(tr.querySelectorAll('td'));
+            const _mTr = Array.from(doc.querySelectorAll('.print-meta-table tr')).map(tr => Array.from(tr.querySelectorAll('td')));
+            const _mTxt = td => td.textContent.replace(/\s+/g, ' ').trim();
+            if (_mTr.length && _mTr[0].length === 4) {
+                // 4 columns: label | : value (free space) | label | : value  -> left bilkul left, right bilkul right
+                const _tw = ch => Math.ceil(ch * szQ * 15 * 0.62) + 90; // chars -> twips (safe estimate)
+                const mx = c => Math.max(...(_mTr.map(r => (_mTxt(r[c]) || '').length)), 1);
+                let w1 = _tw(mx(0)), w3 = _tw(mx(2)), w4 = _tw(mx(3));
+                let w2 = colW - w1 - w3 - w4;
+                if (w2 < Math.round(colW * 0.08)) { const k = (colW - Math.round(colW * 0.08)) / (w1 + w3 + w4); w1 = Math.floor(w1 * k); w3 = Math.floor(w3 * k); w4 = Math.floor(w4 * k); w2 = colW - w1 - w3 - w4; }
+                metaWidths = [w1, w2, w3, w4];
+            }
+            _mTr.forEach(tds => {
                 if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
-                metaRows.push(tds.map(td => { const al = (td.getAttribute('style') || '').includes('right') ? 'right' : ((td.getAttribute('style') || '').includes('center') ? 'center' : 'left'); return para([{ t: td.textContent.replace(/\s+/g, ' ').trim() }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
+                metaRows.push(tds.map(td => { const st = td.getAttribute('style') || ''; const al = st.includes('text-align: right') || st.includes('text-align:right') ? 'right' : (st.includes('center') ? 'center' : 'left'); return para([{ t: _mTxt(td) }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
             });
             if (metaRows.length) { body += table(metaRows, metaWidths, 0, true); }
 
@@ -2010,7 +2079,7 @@
             setPrintPageSize(true); document.getElementById('paperPreview').innerHTML = `<div class="two-paper-wrapper two-paper-layout"><div class="paper-half left-half">${html}</div><div class="paper-divider"></div><div class="paper-half right-half">${html}</div></div>`; window.print();
         }
 
-        window.onload = function() {
+        window.onload = async function() {
             // 🌟 Smooth Splash Screen Exit
             const splash = document.getElementById("videoSplash");
             if (splash) {
@@ -2023,8 +2092,10 @@
             document.querySelectorAll('.top-action-bar > .action-btn').forEach((b, i) => b.style.setProperty('--i', i));
             document.querySelectorAll('.meta-grid .form-group').forEach((g, i) => g.style.setProperty('--i', i + 3));
             setTimeout(() => { document.body.classList.add('enter'); setTimeout(() => document.body.classList.remove('enter'), 1400); }, 900);
+            try { await Store.restore(); } catch (e) {}
             loadAutoSave(); 
             setupFullScreenSelects(); updateSavedCountBadge(); updatePaperFormatting(); updateSectionVisibility();
+            _autoReady = true;
         };
     </script>
 </body>
