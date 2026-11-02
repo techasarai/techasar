@@ -524,8 +524,20 @@
         .saved-paper-card.card-out { animation: cardOut 0.26s cubic-bezier(0.4, 0, 0.2, 1) both !important; animation-delay: var(--d, 0ms) !important; }
 
         /* Toast: keyframes ek hi baar CSS me (pehle har baar <style> inject hoti thi = lag) */
-        @keyframes toastFadeInCenter { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } }
-        @keyframes toastFadeOutCenter { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -20px); } }
+        /* 🍎 iOS-style glass toast */
+.toast-msg { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 50%; z-index: 999999; width: max-content; max-width: min(92vw, 440px); display: flex; align-items: center; gap: 12px; padding: 11px 18px 11px 12px; border-radius: 22px; color: #fff; background: rgba(28, 30, 40, 0.55); -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25); transform: translate(-50%, 0); animation: iosToastIn 0.55s cubic-bezier(0.32, 0.72, 0, 1) both; touch-action: pan-x; cursor: pointer; }
+.toast-msg.out { animation: iosToastOut 0.35s cubic-bezier(0.4, 0, 0.7, 0.2) forwards; pointer-events: none; }
+.toast-msg.bump { animation: iosToastBump 0.35s ease-out both; }
+.toast-msg .t-ico { flex: 0 0 auto; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
+.toast-msg .t-ico svg { width: 20px; height: 20px; }
+.toast-msg .t-txt { font-size: 14.5px; font-weight: 600; line-height: 1.35; letter-spacing: 0.1px; word-break: break-word; }
+.toast-msg.t-success .t-ico { background: linear-gradient(145deg, #34d399, #10b981); }
+.toast-msg.t-error .t-ico { background: linear-gradient(145deg, #fb7185, #ef4444); }
+.toast-msg.t-warning .t-ico { background: linear-gradient(145deg, #fbbf24, #f59e0b); }
+body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62); border-color: rgba(255, 255, 255, 0.8); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+@keyframes iosToastIn { 0% { opacity: 0; transform: translate(-50%, -140%) scale(0.92); } 60% { opacity: 1; transform: translate(-50%, 6%) scale(1.01); } 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+@keyframes iosToastOut { from { opacity: 1; transform: translate(-50%, 0) scale(1); } to { opacity: 0; transform: translate(-50%, -140%) scale(0.94); } }
+@keyframes iosToastBump { 0% { transform: translate(-50%, 0) scale(1); } 40% { transform: translate(-50%, 0) scale(1.04); } 100% { transform: translate(-50%, 0) scale(1); } }
     </style>
 <style>
 .question-block { content-visibility: auto; contain-intrinsic-size: auto 280px; }
@@ -908,24 +920,46 @@
 
     <script>
         // --- 0. NEW SVG-BASED CENTERED TOAST NOTIFICATION ---
-        function showToast(msg, type = 'success') {
-            const notification = document.createElement('div'); 
-            notification.className = 'toast-msg'; 
-            
-            let svgIcon = ''; let bgCol = '';
-            if(type === 'success') { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`; bgCol = '#10b981'; } 
-            else if (type === 'error') { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`; bgCol = '#ef4444'; } 
-            else { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`; bgCol = '#f59e0b'; }
-
-            notification.innerHTML = `<div style="display:flex; align-items:center; gap:12px;">${svgIcon}<span style="font-size:16px;">${msg}</span></div>`;
-            notification.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); background:${bgCol}; color:white; padding:15px 30px; border-radius:12px; font-weight:bold; z-index:999999; animation: toastFadeInCenter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastFadeOutCenter 0.3s ease 2.7s forwards; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);`;
-            
-            document.querySelectorAll('.toast-msg').forEach(t => t.remove());
-            document.body.appendChild(notification); 
-            setTimeout(() => { notification.remove(); }, 3000);
+        /* 🍎 iOS-style glass toast: ek hi toast, same message dobara aaye to naya nahi banta */
+        let _toastEl = null, _toastTimer = null, _toastKey = '';
+        const _TOAST_SVG = {
+            success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12.5 10 17.5 19 7.5"></polyline></svg>',
+            error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>',
+            warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="6" x2="12" y2="13"></line><circle cx="12" cy="18" r="0.6"></circle></svg>'
+        };
+        function _hideToast(el) {
+            if (!el || el.classList.contains('out')) return;
+            clearTimeout(_toastTimer); el.classList.add('out');
+            const kill = () => { if (el.parentNode) el.remove(); if (_toastEl === el) { _toastEl = null; _toastKey = ''; } };
+            el.addEventListener('animationend', kill, { once: true }); setTimeout(kill, 500);
         }
-
-
+        function showToast(msg, type = 'success') {
+            if (!_TOAST_SVG[type]) type = 'success';
+            // text ke aage wala emoji hatao - icon sirf SVG ka rahe (double icon nahi)
+            const clean = String(msg).replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u, '').trim();
+            const key = type + '|' + clean;
+            // same message abhi dikh raha hai -> naya toast nahi, sirf timer aage badhao
+            if (_toastEl && _toastEl.isConnected && !_toastEl.classList.contains('out') && _toastKey === key) {
+                clearTimeout(_toastTimer); _toastTimer = setTimeout(() => _hideToast(_toastEl), 2600);
+                _toastEl.classList.remove('bump'); void _toastEl.offsetWidth; _toastEl.classList.add('bump');
+                return;
+            }
+            if (_toastEl) { clearTimeout(_toastTimer); _toastEl.remove(); _toastEl = null; }
+            document.querySelectorAll('.toast-msg').forEach(t => t.remove());
+            const el = document.createElement('div');
+            el.className = 'toast-msg t-' + type;
+            el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite');
+            el.innerHTML = '<div class="t-ico">' + _TOAST_SVG[type] + '</div><div class="t-txt"></div>';
+            el.querySelector('.t-txt').textContent = clean;
+            // tap ya upar swipe karke band karo (iOS jaisa)
+            let y0 = null;
+            el.addEventListener('click', () => _hideToast(el));
+            el.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
+            el.addEventListener('touchmove', e => { if (y0 !== null && e.touches[0].clientY - y0 < -25) { y0 = null; _hideToast(el); } }, { passive: true });
+            document.body.appendChild(el);
+            _toastEl = el; _toastKey = key;
+            _toastTimer = setTimeout(() => _hideToast(el), 2600);
+        }
 
         /* 💾 Auto-Save & Manual Vault Save Logic */
         let mcqCount = 0; let activeSelectElement = null; let activeTriggerUpdateFn = null; let customPromptCallback = null; let requiresVerification = false;
