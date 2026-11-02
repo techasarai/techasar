@@ -417,6 +417,8 @@
             .print-exam { font-weight: bold; margin-bottom: 5px; }
             .print-meta-table { width: 100%; border-collapse: collapse; font-weight: bold; table-layout: fixed; }
             .print-meta-table td { padding: 2px 0; }
+            .print-note { display: block !important; text-align: left; font-weight: bold; margin: 6px 0 4px 0; }
+            .two-paper-layout .print-note { margin: 4px 0 2px 0; }
             .print-section-heading { display: block !important; text-align: center; font-weight: bold; margin: 10px 0 6px 0; text-decoration: underline; text-transform: uppercase; page-break-after: avoid; }
             .print-q-item { width: 100%; margin-bottom: 5px; page-break-inside: avoid; }
             .print-q-table { width: 100%; border-collapse: collapse; }
@@ -1239,7 +1241,7 @@
             if (mcqLayout === '2x2') { mcqGridConfig = 'repeat(2, minmax(0, 1fr))'; } else if (mcqLayout === '1x1') { mcqGridConfig = '1fr'; optColWidth = '100%'; }
             
             const boldAllOn = document.getElementById('boldAll') && document.getElementById('boldAll').value === 'bold';
-            styleTag.innerHTML = `@media print { ${boldAllOn ? '#paperPreview, #paperPreview * { font-weight: 700 !important; }' : ''} #paperPreview, #paperPreview * { font-family: ${font} !important; } .print-q-text, .print-opt-col, .print-meta-table td, .print-q-marks { line-height: ${spacing} !important; font-size: ${fontSize}px !important; } .print-options-container { display: grid !important; grid-template-columns: ${mcqGridConfig} !important; gap: 8px 15px !important; width: 100% !important; } .print-opt-col { width: ${optColWidth} !important; min-width: 0 !important; word-wrap: break-word !important; white-space: normal !important; } .print-section-heading { font-size: ${parseFloat(fontSize) + 1}px !important; } .print-school { font-size: ${parseFloat(fontSize) + 10}px !important; } .print-exam { font-size: ${parseFloat(fontSize) + 1}px !important; } .two-paper-layout .print-school { font-size: ${parseFloat(fontSize) + 4}px !important; } .two-paper-layout .print-exam { font-size: ${parseFloat(fontSize) - 1}px !important; } .two-paper-layout .print-section-heading { font-size: ${parseFloat(fontSize) - 2}px !important; } .two-paper-layout .print-q-text, .two-paper-layout .print-q-marks, .two-paper-layout .print-meta-table td { font-size: ${parseFloat(fontSize) - 3}px !important; } .two-paper-layout .print-opt-col { font-size: ${parseFloat(fontSize) - 3.5}px !important; } }`;
+            styleTag.innerHTML = `@media print { ${boldAllOn ? '#paperPreview, #paperPreview * { font-weight: 700 !important; }' : ''} #paperPreview, #paperPreview * { font-family: ${font} !important; } .print-q-text, .print-opt-col, .print-meta-table td, .print-q-marks, .print-note { line-height: ${spacing} !important; font-size: ${fontSize}px !important; } .print-options-container { display: grid !important; grid-template-columns: ${mcqGridConfig} !important; gap: 8px 15px !important; width: 100% !important; } .print-opt-col { width: ${optColWidth} !important; min-width: 0 !important; word-wrap: break-word !important; white-space: normal !important; } .print-section-heading { font-size: ${parseFloat(fontSize) + 1}px !important; } .print-school { font-size: ${parseFloat(fontSize) + 10}px !important; } .print-exam { font-size: ${parseFloat(fontSize) + 1}px !important; } .two-paper-layout .print-school { font-size: ${parseFloat(fontSize) + 4}px !important; } .two-paper-layout .print-exam { font-size: ${parseFloat(fontSize) - 1}px !important; } .two-paper-layout .print-section-heading { font-size: ${parseFloat(fontSize) - 2}px !important; } .two-paper-layout .print-q-text, .two-paper-layout .print-q-marks, .two-paper-layout .print-meta-table td { font-size: ${parseFloat(fontSize) - 3}px !important; } .two-paper-layout .print-opt-col { font-size: ${parseFloat(fontSize) - 3.5}px !important; } }`;
         }
 
         /* ⌨️ Keyboard Shortcuts (Ctrl+B, Ctrl+U, Ctrl+2, Ctrl+=, Ctrl+Shift+=) */
@@ -1865,7 +1867,10 @@
             addSection('#shortContainer .normal-item-block');
             addSection('#longContainer .normal-item-block');
 
-            if(globalQNumber === 1) return null; return `<div class="single-paper-content">${headerHTML}${bodyHTML}</div>`;
+            if(globalQNumber === 1) return null;
+            const noteText = isEnglish ? 'Note : All questions are compulsory:' : 'नोट : सभी प्रश्नों के उत्तर देना अनिवार्य है:';
+            const noteHTML = `<div class="print-note">${noteText}</div>`;
+            return `<div class="single-paper-content">${headerHTML}${noteHTML}${bodyHTML}</div>`;
         }
 
         // ===================== 📝 WORD (.docx) EXPORT =====================
@@ -1998,7 +2003,11 @@
             if (metaRows.length) { body += table(metaRows, metaWidths, 0, true, true); }
 
             // ---- Body ----
-            doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
+            doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-note, :scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
+                if (el.classList.contains('print-note')) {
+                    body += para([{ t: el.textContent.trim() }], { bold: true, sizePx: szQ, before: twoUp ? 40 : 80, after: twoUp ? 20 : 40, line: 240 });
+                    return;
+                }
                 if (el.classList.contains('print-section-heading')) {
                     body += para([{ t: el.textContent }], { align: 'center', bold: true, underline: true, sizePx: szHead, before: twoUp ? 120 : 200, after: 100, keepNext: true, line: 240 });
                     return;
