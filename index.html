@@ -1980,7 +1980,8 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 let ppr = '';
                 if (o.keepNext) ppr += '<w:keepNext/>';
                 if (o.keepLines) ppr += '<w:keepLines/>';
-                if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
+                if (o.tabs && o.tabs.length) ppr += '<w:tabs>' + o.tabs.map(t => `<w:tab w:val="${t.v}" w:pos="${t.p}"/>`).join('') + '</w:tabs>';
+                else if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
                 if (o.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="2" w:color="000000"/></w:pBdr>';
                 ppr += `<w:spacing w:before="${o.before || 0}" w:after="${o.after === undefined ? 40 : o.after}" w:line="${o.line || lineVal}" w:lineRule="auto"/>`;
                 if (o.ind) ppr += `<w:ind w:left="${o.ind}"/>`;
@@ -2007,13 +2008,16 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             const school = doc.querySelector('.print-school'); const exam = doc.querySelector('.print-exam');
             if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
             if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
-            const metaRows = []; let metaWidths = [];
-            doc.querySelectorAll('.print-meta-table tr').forEach(tr => {
+            // Header: table nahi - tab-stop wale seedhe paragraph (edit karna aasan)
+            const _mrows = Array.from(doc.querySelectorAll('.print-meta-table tr'));
+            _mrows.forEach((tr, ri) => {
                 const tds = Array.from(tr.querySelectorAll('td'));
-                if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
-                metaRows.push(tds.map(td => { const al = (td.getAttribute('style') || '').includes('right') ? 'right' : ((td.getAttribute('style') || '').includes('center') ? 'center' : 'left'); return para([{ t: td.textContent.replace(/\s+/g, ' ').trim() }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
+                const runs = [];
+                tds.forEach((td, k) => { if (k) runs.push({ tab: true }); runs.push({ t: td.textContent.replace(/\s+/g, ' ').trim() }); });
+                const tabs = tds.length === 3 ? [{ v: 'center', p: Math.round(colW / 2) }, { v: 'right', p: colW }] : (tds.length === 2 ? [{ v: 'right', p: colW }] : []);
+                const last = ri === _mrows.length - 1;
+                body += para(runs, { bold: true, tabs, after: last ? 60 : 10, line: 240, sizePx: szQ, border: last });
             });
-            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true); }
 
             // ---- Body ----
             doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-note, :scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
@@ -2035,14 +2039,23 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                     let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
                     if (st.includes('repeat(2')) cols = 2; else if (st.includes('1fr')) cols = 1;
                     const indent = 375; const tw = colW - indent; const cw = Math.floor(tw / cols);
-                    const rows = []; const list = Array.from(opts);
+                    const list = Array.from(opts);
+                    // Table nahi: ek row = ek paragraph + tab stops. Option column me na aaye to har option alag line.
+                    let _oc = null; try { _oc = document.createElement('canvas').getContext('2d'); _oc.font = (boldAllDoc ? 'bold ' : '') + szOpt + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
+                    const fitsCol = o => { const t = o.textContent.replace(/\s+/g, ' ').trim(); const w = _oc ? _oc.measureText(t).width * 15 * 1.06 : t.length * szOpt * 15 * 0.6; return w <= cw - 150; };
                     for (let i = 0; i < list.length; i += cols) {
-                        const row = list.slice(i, i + cols).map(o => para(collect(o, {}, []), { after: 20, sizePx: szOpt }));
-                        while (row.length < cols) row.push('');
-                        rows.push(row);
+                        const rowOpts = list.slice(i, i + cols);
+                        const lastRow = i + cols >= list.length;
+                        const aft = lastRow ? 80 : 20;
+                        if (cols > 1 && rowOpts.every(fitsCol)) {
+                            const runs = [];
+                            rowOpts.forEach((o, k) => { if (k) runs.push({ tab: true }); collect(o, {}, []).forEach(r => runs.push(r)); });
+                            const tabs = rowOpts.slice(1).map((_, k) => ({ v: 'left', p: indent + (k + 1) * cw }));
+                            body += para(runs, { ind: indent, tabs, after: aft, sizePx: szOpt });
+                        } else {
+                            rowOpts.forEach((o, k) => { body += para(collect(o, {}, []), { ind: indent, after: (lastRow && k === rowOpts.length - 1) ? 80 : 20, sizePx: szOpt }); });
+                        }
                     }
-                    body += table(rows, Array(cols).fill(cw), indent, false);
-                    body += para([], { after: 0, line: 240, sizePx: 6 });
                 }
             });
             return body; };
