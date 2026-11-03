@@ -1849,16 +1849,9 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             const timeValue = document.getElementById('timeAllowed').value;
             let marksValue = document.getElementById('maxMarks').value; const marks = marksValue === 'none' ? '________' : marksValue;
             const isEnglish = subject.toLowerCase().includes('english') || subject.includes('अंग्रेज़ी');
-            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table" style="table-layout:auto;width:100%;">`;
-            // Left: कक्षा (ऊपर) + विषय (नीचे) -> bilkul left | Right: पूर्णांक (ऊपर) + समय (नीचे) -> bilkul right
-            // Label aur colon upar-niche barabar; beech ki khali jagah sirf ek hi (c2) column leta hai
-            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0;';
-            const _gap = 'text-align:left;vertical-align:top;width:100%;padding-right:1em;';
-            const _val = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;';
-            const _timeLabel = timeValue === 'none' ? '' : 'समय&nbsp;';
-            const _timeVal = timeValue === 'none' ? '' : `: <span>${timeValue}</span>`;
-            headerHTML += `<tr><td style="${_lab}">कक्षा&nbsp;</td><td style="${_gap}">: <span>${selectedClass}</span></td><td style="${_lab}">पूर्णांक&nbsp;</td><td style="${_val}">: <span>${marks}</span></td></tr>`;
-            headerHTML += `<tr><td style="${_lab}">विषय&nbsp;</td><td style="${_gap}">: <span>${subject}</span></td><td style="${_lab}">${_timeLabel}</td><td style="${_val}">${_timeVal}</td></tr>`;
+            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table">`;
+            if (timeValue === 'none') { headerHTML += `<tr><td style="text-align: left; width: 33%;">विषय : <span>${subject}</span></td><td style="text-align: center; width: 34%;">कक्षा : <span>${selectedClass}</span></td><td style="text-align: right; width: 33%;">पूर्णांक : <span>${marks}</span></td></tr>`; } 
+            else { headerHTML += `<tr><td style="text-align: left; width: 50%;">विषय : <span>${subject}</span></td><td style="text-align: right; width: 50%;">कक्षा : <span>${selectedClass}</span></td></tr><tr><td style="text-align: left;">समय : <span>${timeValue}</span></td><td style="text-align: right;">पूर्णांक : <span>${marks}</span></td></tr>`; }
             headerHTML += `</table></div>`;
 
             refreshSectionBoxes();
@@ -2015,26 +2008,12 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
             if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
             const metaRows = []; let metaWidths = [];
-            const _mTr = Array.from(doc.querySelectorAll('.print-meta-table tr')).map(tr => Array.from(tr.querySelectorAll('td')));
-            const _mTxt = td => td.textContent.replace(/\s+/g, ' ').trim();
-            if (_mTr.length && _mTr[0].length === 4) {
-                // 4 columns: label | : value (free space) | label | : value  -> left bilkul left, right bilkul right
-                // Asli text ki chaudai napo (bold, wahi font/size) -> label aur colon ke beech sirf single space
-                let _ctx = null; try { _ctx = document.createElement('canvas').getContext('2d'); _ctx.font = 'bold ' + szQ + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
-                const _mw = t => _ctx ? _ctx.measureText(t).width : t.length * szQ * 0.62;
-                const _tw = t => Math.ceil(_mw(t) * 15 * 1.02) + 20; // px -> twips (+ tiny safety, cell margin ab 0)
-                const mxw = c => Math.max(...(_mTr.map(r => _tw(_mTxt(r[c]) || ' '))), 0);
-                const _sp = Math.ceil(_mw(' ') * 15);
-                let w1 = mxw(0) + _sp, w3 = mxw(2) + _sp, w4 = mxw(3);
-                let w2 = colW - w1 - w3 - w4;
-                if (w2 < Math.round(colW * 0.08)) { const k = (colW - Math.round(colW * 0.08)) / (w1 + w3 + w4); w1 = Math.floor(w1 * k); w3 = Math.floor(w3 * k); w4 = Math.floor(w4 * k); w2 = colW - w1 - w3 - w4; }
-                metaWidths = [w1, w2, w3, w4];
-            }
-            _mTr.forEach(tds => {
+            doc.querySelectorAll('.print-meta-table tr').forEach(tr => {
+                const tds = Array.from(tr.querySelectorAll('td'));
                 if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
-                metaRows.push(tds.map(td => { const st = td.getAttribute('style') || ''; const al = st.includes('text-align: right') || st.includes('text-align:right') ? 'right' : (st.includes('center') ? 'center' : 'left'); return para([{ t: _mTxt(td) }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
+                metaRows.push(tds.map(td => { const al = (td.getAttribute('style') || '').includes('right') ? 'right' : ((td.getAttribute('style') || '').includes('center') ? 'center' : 'left'); return para([{ t: td.textContent.replace(/\s+/g, ' ').trim() }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
             });
-            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true, true); }
+            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true); }
 
             // ---- Body ----
             doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-note, :scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
