@@ -821,6 +821,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 <span class="count-tag" style="background:rgba(245,158,11,0.2); color:#fde047;">2.: <span id="cnt_sec2">0</span></span>
                 <span class="count-tag" style="background:rgba(16,185,129,0.2); color:#6ee7b7;">3.: <span id="cnt_sec3">0</span></span>
                 <span class="count-tag" style="background:rgba(139,92,246,0.2); color:#c4b5fd;">4.: <span id="cnt_sec4">0</span></span>
+                <span class="count-tag" style="background:rgba(59,130,246,0.25); color:#93c5fd;">कुल: <span id="cnt_total">0</span></span>
             </div>
 
             <button class="action-btn import-btn" style="width: 100%; justify-content: center; font-size: 16px; margin-top: 10px;" onclick="saveAndLoadImportedHTML()">💾 पेपर सेव करें और एडिटर में लोड करें</button>
@@ -1003,9 +1004,6 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
         Store.persist();
 
         let currentPaperId = null; 
-        /* 🧹 Safe text helpers: " < & wale text se field/print kharab na ho */
-        function _escAttr(v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-        function _safeHtml(v) { return String(v == null ? '' : v).replace(/&(?!#?\w+;)/g, '&amp;').replace(/<(?!\/?(?:b|i|u|strong|em|sub|sup|br)\b[^<>]*>)/gi, '&lt;'); }
         let _vaultDirty = false, _vaultTimer = null;
         function flushVault() { clearTimeout(_vaultTimer); if (!_vaultDirty) return; _vaultDirty = false; try { saveCurrentPaperToVault(true); } catch (e) {} }
         let _autoReady = false; // load hone se pehle autosave khali data se overwrite na kare
@@ -1224,7 +1222,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 select.style.display = 'none'; 
                 const trigger = document.createElement('div'); trigger.className = 'custom-select-trigger';
                 const labelElement = select.previousElementSibling; const modalTitle = labelElement ? labelElement.innerText : 'Select Option';
-                const updateTriggerText = () => { trigger.innerHTML = `<span>${_escAttr(select.options[select.selectedIndex]?.text || 'Select...')}</span> <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; };
+                const updateTriggerText = () => { trigger.innerHTML = `<span>${select.options[select.selectedIndex]?.text || 'Select...'}</span> <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; };
                 updateTriggerText();
                 trigger.addEventListener('click', () => { openFullScreenSelect(select, modalTitle, updateTriggerText); });
                 select.parentNode.insertBefore(trigger, select.nextSibling);
@@ -1411,13 +1409,13 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             if(layout) { div.setAttribute('data-layout', layout); }
             if(layout === '2x2') div.classList.add('force-2x2-grid');
             
-            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">1. प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${_escAttr(question)}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${_escAttr(op1)}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${_escAttr(op2)}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${_escAttr(op3)}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${_escAttr(op4)}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${_escAttr(marks)}"></div>`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">1. प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${_escH(question)}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${_escH(op1)}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${_escH(op2)}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${_escH(op3)}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${_escH(op4)}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${_escH(marks)}"></div>`;
             markNewBlock(div); container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
         }
 
         function createNormalElement(containerId, labelPrefix, question = '', marks = '2') {
             let uniqueId = Math.floor(Math.random() * 1000000); const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'question-block normal-item-block'; div.id = `normal_block_${uniqueId}`;
-            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix}</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${_escAttr(question)}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${_escAttr(marks)}"></div>`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix}</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${_escH(question)}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${_escH(marks)}"></div>`;
             markNewBlock(div); container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
         }
 
@@ -1459,195 +1457,528 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
         function openSettingsModal() { syncImportSettingsUI(); openOverlay('settingsModal'); }
         function closeSettingsModal() { closeOverlay('settingsModal'); }
 
-        // ===================== ⚡ SUPER POWERFUL AI IMPORT PARSER =====================
+        // ===================== ⚡ SUPER POWERFUL AI IMPORT PARSER (v2) =====================
+        // Text / Markdown / JSON / JS-array / HTML (.ai-* ya normal HTML) - sab pehchanta hai, questions ki koi limit nahi.
+        function _escH(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        const _AI_DEFM = { 1: '1', 2: '2', 3: '4', 4: '7' };
+        function _D2A(s) { return String(s).replace(/[०-९]/g, c => '०१२३४५६७८९'.indexOf(c)); }
+        function _num(v) { const m = _D2A(v == null ? '' : v).match(/\d+(?:\.\d+)?/); return m ? m[0] : ''; }
+        function _newOut() { return { mcqs: [], vshorts: [], shorts: [], longs: [] }; }
+        function _outTotal(o) { return o.mcqs.length + o.vshorts.length + o.shorts.length + o.longs.length; }
+
+        // ---- section pehchan (naam / keyword se) ----
+        function _kwSec(s) {
+            const t = String(s).toLowerCase();
+            if (/अति\s*लघु|very\s*short|v\.?\s*short/.test(t)) return 2;
+            if (/बहुविकल्प|वस्तुनिष्ठ|mcq|multiple\s*choice|objective/.test(t)) return 1;
+            if (/दीर्घ|long\s*answer|essay|निबन्ध|निबंध|descriptive/.test(t)) return 4;
+            if (/लघु|short/.test(t)) return 3;
+            return 0;
+        }
+        function _secFromName(n) {
+            if (n == null) return 0;
+            const t = _D2A(String(n)).toLowerCase().replace(/[\s_\-]+/g, '');
+            if (!t) return 0;
+            if (/veryshort|vshort|अतिलघु/.test(t)) return 2;
+            if (/mcq|objective|multiplechoice|बहुविकल्प|वस्तुनिष्ठ/.test(t)) return 1;
+            if (/long|दीर्घ|essay|descriptive/.test(t)) return 4;
+            if (/short|लघु/.test(t)) return 3;
+            const m = t.match(/^(?:box|sec|section|part|खण्ड|खंड|भाग|बॉक्स)?([1-4a-d])$/);
+            return m ? ({ '1': 1, a: 1, '2': 2, b: 2, '3': 3, c: 3, '4': 4, d: 4 })[m[1]] : 0;
+        }
+
+        // ---- marks nikalna: [1] [2 अंक] (4 marks) - 4 अंक  Marks: 3 ----
+        function _takeMarks(str) {
+            let t = String(str || ''), marks = '';
+            const U = '(?:अंकों|अंक|marks|mark|मार्क्स|मार्क|pts|pt|points|point)';
+            const r1 = new RegExp('[\\[\\(（【]\\s*(\\d+(?:\\.\\d+)?)\\s*' + U + '\\s*\\.?\\s*[\\]\\)）】]', 'ig');
+            const r1b = new RegExp('[\\[\\(（【]\\s*' + U + '\\s*[:=\\-–]?\\s*(\\d+(?:\\.\\d+)?)\\s*[\\]\\)）】]', 'ig');
+            t = t.replace(r1, (m, n) => { if (!marks) marks = n; return ' '; });
+            t = t.replace(r1b, (m, n) => { if (!marks) marks = n; return ' '; });
+            const tail = [
+                new RegExp('(?:^|\\s)(?:[\\-–—:]\\s*)?(\\d+(?:\\.\\d+)?)\\s*' + U + '\\s*[\\.।]?\\s*$', 'i'),
+                new RegExp(U + '\\s*(?:[:：=]|[\\-–—](?=\\s))\\s*(\\d+(?:\\.\\d+)?)\\s*[\\.।]?\\s*$', 'i'),
+                /(?:^|\s)\[\s*(\d+(?:\.\d+)?)\s*\]\s*$/
+            ];
+            if (!marks) {
+                for (const re of tail) { const m = t.match(re); if (m) { marks = m[1]; t = t.slice(0, m.index) + ' '; break; } }
+            }
+            if (!marks && t.indexOf('\n') > 0) { // pehli line ke end par marks
+                const nl = t.indexOf('\n'), first = t.slice(0, nl);
+                for (const re of tail) { const m = first.match(re); if (m) { marks = m[1]; t = first.slice(0, m.index) + ' ' + t.slice(nl); break; } }
+            }
+            t = t.replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+\n/g, '\n').trim();
+            return { text: t, marks };
+        }
+
+        // ---- options (A)(B)(C)(D) / A. B. / अ ब स द / क ख ग घ / (1)(2)(3)(4) ----
+        const _OPSETS = [
+            { m: ['a', 'b', 'c', 'd'] },
+            { m: ['अ', 'ब', 'स', 'द'] },
+            { m: ['अ', 'ब', 'ज', 'द'] },
+            { m: ['क', 'ख', 'ग', 'घ'] },
+            { m: ['[1१]', '[2२]', '[3३]', '[4४]'], paren: true }
+        ];
+        function _chain(str, set, start, o) {
+            o = o || {};
+            const mk = i => {
+                const L = set.m[i];
+                return set.paren ? new RegExp('(^|\\s)\\(\\s*' + L + '\\s*\\)', 'gi')
+                    : new RegExp('(^|\\s)(?:\\(\\s*' + L + '\\s*\\)|' + L + '[\\)\\.:])', 'gi');
+            };
+            const first = mk(start); let m;
+            while ((m = first.exec(str))) {
+                const s0 = m.index + m[1].length;
+                if (o.anchored && str.slice(0, s0).trim() !== '') return null;
+                const marks = [{ s: s0, e: m.index + m[0].length, p: m[0].trim()[0] === '(' }];
+                let pos = m.index + m[0].length;
+                for (let i = start + 1; i < 4; i++) {
+                    const re = mk(i); re.lastIndex = pos; const mm = re.exec(str);
+                    if (!mm) break;
+                    marks.push({ s: mm.index + mm[1].length, e: mm.index + mm[0].length, p: mm[0].trim()[0] === '(' });
+                    pos = mm.index + mm[0].length;
+                }
+                const allParen = marks.every(x => x.p);
+                const need = o.anchored ? 1 : (allParen ? 2 : 3);
+                if (marks.length < need) { if (o.anchored) return null; continue; }
+                const opts = marks.map((k, j) => str.slice(k.e, j + 1 < marks.length ? marks[j + 1].s : str.length).trim());
+                return { head: str.slice(0, marks[0].s).trim(), opts, set };
+            }
+            return null;
+        }
+        function _splitInlineOptions(text) {
+            for (const set of _OPSETS) { const r = _chain(text, set, 0, {}); if (r) return r; }
+            return null;
+        }
+        function _takeOptionLine(cur, s) {
+            const idx = cur.options.length; if (idx >= 4) return false;
+            const sets = cur.opSet ? [cur.opSet] : _OPSETS;
+            for (const set of sets) {
+                const r = _chain(s, set, idx, { anchored: true });
+                if (r) { r.opts.forEach(o => cur.options.push(o)); cur.opSet = set; return true; }
+            }
+            return false;
+        }
+        function _stripOptPrefixes(ops) {
+            for (const set of _OPSETS) {
+                const re = i => new RegExp(set.paren ? '^\\(\\s*' + set.m[i] + '\\s*\\)\\s*' : '^(?:\\(\\s*' + set.m[i] + '\\s*\\)|' + set.m[i] + '[\\)\\.:])\\s*', 'i');
+                if (ops[0] && re(0).test(ops[0]) && (!ops[1] || re(1).test(ops[1]))) {
+                    return ops.map((o, i) => (o && i < 4) ? o.replace(re(i), '').trim() : o);
+                }
+            }
+            return ops;
+        }
+        function _stripQNum(t) {
+            return t.replace(/^(?:(?:प्रश्न(?:\s*संख्या)?|प्र\.?|question|ques\.?|que\.?|q)\s*\.?\s*[0-9०-९]{1,3}\s*[\.\):\-–—]?\s*|\(?\s*[0-9०-९]{1,3}\s*[\.\)](?![0-9०-९])\s+|\u0001Q\u0001\s*)/i, '').trim();
+        }
+
+        // ---- ek question ko sahi section mein daalna ----
+        function _emitQ(out, q, hdrM) {
+            hdrM = hdrM || {};
+            let text = String(q.text == null ? '' : q.text).replace(/\r/g, '').trim();
+            let ops = (q.options || []).map(o => String(o == null ? '' : o).replace(/\s+/g, ' ').trim());
+            let marks = q.marks ? _num(q.marks) : '';
+            if (ops.length) {
+                for (let i = ops.length - 1; i >= 0; i--) {
+                    if (ops[i]) { const t = _takeMarks(ops[i]); if (t.marks) { ops[i] = t.text; if (!marks) marks = t.marks; } break; }
+                }
+            }
+            const t0 = _takeMarks(text); text = t0.text; if (!marks) marks = t0.marks;
+            const textBefore = text;
+            if (ops.filter(Boolean).length < 2) {
+                const r = _splitInlineOptions(text);
+                if (r) { text = r.head; ops = r.opts.map(o => o.replace(/\s+/g, ' ').trim()); }
+            }
+            if (q.strip) { const st = _stripQNum(text); if (st) text = st; }
+            ops = _stripOptPrefixes(ops);
+            if (ops.length) { const t = _takeMarks(ops[ops.length - 1]); if (t.marks) { ops[ops.length - 1] = t.text; if (!marks) marks = t.marks; } }
+            text = text.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+            if (!text) return;
+            let sec = q.sec || 0;
+            const nOps = ops.filter(Boolean).length;
+            if (nOps >= 2 && (sec === 0 || sec === 1 || nOps >= 4)) sec = 1;
+            else if (nOps >= 2) { // sec 2-4 mein 2-3 option = asal mein sub-parts, text wapas jod do
+                text = (ops.length === nOps && textBefore.indexOf(ops[0]) !== -1) ? textBefore : text + '\n' + ops.map((o, i) => '(' + 'abcd'[i] + ') ' + o).join('\n');
+                ops = [];
+            }
+            if (sec === 0) {
+                const mv = parseFloat(marks);
+                if (!isNaN(mv)) sec = mv <= 2 ? 2 : (mv <= 5 ? 3 : 4);
+                else sec = text.length < 80 ? 2 : (text.length < 180 ? 3 : 4);
+            }
+            const mk = marks || hdrM[sec] || _AI_DEFM[sec];
+            if (sec === 1) { while (ops.length < 4) ops.push(''); out.mcqs.push([text, ops[0], ops[1], ops[2], ops[3], mk, '']); }
+            else if (sec === 2) out.vshorts.push([text, mk]);
+            else if (sec === 3) out.shorts.push([text, mk]);
+            else out.longs.push([text, mk]);
+        }
+
+        // ---- TEXT / MARKDOWN parser ----
+        const _QSTART = /^(?:(?:प्रश्न(?:\s*संख्या)?|प्र\.?|question|ques\.?|que\.?|q)\s*\.?\s*([0-9०-९]{1,3})(?:\s*[\.\):\-–—](?![0-9०-९]))?\s*|\(?\s*([0-9०-९]{1,3})\s*[\.\):\-–—](?![0-9०-९])\s*|\[\s*([0-9०-९]{1,3})\s*\]\s*|[-*•●▪◦]\s+|\u0001Q\u0001\s*)([\s\S]*)$/i;
+        const _QNUM_DET = /^(?:(?:प्रश्न(?:\s*संख्या)?|प्र\.?|question|ques\.?|que\.?|q)\s*\.?\s*[0-9०-९]{1,3}|[0-9०-९]{1,3}\s*[\.\)\:\-–—](?![0-9०-९]))/i;
+        const _ANSLINE = /^(?:उत्तर(?:\s*कुंजी|\s*कुँजी)?|answer(?:\s*key)?|ans\.?|correct\s*(?:answer|option)|सही\s*(?:उत्तर|विकल्प)|solution|explanation|व्याख्या|हल|स्पष्टीकरण)\s*(?:[:：]|[\-–—](?=\s))/i;
+        const _METALINE = /^(?:नोट|note|निर्देश|instructions?|general\s*instructions|कुल\s*अंक|total\s*marks|full\s*marks|पूर्णांक|समय|time|कक्षा|class|विषय|subject|नाम|name|roll)\s*[:：\-–—]/i;
+        function _isMeta(s) { return _METALINE.test(s); }
+        function _hdrMarks(s) {
+            if (!/प्रत्येक|each|per\s*question|हर\s*प्रश्न/i.test(s)) return '';
+            const m = s.match(/(\d+(?:\.\d+)?)\s*(?:अंक|marks?)/i) || s.match(/\[\s*(\d+(?:\.\d+)?)\s*\]/);
+            return m ? m[1] : '';
+        }
+        function _stripParens(s) {
+            let r = String(s), prev;
+            for (let k = 0; k < 6 && r !== prev; k++) { prev = r; r = r.replace(/\([^()]*\)|\[[^\[\]]*\]|（[^（）]*）/g, ' '); }
+            return r;
+        }
+        function _isHdrText(s) {
+            if (!_kwSec(s)) return false;
+            let r = _stripParens(s);
+            r = r.replace(/(अति\s*लघु|very\s*short|v\.?\s*short|बहुविकल्पीय|बहुविकल्प|वस्तुनिष्ठ|mcqs?|multiple\s*choice|objective|लघु|दीर्घ|short|long|essay|निबन्ध|निबंध|descriptive)/gi, ' ');
+            r = r.replace(/प्रश्नों|प्रश्न|उत्तरीय|उत्तर|questions?|answers?|types?|based|choice|section|part|खण्ड|खंड|भाग|box|बॉक्स|वर्ग|group/gi, ' ');
+            r = r.replace(/[\s\.\:\-–—,।\*_#=\u0001]+/g, '');
+            return r.length <= 2;
+        }
+        function _headerInfo(line) {
+            const s = line.trim().replace(/^[#>\s*_=\-–—•]+/, '').replace(/[*_=\s]+$/, '');
+            if (!s || s.length > 140 || /[?？]/.test(s)) return null;
+            let m = s.match(/^(?:खण्ड|खंड|section|part|भाग|box|बॉक्स|group|वर्ग)\s*[-:.]?\s*([0-9०-९]+|[a-zA-Z]|[अबसदकखगघ])(?![A-Za-z0-9])(.*)$/i);
+            if (m) {
+                const rest = m[2] || '';
+                const plain = _stripParens(rest).replace(/[\s\.\:\-–—,।\*_#=]+/g, '');
+                if (plain === '' || /^\s*[:\-–—.]/.test(rest) || _isHdrText(rest)) {
+                    let sec = _kwSec(rest);
+                    if (!sec) { const v = _D2A(m[1]).toLowerCase(); sec = ({ '1': 1, a: 1, 'अ': 1, 'क': 1, '2': 2, b: 2, 'ब': 2, 'ख': 2, '3': 3, c: 3, 'स': 3, 'ग': 3, '4': 4, d: 4, 'द': 4, 'घ': 4 })[v] || 0; }
+                    return { sec, marks: _hdrMarks(s) };
+                }
+            }
+            m = s.match(/^\(?\s*([1-4१-४])\s*[\.\):\-–—]?\s*\)?\s*$/);
+            if (m) return { sec: +_D2A(m[1]), marks: '' };
+            m = s.match(/^\(?\s*([1-4१-४])\s*[\.\):\-–—]\s*(.+)$/);
+            if (m && _isHdrText(m[2])) return { sec: _kwSec(m[2]) || +_D2A(m[1]), marks: _hdrMarks(s) };
+            if (_isHdrText(s)) return { sec: _kwSec(s), marks: _hdrMarks(s) };
+            return null;
+        }
+        function _prepText(raw) {
+            let t = String(raw).replace(/\u00A0/g, ' ').replace(/\t/g, '    ');
+            t = t.replace(/^[ ]*```[^\n]*$/gm, '');
+            return t.split('\n').map(l => {
+                l = l.replace(/^\s{0,3}#{1,6}\s+/, '').replace(/^\s*>\s?/, '');
+                l = l.replace(/\*\*(.+?)\*\*/g, '$1').replace(/`([^`\n]+)`/g, '$1').replace(/(\d)\\([.)])/g, '$1$2');
+                return l.replace(/\s+$/, '');
+            });
+        }
+        const _OPT_LIKE = /^(?:\(\s*(?:[a-dA-D१-४1-4अबसदजकखगघ])\s*\)|[a-dA-Dअबसदजकखगघ][\)\.:])/;
+        const _TERM = /(?:[?？।]|\[\s*\d+(?:\.\d+)?\s*(?:अंक|marks?)?\s*\])\s*$/i;
+        // jab input mein numbering na ho: har question ke shuru par chhupa marker lagao
+        function _addSyntheticStarts(lines) {
+            const blocks = []; let b = null;
+            lines.forEach((l, i) => { if (!l.trim()) { b = null; return; } if (!b) { b = []; blocks.push(b); } b.push(i); });
+            const info = new Map();
+            blocks.forEach(bl => {
+                const content = bl.filter(i => { const s = lines[i].trim(); return !_headerInfo(s) && !_isMeta(s) && !_ANSLINE.test(s) && !_OPT_LIKE.test(s); });
+                const hasOpt = bl.some(i => _OPT_LIKE.test(lines[i].trim()));
+                const allTerm = content.length > 0 && content.every(i => _TERM.test(lines[i].trim()));
+                bl.forEach(i => info.set(i, { hasOpt, allTerm, n: content.length, single: blocks.length === 1 }));
+            });
+            const res = []; let startNext = true, prevTerm = false, lastOpt = false;
+            lines.forEach((l, i) => {
+                const s = l.trim();
+                if (!s) { res.push(l); startNext = true; return; }
+                if (_headerInfo(s)) { res.push(l); startNext = true; lastOpt = false; return; }
+                if (_isMeta(s) || _ANSLINE.test(s)) { res.push(l); return; }
+                if (_OPT_LIKE.test(s)) { res.push(l); lastOpt = true; return; }
+                const inf = info.get(i) || {};
+                let start = startNext || lastOpt;
+                if (!start) start = inf.single ? (!inf.hasOpt || prevTerm) : (inf.allTerm && !inf.hasOpt && inf.n >= 2);
+                res.push(start ? '\u0001Q\u0001 ' + s : l);
+                startNext = false; lastOpt = false; prevTerm = _TERM.test(s);
+            });
+            return res;
+        }
+        function _parseText(raw) {
+            const out = _newOut();
+            let lines = _prepText(raw);
+            let numbered = false;
+            for (const l of lines) {
+                const s = l.trim();
+                if (!s || _headerInfo(s) || _isMeta(s)) continue;
+                if (_QNUM_DET.test(s) || /^[-*•●▪◦]\s+\S/.test(s)) { numbered = true; break; }
+            }
+            if (!numbered) lines = _addSyntheticStarts(lines);
+            let sec = 0, cur = null, inAns = false, pendBlank = false;
+            const hdrM = {};
+            const flush = () => { if (cur) { _emitQ(out, cur, hdrM); cur = null; } };
+            for (const line of lines) {
+                const s = line.trim();
+                if (!s) { pendBlank = true; continue; }
+                if (/^[-=_*~#]{3,}$/.test(s) || (/^\|?[\s:\-|]{3,}$/.test(s) && s.indexOf('-') !== -1)) continue;
+                const h = _headerInfo(s);
+                if (h) { flush(); if (h.sec) { sec = h.sec; if (h.marks) hdrM[h.sec] = h.marks; } inAns = false; pendBlank = false; continue; }
+                if (_isMeta(s)) continue;
+                if (_ANSLINE.test(s)) { inAns = true; continue; }
+                const qm = s.match(_QSTART);
+                if (inAns) { if (qm && !/^\(\s*[1-4]\s*\)/.test(s)) inAns = false; else continue; }
+                if (cur && _takeOptionLine(cur, s)) { pendBlank = false; continue; }
+                if (qm) {
+                    flush();
+                    cur = { sec, text: qm[4] || '', options: [], marks: null, opSet: null };
+                    pendBlank = false; continue;
+                }
+                if (cur) {
+                    if (cur.options.length) cur.options[cur.options.length - 1] += ' ' + s;
+                    else {
+                        const keep = /^\s{2,}/.test(line) && /[{};=<>()]/.test(s);
+                        cur.text += (pendBlank ? '\n\n' : '\n') + (keep ? line.replace(/\s+$/, '') : s);
+                    }
+                } else if (sec > 0 || /[?？।]/.test(s)) {
+                    cur = { sec, text: s, options: [], marks: null, opSet: null };
+                }
+                pendBlank = false;
+            }
+            flush();
+            return out;
+        }
+
+        // ---- HTML -> text (normal HTML: ol/li, p, div, table, br, sub/sup) ----
+        const _SUBM = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉', '+': '₊', '-': '₋', '=': '₌', '(': '₍', ')': '₎' };
+        const _SUPM = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '+': '⁺', '-': '⁻', '=': '⁼', '(': '⁽', ')': '⁾', 'n': 'ⁿ', 'i': 'ⁱ' };
+        function _nodeToText(root) {
+            const BLOCK = /^(P|DIV|LI|TR|H[1-6]|SECTION|ARTICLE|UL|OL|TABLE|BLOCKQUOTE|PRE|HEADER|FOOTER|MAIN|DT|DD|FIGURE|FORM|FIELDSET|LEGEND)$/;
+            let out = '';
+            function walk(n, ctx) {
+                if (n.nodeType === 3) { out += ctx.pre ? n.nodeValue : n.nodeValue.replace(/\s+/g, ' '); return; }
+                if (n.nodeType !== 1) return;
+                const tag = n.tagName;
+                if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TEMPLATE') return;
+                if (tag === 'BR') { out += '\n'; return; }
+                if (tag === 'SUB' || tag === 'SUP') {
+                    const t = n.textContent, mp = tag === 'SUB' ? _SUBM : _SUPM;
+                    out += t.split('').every(c => mp[c]) ? t.split('').map(c => mp[c]).join('') : t; return;
+                }
+                const blk = BLOCK.test(tag);
+                if (blk) out += '\n';
+                if (tag === 'LI') {
+                    const par = n.parentElement;
+                    const idx = par ? Array.prototype.indexOf.call(par.children, n) : 0;
+                    if (ctx.depth >= 2) out += idx < 4 ? '(' + 'ABCD'[idx] + ') ' : '- ';
+                    else if (par && par.tagName === 'OL') out += (idx + 1) + '. ';
+                    else out += '- ';
+                }
+                const nctx = { pre: ctx.pre || tag === 'PRE', depth: ctx.depth + ((tag === 'UL' || tag === 'OL') ? 1 : 0) };
+                n.childNodes.forEach(c => walk(c, nctx));
+                if (blk) out += '\n';
+                if (tag === 'TD' || tag === 'TH') out += '  ';
+            }
+            walk(root, { pre: false, depth: 0 });
+            return out.replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+        }
+        function _htmlToText(html) {
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            return _nodeToText(doc.body || doc.documentElement);
+        }
+        function _parseAiHtml(raw) {
+            const out = _newOut();
+            const doc = new DOMParser().parseFromString(raw, 'text/html');
+            const T = el => el ? _nodeToText(el) : '';
+            doc.querySelectorAll('.ai-mcq,.ai-vshort,.ai-short,.ai-long').forEach(el => {
+                const sec = el.classList.contains('ai-mcq') ? 1 : el.classList.contains('ai-vshort') ? 2 : el.classList.contains('ai-short') ? 3 : 4;
+                let ops = ['.ai-o1', '.ai-o2', '.ai-o3', '.ai-o4'].map(c => T(el.querySelector(c)));
+                if (ops.filter(Boolean).length < 2) { const l = el.querySelectorAll('.ai-o,.ai-opt,.ai-option,.ai-options li'); if (l.length) ops = Array.from(l).map(T); }
+                let text = T(el.querySelector('.ai-q'));
+                if (!text) {
+                    const c = el.cloneNode(true);
+                    c.querySelectorAll('.ai-m,.ai-o1,.ai-o2,.ai-o3,.ai-o4,.ai-o,.ai-opt,.ai-option,.ai-options').forEach(x => x.remove());
+                    text = T(c);
+                }
+                const mEl = el.querySelector('.ai-m');
+                _emitQ(out, { sec, text, options: ops, marks: mEl ? T(mEl) : null, strip: true }, {});
+            });
+            return out;
+        }
+
+        // ---- JSON / JS-array parser (trailing comma, single quote, comments, unquoted keys - sab chalega) ----
+        function _relaxedParse(src) {
+            let i = 0; const n = src.length;
+            const reKey = /[A-Za-z_$\u0900-\u097F][\w$\u0900-\u097F\-]*|\d+/y;
+            const reLit = /-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null|undefined|True|False|None/y;
+            function ws() {
+                for (; ;) {
+                    while (i < n && /\s/.test(src[i])) i++;
+                    if (src[i] === '/' && src[i + 1] === '/') { while (i < n && src[i] !== '\n') i++; }
+                    else if (src[i] === '/' && src[i + 1] === '*') { const j = src.indexOf('*/', i + 2); i = j < 0 ? n : j + 2; }
+                    else break;
+                }
+            }
+            function str(q) {
+                let o = ''; i++;
+                while (i < n) {
+                    const c = src[i];
+                    if (c === '\\') {
+                        const d = src[i + 1]; i += 2;
+                        if (d === 'n') o += '\n'; else if (d === 't') o += '\t'; else if (d === 'r') o += '';
+                        else if (d === 'u') { const h = src.substr(i, 4); if (/^[0-9a-fA-F]{4}$/.test(h)) { o += String.fromCharCode(parseInt(h, 16)); i += 4; } else o += 'u'; }
+                        else if (d === '"' || d === "'" || d === '`' || d === '\\' || d === '/') o += d;
+                        else if (d === '\n') { /* line continuation */ }
+                        else o += '\\' + d;
+                        continue;
+                    }
+                    if (c === q) { i++; return o; }
+                    o += c; i++;
+                }
+                throw new Error('unterminated string');
+            }
+            function val() {
+                ws(); const c = src[i];
+                if (c === '{') {
+                    i++; const o = {}; ws();
+                    if (src[i] === '}') { i++; return o; }
+                    for (; ;) {
+                        ws(); let k; const c2 = src[i];
+                        if (c2 === '"' || c2 === "'" || c2 === '`') k = str(c2);
+                        else { reKey.lastIndex = i; const m = reKey.exec(src); if (!m) throw new Error('key'); k = m[0]; i += k.length; }
+                        ws(); if (src[i] !== ':') throw new Error('colon'); i++;
+                        o[k] = val(); ws();
+                        if (src[i] === ',') { i++; ws(); if (src[i] === '}') { i++; return o; } continue; }
+                        if (src[i] === '}') { i++; return o; }
+                        throw new Error('obj');
+                    }
+                }
+                if (c === '[') {
+                    i++; const a = []; ws();
+                    if (src[i] === ']') { i++; return a; }
+                    for (; ;) {
+                        a.push(val()); ws();
+                        if (src[i] === ',') { i++; ws(); if (src[i] === ']') { i++; return a; } continue; }
+                        if (src[i] === ']') { i++; return a; }
+                        throw new Error('arr');
+                    }
+                }
+                if (c === '"' || c === "'" || c === '`') return str(c);
+                reLit.lastIndex = i; const m = reLit.exec(src);
+                if (m) { i += m[0].length; const t = m[0]; if (/^-?\d/.test(t)) return parseFloat(t); return (t === 'true' || t === 'True') ? true : ((t === 'false' || t === 'False') ? false : null); }
+                throw new Error('value');
+            }
+            return val();
+        }
+        function _matchBal(s, start) {
+            let depth = 0, inStr = null;
+            for (let i = start; i < s.length; i++) {
+                const c = s[i];
+                if (inStr) { if (c === '\\') { i++; continue; } if (c === inStr) inStr = null; continue; }
+                if (c === '"' || c === "'" || c === '`') { inStr = c; continue; }
+                if (c === '/' && s[i + 1] === '/') { const j = s.indexOf('\n', i); if (j < 0) return -1; i = j; continue; }
+                if (c === '/' && s[i + 1] === '*') { const j = s.indexOf('*/', i + 2); if (j < 0) return -1; i = j + 1; continue; }
+                if (c === '{' || c === '[') depth++;
+                else if (c === '}' || c === ']') { depth--; if (depth === 0) return i; if (depth < 0) return -1; }
+            }
+            return -1;
+        }
+        function _scanJson(src) {
+            const vals = []; let i = 0;
+            while (i < src.length) {
+                const c = src[i];
+                if (c === '{' || c === '[') {
+                    const end = _matchBal(src, i);
+                    if (end > i) {
+                        try { vals.push(_relaxedParse(src.slice(i, end + 1))); i = end + 1; continue; } catch (e) { /* andar ke chhote objects try karo */ }
+                    }
+                }
+                i++;
+            }
+            return vals;
+        }
+        function _lk(o) { const m = {}; Object.keys(o).forEach(k => { m[k.toLowerCase()] = k; }); return m; }
+        function _pick(o, keys) { const m = _lk(o); for (const k of keys) { if (m[k.toLowerCase()] !== undefined) return o[m[k.toLowerCase()]]; } return undefined; }
+        function _jStr(v) {
+            if (typeof v === 'string') return v.trim() ? v : null;
+            if (Array.isArray(v) && v.length && v.every(x => typeof x === 'string')) return v.join('\n');
+            if (v && typeof v === 'object' && !Array.isArray(v)) { const t = _pick(v, ['text', 'q', 'question', 'value']); return typeof t === 'string' && t.trim() ? t : null; }
+            return null;
+        }
+        function _jsonQText(o, allowWeak) {
+            for (const k of ['q', 'question', 'ques', 'que', 'question_text', 'questionText', 'qn', 'प्रश्न', 'statement', 'prompt']) { const t = _jStr(_pick(o, [k])); if (t != null) return t; }
+            if (allowWeak) for (const k of ['text', 'title', 'name']) { const t = _jStr(_pick(o, [k])); if (t != null) return t; }
+            return null;
+        }
+        function _jsonOptions(it) {
+            let ops = _pick(it, ['options', 'choices', 'opts', 'ops', 'answers', 'विकल्प', 'option']);
+            let out = [];
+            const S = v => (v == null ? '' : (typeof v === 'object' ? String(_pick(v, ['text', 'value', 'option', 'label', 't']) || '') : String(v)));
+            if (Array.isArray(ops)) out = ops.map(S);
+            else if (ops && typeof ops === 'object') out = Object.keys(ops).map(k => S(ops[k]));
+            else if (typeof ops === 'string') { const r = _splitInlineOptions(ops); out = r ? r.opts : ops.split(/\n|\|/).map(x => x.trim()).filter(Boolean); }
+            if (out.filter(Boolean).length < 2) {
+                const sets = [['a', 'b', 'c', 'd'], ['op1', 'op2', 'op3', 'op4'], ['option1', 'option2', 'option3', 'option4'], ['option_a', 'option_b', 'option_c', 'option_d'], ['optiona', 'optionb', 'optionc', 'optiond'], ['opt1', 'opt2', 'opt3', 'opt4'], ['o1', 'o2', 'o3', 'o4'], ['1', '2', '3', '4']];
+                for (const st of sets) {
+                    const vals = st.map(k => _pick(it, [k]));
+                    if (vals.filter(v => v != null && v !== '' && typeof v !== 'object').length >= 2) { out = vals.map(S); break; }
+                }
+            }
+            return out;
+        }
+        function _collectJson(node, ctxSec, out, depth) {
+            if (node == null || depth > 10) return;
+            if (Array.isArray(node)) {
+                node.forEach(x => {
+                    if (typeof x === 'string') { if (x.trim()) _emitQ(out, { sec: ctxSec, text: x, options: [], marks: null, strip: true }, {}); }
+                    else _collectJson(x, ctxSec, out, depth + 1);
+                });
+                return;
+            }
+            if (typeof node !== 'object') return;
+            const hasChild = Object.keys(node).some(k => Array.isArray(node[k]) && node[k].some(x => x && typeof x === 'object') && !/^(options|choices|opts|answers|ops)$/i.test(k));
+            const qt = _jsonQText(node, !hasChild);
+            if (qt != null) {
+                const s = _secFromName(_pick(node, ['section', 'sec', 'box', 'type', 'category', 'kind', 'group', 'खण्ड', 'section_name'])) || ctxSec;
+                const mv = _pick(node, ['m', 'marks', 'mark', 'score', 'points', 'max_marks', 'अंक']);
+                _emitQ(out, { sec: s, text: qt, options: _jsonOptions(node), marks: (mv == null || typeof mv === 'object') ? null : String(mv), strip: true }, {});
+                return;
+            }
+            Object.keys(node).forEach(k => {
+                const v = node[k];
+                if (v == null || typeof v !== 'object') return;
+                _collectJson(v, _secFromName(k) || ctxSec, out, depth + 1);
+            });
+        }
+        function _parseJsonLike(src) {
+            if (!/["']?(?:q|question|ques|questions|mcqs?|options|choices|vshorts?|shorts?|longs?|section[1-4]|प्रश्न)["']?\s*:/i.test(src) && !/^\s*[\[{]/.test(src)) return null;
+            const out = _newOut();
+            _scanJson(src).forEach(v => _collectJson(v, 0, out, 0));
+            return _outTotal(out) ? out : null;
+        }
+        function _parseStructured(c) {
+            if (/\bai-(?:mcq|vshort|short|long)\b/.test(c)) { try { const r = _parseAiHtml(c); if (_outTotal(r)) return r; } catch (e) { } }
+            try { const r = _parseJsonLike(c); if (r) return r; } catch (e) { }
+            return null;
+        }
+
+        // ---- MAIN: koi bhi format -> {mcqs, vshorts, shorts, longs} ----
         function parseUniversalAiInput(rawInput) {
-            let raw = (rawInput || '').trim();
-            if (!raw) return { mcqs: [], vshorts: [], shorts: [], longs: [] };
-            
-            // Clean markdown code blocks
-            raw = raw.replace(/^```[a-zA-Z]*\n/gm, '').replace(/\n```$/gm, '').replace(/```/g, '').trim();
-
-            let mcqs = [], vshorts = [], shorts = [], longs = [];
-
-            // 1. Check if HTML contains classic .ai-* classes
-            if (raw.includes('ai-mcq') || raw.includes('ai-vshort') || raw.includes('ai-short') || raw.includes('ai-long')) {
-                try {
-                    const doc = new DOMParser().parseFromString(raw, 'text/html');
-                    doc.querySelectorAll('.ai-mcq').forEach(el => {
-                        mcqs.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-o1')?.innerText || '', el.querySelector('.ai-o2')?.innerText || '', el.querySelector('.ai-o3')?.innerText || '', el.querySelector('.ai-o4')?.innerText || '', el.querySelector('.ai-m')?.innerText || '1', '']);
-                    });
-                    doc.querySelectorAll('.ai-vshort').forEach(el => {
-                        vshorts.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-m')?.innerText || '2']);
-                    });
-                    doc.querySelectorAll('.ai-short').forEach(el => {
-                        shorts.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-m')?.innerText || '4']);
-                    });
-                    doc.querySelectorAll('.ai-long').forEach(el => {
-                        longs.push([el.querySelector('.ai-q')?.innerText || '', el.querySelector('.ai-m')?.innerText || '7']);
-                    });
-                    if (mcqs.length || vshorts.length || shorts.length || longs.length) {
-                        return { mcqs, vshorts, shorts, longs };
-                    }
-                } catch(e) {}
-            }
-
-            // 2. Check JSON
-            if ((raw.startsWith('{') && raw.endsWith('}')) || (raw.startsWith('[') && raw.endsWith(']'))) {
-                try {
-                    const d = JSON.parse(raw);
-                    if (Array.isArray(d)) {
-                        d.forEach(item => {
-                            const q = item.q || item.question || '';
-                            const ops = item.options || [item.a || item.op1 || '', item.b || item.op2 || '', item.c || item.op3 || '', item.d || item.op4 || ''];
-                            const m = String(item.m || item.marks || '1');
-                            if (ops && ops.filter(Boolean).length >= 2) {
-                                while(ops.length < 4) ops.push('');
-                                mcqs.push([q, ops[0]||'', ops[1]||'', ops[2]||'', ops[3]||'', m, '']);
-                            } else {
-                                const sec = item.section || item.box || 2;
-                                if (sec === 2) vshorts.push([q, m]);
-                                else if (sec === 3) shorts.push([q, m]);
-                                else longs.push([q, m]);
-                            }
-                        });
-                        return { mcqs, vshorts, shorts, longs };
-                    } else if (typeof d === 'object') {
-                        const mList = d.mcqs || d.section1 || d['1'] || [];
-                        const vsList = d.vshorts || d.section2 || d['2'] || [];
-                        const sList = d.shorts || d.section3 || d['3'] || [];
-                        const lList = d.longs || d.section4 || d['4'] || [];
-                        mList.forEach(item => {
-                            const q = item.q || item.question || '';
-                            const ops = item.options || [item.a || item.op1 || '', item.b || item.op2 || '', item.c || item.op3 || '', item.d || item.op4 || ''];
-                            const m = String(item.m || item.marks || '1');
-                            while(ops.length < 4) ops.push('');
-                            mcqs.push([q, ops[0]||'', ops[1]||'', ops[2]||'', ops[3]||'', m, '']);
-                        });
-                        vsList.forEach(item => vshorts.push([item.q || item.question || '', String(item.m || item.marks || '2')]));
-                        sList.forEach(item => shorts.push([item.q || item.question || '', String(item.m || item.marks || '4')]));
-                        lList.forEach(item => longs.push([item.q || item.question || '', String(item.m || item.marks || '7')]));
-                        if (mcqs.length || vshorts.length || shorts.length || longs.length) {
-                            return { mcqs, vshorts, shorts, longs };
-                        }
-                    }
-                } catch(e) {}
-            }
-
-            // 3. Universal Line-by-Line & Section Text/Markdown Parser
-            const lines = raw.split(/\r?\n/);
-            let currSec = 1;
-            let currentQ = null;
-
-            function pushQ(qObj) {
-                if (!qObj || !qObj.text.trim()) return;
-                let qText = qObj.text.trim();
-                let m = qObj.marks;
-                let ops = qObj.options || [];
-
-                // Extract marks if in text: e.g. [1], [2 अंक], (4 अंक)
-                const marksM = qText.match(/\[\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)?\s*\]|\(\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)\s*\)/i);
-                if (marksM) {
-                    if (!m) m = marksM[1] || marksM[2];
-                    qText = qText.replace(/\[\s*\d+(?:\.\d+)?\s*(?:अंक|marks)?\s*\]|\(\s*\d+(?:\.\d+)?\s*(?:अंक|marks)\s*\)/gi, '').trim();
+            const raw = String(rawInput || '').replace(/^\uFEFF/, '').replace(/[\u200B-\u200D\u2060]/g, '').replace(/\r\n?/g, '\n').trim();
+            if (!raw) return _newOut();
+            const merge = (dst, r) => { ['mcqs', 'vshorts', 'shorts', 'longs'].forEach(k => dst[k].push(...r[k])); };
+            const fences = [];
+            raw.replace(/```[^\n`]*\n([\s\S]*?)(?:```|$)/g, (m, c) => { fences.push(c); return m; });
+            // 1) code blocks ke andar JSON / .ai-* HTML (kitne bhi blocks) - sab jod do
+            const all = _newOut(); let hit = false;
+            fences.forEach(c => { const r = _parseStructured(c); if (r) { merge(all, r); hit = true; } });
+            if (hit) return all;
+            // 2) bina code-block ke seedha JSON / .ai-* HTML
+            const whole = _parseStructured(raw);
+            if (whole) return whole;
+            // 3) normal HTML (ol/li, p, div, table)
+            const HTMLSTART = /^<\s*(?:!doctype|html|head|body|div|section|article|main|ol|ul|table|h[1-6]|p|center)\b/i;
+            const outside = raw.replace(/```[^\n`]*\n[\s\S]*?(?:```|$)/g, '').trim();
+            const unf = raw.replace(/^[ ]*```[^\n]*$/gm, '').trim();
+            try {
+                if (HTMLSTART.test(unf)) { const r = _parseText(_htmlToText(unf)); if (_outTotal(r)) return r; }
+                if (fences.length && outside.length < 400) {
+                    const g = _newOut(); let any = false;
+                    fences.forEach(c => { c = c.trim(); if (HTMLSTART.test(c)) { const r = _parseText(_htmlToText(c)); if (_outTotal(r)) { merge(g, r); any = true; } } });
+                    if (any) return g;
                 }
-
-                // If options embedded in question text: e.g. (A) ... (B) ... (C) ... (D) ...
-                if (ops.length < 4) {
-                    const opMatches = Array.from(qText.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|(?<!\w)([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
-                    if (opMatches.length >= 4) {
-                        const mainQ = qText.substring(0, opMatches[0].index).trim();
-                        ops = [opMatches[0][3].trim(), opMatches[1][3].trim(), opMatches[2][3].trim(), opMatches[3][3].trim()];
-                        qText = mainQ;
-                    }
-                }
-
-                // Strip leading question numbering: e.g. "प्रश्न 1.", "Q1.", "1."
-                qText = qText.replace(/^(?:Q\.?\s*\d+|प्रश्न\s*\d+|\d+)\s*[\.:\-\)]\s*/i, '').trim();
-
-                // Option line ke end me likha [1] / (2 अंक) = us prashn ke ank (option ka hissa nahi)
-                if (ops.length) {
-                    const endMarks = /\s*(?:\[\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)?\s*\]|\(\s*(\d+(?:\.\d+)?)\s*(?:अंक|marks)\s*\))\s*$/i;
-                    ops = ops.map(o => { const mm = String(o).match(endMarks); if (mm) { if (!m) m = mm[1] || mm[2]; return String(o).replace(endMarks, '').trim(); } return o; });
-                }
-
-                if (ops.length >= 2 || qObj.sec === 1) {
-                    while (ops.length < 4) ops.push('');
-                    mcqs.push([qText, ops[0], ops[1], ops[2], ops[3], m || '1', '']);
-                } else if (qObj.sec === 2) {
-                    vshorts.push([qText, m || '2']);
-                } else if (qObj.sec === 3) {
-                    shorts.push([qText, m || '4']);
-                } else if (qObj.sec === 4) {
-                    longs.push([qText, m || '7']);
-                } else {
-                    if (qText.length < 80) vshorts.push([qText, m || '2']);
-                    else if (qText.length < 180) shorts.push([qText, m || '4']);
-                    else longs.push([qText, m || '7']);
-                }
-            }
-
-            for (let i = 0; i < lines.length; i++) {
-                const s = lines[i].trim();
-                if (!s) continue;
-
-                // Section header match: "1.", "2.", "3.", "4.", "खण्ड 1", "Section 1", "बहुविकल्पीय"
-                const secMatch = s.match(/^(?:(?:खण्ड|खंड|section|part|भाग)\s*([1-4]|[a-d])|([1-4])\s*[\.:\-\)]|(?:बहुविकल्पीय|mcq)|(?:अति\s*लघु)|(?:लघु\s*उत्तरीय)|(?:दीर्घ\s*उत्तरीय))/i);
-                if (secMatch) {
-                    pushQ(currentQ);
-                    currentQ = null;
-                    if (secMatch[1]) {
-                        const v = secMatch[1].toLowerCase();
-                        currSec = {'1':1,'a':1,'2':2,'b':2,'3':3,'c':3,'4':4,'d':4}[v] || 1;
-                    } else if (secMatch[2]) {
-                        currSec = parseInt(secMatch[2]);
-                    } else {
-                        const h = s.toLowerCase();
-                        if (h.includes('अति')) currSec = 2;
-                        else if (h.includes('दीर्घ')) currSec = 4;
-                        else if (h.includes('लघु')) currSec = 3;
-                        else currSec = 1;
-                    }
-                    continue;
-                }
-
-                // Option line match: (A) ... or A. ...
-                const opMatch = s.match(/^(?:\(([a-dA-Dअबसदकखगघ1-4])\)|([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*(.*)$/);
-                if (opMatch && currentQ) {
-                    const multiOps = Array.from(s.matchAll(/(?:\(([a-dA-Dअबसदकखगघ1-4])\)|([a-dA-Dअबसदकखगघ])\s*[\.\)])\s*([^\(\n\r]+)/g));
-                    if (multiOps.length > 1) {
-                        multiOps.forEach(mo => currentQ.options.push(mo[3].trim()));
-                    } else {
-                        currentQ.options.push(opMatch[3].trim());
-                    }
-                    continue;
-                }
-
-                // Question start match: "प्रश्न 1.", "1.", "Q1."
-                const qStart = s.match(/^(?:Q\.?\s*\d+|प्रश्न\s*\d+|\d+)\s*[\.:\-\)]\s*(.*)$/i);
-                if (qStart && !s.match(/^\([a-dA-D1-4]\)/)) {
-                    pushQ(currentQ);
-                    currentQ = {
-                        sec: currSec,
-                        text: qStart[1] ? qStart[1].trim() : s,
-                        options: [],
-                        marks: null
-                    };
-                } else {
-                    if (currentQ) {
-                        currentQ.text += '\n' + s;
-                    } else {
-                        currentQ = {
-                            sec: currSec,
-                            text: s,
-                            options: [],
-                            marks: null
-                        };
-                    }
-                }
-            }
-            pushQ(currentQ);
-
-            return { mcqs, vshorts, shorts, longs };
+            } catch (e) { }
+            // 4) plain text / markdown
+            return _parseText(unf);
         }
 
         // Live Question Count Preview in Import Modal
@@ -1662,6 +1993,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             if (c2) c2.innerText = res.vshorts.length;
             if (c3) c3.innerText = res.shorts.length;
             if (c4) c4.innerText = res.longs.length;
+            const ct = document.getElementById('cnt_total'); if (ct) ct.innerText = res.mcqs.length + res.vshorts.length + res.shorts.length + res.longs.length;
         }
 
         // 📋 Copy prompt tailored for current Class and Subject
@@ -1858,9 +2190,16 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             const timeValue = document.getElementById('timeAllowed').value;
             let marksValue = document.getElementById('maxMarks').value; const marks = marksValue === 'none' ? '________' : marksValue;
             const isEnglish = subject.toLowerCase().includes('english') || subject.includes('अंग्रेज़ी');
-            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table">`;
-            if (timeValue === 'none') { headerHTML += `<tr><td style="text-align: left; width: 33%;">विषय : <span>${subject}</span></td><td style="text-align: center; width: 34%;">कक्षा : <span>${selectedClass}</span></td><td style="text-align: right; width: 33%;">पूर्णांक : <span>${marks}</span></td></tr>`; } 
-            else { headerHTML += `<tr><td style="text-align: left; width: 50%;">विषय : <span>${subject}</span></td><td style="text-align: right; width: 50%;">कक्षा : <span>${selectedClass}</span></td></tr><tr><td style="text-align: left;">समय : <span>${timeValue}</span></td><td style="text-align: right;">पूर्णांक : <span>${marks}</span></td></tr>`; }
+            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table" style="table-layout:auto;width:100%;">`;
+            // Left: कक्षा (ऊपर) + विषय (नीचे) -> bilkul left | Right: पूर्णांक (ऊपर) + समय (नीचे) -> bilkul right
+            // Label aur colon upar-niche barabar; beech ki khali jagah sirf ek hi (c2) column leta hai
+            const _lab = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;padding-right:0;';
+            const _gap = 'text-align:left;vertical-align:top;width:100%;padding-right:1em;';
+            const _val = 'text-align:left;vertical-align:top;white-space:nowrap;width:1%;';
+            const _timeLabel = timeValue === 'none' ? '' : 'समय&nbsp;';
+            const _timeVal = timeValue === 'none' ? '' : `: <span>${timeValue}</span>`;
+            headerHTML += `<tr><td style="${_lab}">कक्षा&nbsp;</td><td style="${_gap}">: <span>${selectedClass}</span></td><td style="${_lab}">पूर्णांक&nbsp;</td><td style="${_val}">: <span>${marks}</span></td></tr>`;
+            headerHTML += `<tr><td style="${_lab}">विषय&nbsp;</td><td style="${_gap}">: <span>${subject}</span></td><td style="${_lab}">${_timeLabel}</td><td style="${_val}">${_timeVal}</td></tr>`;
             headerHTML += `</table></div>`;
 
             refreshSectionBoxes();
@@ -1875,7 +2214,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 
                 mcqBlocks.forEach(block => {
                     updateBlockPrefixes(block, true);
-                    let txt = block.querySelector('.mcq-text').value.trim() || 'Question text...'; txt = _safeHtml(txt).replace(/\n+/g, '<br>'); 
+                    let txt = block.querySelector('.mcq-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>'); 
                     const m = block.querySelector('.mcq-marks').value.trim() || '1'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
                     
                     let customLayout = block.getAttribute('data-layout');
@@ -1883,7 +2222,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                     if (customLayout === '2x2') { gridStyle = 'style="grid-template-columns: repeat(2, minmax(0, 1fr)) !important;"'; } 
                     else if (customLayout === '1x1') { gridStyle = 'style="grid-template-columns: 1fr !important;"'; }
 
-                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').textContent}</strong> ${_safeHtml(block.querySelector('.mcq-op-a').value.trim())}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').textContent}</strong> ${_safeHtml(block.querySelector('.mcq-op-b').value.trim())}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').textContent}</strong> ${_safeHtml(block.querySelector('.mcq-op-c').value.trim())}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').textContent}</strong> ${_safeHtml(block.querySelector('.mcq-op-d').value.trim())}</div></div></div>`;
+                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').textContent}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').textContent}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').textContent}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').textContent}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
                     globalQNumber++;
                 });
             }
@@ -1892,7 +2231,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 const blocks = document.querySelectorAll(selector);
                 if(blocks.length > 0) {
                     blocks.forEach(block => {
-                        let txt = block.querySelector('.normal-text').value.trim() || 'Question text...'; txt = _safeHtml(txt).replace(/\n+/g, '<br>');
+                        let txt = block.querySelector('.normal-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>');
                         const m = block.querySelector('.normal-marks').value.trim() || '0'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
                         bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
                     });
@@ -1989,8 +2328,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 let ppr = '';
                 if (o.keepNext) ppr += '<w:keepNext/>';
                 if (o.keepLines) ppr += '<w:keepLines/>';
-                if (o.tabs && o.tabs.length) ppr += '<w:tabs>' + o.tabs.map(t => `<w:tab w:val="${t.v}" w:pos="${t.p}"/>`).join('') + '</w:tabs>';
-                else if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
+                if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
                 if (o.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="2" w:color="000000"/></w:pBdr>';
                 ppr += `<w:spacing w:before="${o.before || 0}" w:after="${o.after === undefined ? 40 : o.after}" w:line="${o.line || lineVal}" w:lineRule="auto"/>`;
                 if (o.ind) ppr += `<w:ind w:left="${o.ind}"/>`;
@@ -2017,16 +2355,27 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             const school = doc.querySelector('.print-school'); const exam = doc.querySelector('.print-exam');
             if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
             if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
-            // Header: table nahi - tab-stop wale seedhe paragraph (edit karna aasan)
-            const _mrows = Array.from(doc.querySelectorAll('.print-meta-table tr'));
-            _mrows.forEach((tr, ri) => {
-                const tds = Array.from(tr.querySelectorAll('td'));
-                const runs = [];
-                tds.forEach((td, k) => { if (k) runs.push({ tab: true }); runs.push({ t: td.textContent.replace(/\s+/g, ' ').trim() }); });
-                const tabs = tds.length === 3 ? [{ v: 'center', p: Math.round(colW / 2) }, { v: 'right', p: colW }] : (tds.length === 2 ? [{ v: 'right', p: colW }] : []);
-                const last = ri === _mrows.length - 1;
-                body += para(runs, { bold: true, tabs, after: last ? 60 : 10, line: 240, sizePx: szQ, border: last });
+            const metaRows = []; let metaWidths = [];
+            const _mTr = Array.from(doc.querySelectorAll('.print-meta-table tr')).map(tr => Array.from(tr.querySelectorAll('td')));
+            const _mTxt = td => td.textContent.replace(/\s+/g, ' ').trim();
+            if (_mTr.length && _mTr[0].length === 4) {
+                // 4 columns: label | : value (free space) | label | : value  -> left bilkul left, right bilkul right
+                // Asli text ki chaudai napo (bold, wahi font/size) -> label aur colon ke beech sirf single space
+                let _ctx = null; try { _ctx = document.createElement('canvas').getContext('2d'); _ctx.font = 'bold ' + szQ + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
+                const _mw = t => _ctx ? _ctx.measureText(t).width : t.length * szQ * 0.62;
+                const _tw = t => Math.ceil(_mw(t) * 15 * 1.02) + 20; // px -> twips (+ tiny safety, cell margin ab 0)
+                const mxw = c => Math.max(...(_mTr.map(r => _tw(_mTxt(r[c]) || ' '))), 0);
+                const _sp = Math.ceil(_mw(' ') * 15);
+                let w1 = mxw(0) + _sp, w3 = mxw(2) + _sp, w4 = mxw(3);
+                let w2 = colW - w1 - w3 - w4;
+                if (w2 < Math.round(colW * 0.08)) { const k = (colW - Math.round(colW * 0.08)) / (w1 + w3 + w4); w1 = Math.floor(w1 * k); w3 = Math.floor(w3 * k); w4 = Math.floor(w4 * k); w2 = colW - w1 - w3 - w4; }
+                metaWidths = [w1, w2, w3, w4];
+            }
+            _mTr.forEach(tds => {
+                if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
+                metaRows.push(tds.map(td => { const st = td.getAttribute('style') || ''; const al = st.includes('text-align: right') || st.includes('text-align:right') ? 'right' : (st.includes('center') ? 'center' : 'left'); return para([{ t: _mTxt(td) }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
             });
+            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true, true); }
 
             // ---- Body ----
             doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-note, :scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
@@ -2048,23 +2397,14 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                     let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
                     if (st.includes('repeat(2')) cols = 2; else if (st.includes('1fr')) cols = 1;
                     const indent = 375; const tw = colW - indent; const cw = Math.floor(tw / cols);
-                    const list = Array.from(opts);
-                    // Table nahi: ek row = ek paragraph + tab stops. Option column me na aaye to har option alag line.
-                    let _oc = null; try { _oc = document.createElement('canvas').getContext('2d'); _oc.font = (boldAllDoc ? 'bold ' : '') + szOpt + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
-                    const fitsCol = o => { const t = o.textContent.replace(/\s+/g, ' ').trim(); const w = _oc ? _oc.measureText(t).width * 15 * 1.06 : t.length * szOpt * 15 * 0.6; return w <= cw - 150; };
+                    const rows = []; const list = Array.from(opts);
                     for (let i = 0; i < list.length; i += cols) {
-                        const rowOpts = list.slice(i, i + cols);
-                        const lastRow = i + cols >= list.length;
-                        const aft = lastRow ? 80 : 20;
-                        if (cols > 1 && rowOpts.every(fitsCol)) {
-                            const runs = [];
-                            rowOpts.forEach((o, k) => { if (k) runs.push({ tab: true }); collect(o, {}, []).forEach(r => runs.push(r)); });
-                            const tabs = rowOpts.slice(1).map((_, k) => ({ v: 'left', p: indent + (k + 1) * cw }));
-                            body += para(runs, { ind: indent, tabs, after: aft, sizePx: szOpt });
-                        } else {
-                            rowOpts.forEach((o, k) => { body += para(collect(o, {}, []), { ind: indent, after: (lastRow && k === rowOpts.length - 1) ? 80 : 20, sizePx: szOpt }); });
-                        }
+                        const row = list.slice(i, i + cols).map(o => para(collect(o, {}, []), { after: 20, sizePx: szOpt }));
+                        while (row.length < cols) row.push('');
+                        rows.push(row);
                     }
+                    body += table(rows, Array(cols).fill(cw), indent, false);
+                    body += para([], { after: 0, line: 240, sizePx: 6 });
                 }
             });
             return body; };
