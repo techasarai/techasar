@@ -1584,15 +1584,15 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 }
             }
             const t0 = _takeMarks(text); text = t0.text; if (!marks) marks = t0.marks;
+            if (q.strip) { const st0 = _stripQNum(text); if (st0) text = st0; }
             const textBefore = text;
             if (ops.filter(Boolean).length < 2) {
                 const r = _splitInlineOptions(text);
                 if (r) { text = r.head; ops = r.opts.map(o => o.replace(/\s+/g, ' ').trim()); }
             }
-            if (q.strip) { const st = _stripQNum(text); if (st) text = st; }
             ops = _stripOptPrefixes(ops);
             if (ops.length) { const t = _takeMarks(ops[ops.length - 1]); if (t.marks) { ops[ops.length - 1] = t.text; if (!marks) marks = t.marks; } }
-            text = text.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+            text = text.replace(/[ \t]+\n/g, '\n').replace(/\n{2,}/g, '\n').trim();
             if (!text) return;
             let sec = q.sec || 0;
             const nOps = ops.filter(Boolean).length;
@@ -1727,7 +1727,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                     if (cur.options.length) cur.options[cur.options.length - 1] += ' ' + s;
                     else {
                         const keep = /^\s{2,}/.test(line) && /[{};=<>()]/.test(s);
-                        cur.text += (pendBlank ? '\n\n' : '\n') + (keep ? line.replace(/\s+$/, '') : s);
+                        cur.text += '\n' + (keep ? line.replace(/\s+$/, '') : s);
                     }
                 } else if (sec > 0 || /[?？।]/.test(s)) {
                     cur = { sec, text: s, options: [], marks: null, opSet: null };
@@ -2280,7 +2280,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
         }
         // Line breaks + code ki indentation (leading spaces) bachakar
         function _fmtQ(t) {
-            t = _safeQ(String(t).replace(/\r/g, '').trim()).replace(/\n{3,}/g, '\n\n');
+            t = _safeQ(String(t).replace(/\r/g, '').trim()).replace(/[ \t]*\n(?:[ \t]*\n)+/g, '\n');
             return t.split('\n').map(l => l.replace(/^[ \t]+/, m => '&nbsp;'.repeat(m.replace(/\t/g, '    ').length)).replace(/ {2,}/g, m => ' ' + '&nbsp;'.repeat(m.length - 1))).join('<br>');
         }
         function _xe(s) { return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -2369,14 +2369,17 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             const marksW = hasMarks ? 620 : 0;
             let _mctx = null; try { _mctx = document.createElement('canvas').getContext('2d'); } catch (e) {}
             const mTw = (txt, px, bold) => { if (_mctx) { _mctx.font = (bold ? 'bold ' : '') + px + 'px "' + fontName + '", "Nirmala UI", sans-serif'; return _mctx.measureText(txt).width * 15; } return txt.length * px * 0.65 * 15; };
-            // ---- height andaza (2x mein lamba paper page-page par bantne ke liye) ----
-            const LF = 1.35;
-            const parH = (lines, px, o) => lines * px * 15 * LF * (((o && o.line) || lineVal) / 240) + ((o && o.before) || 0) + ((o && o.after === undefined) ? 40 : ((o && o.after) || 0));
-            const textLines = (runs, px, availTw, pre) => {
-                let lines = 0, cur = pre || '';
-                const flush = () => { lines += Math.max(1, Math.ceil(mTw(cur, px, false) * 1.12 / Math.max(availTw, 600))); cur = ''; };
-                runs.forEach(r => { if (r.br) flush(); else if (r.tab) cur += '    '; else if (r.t) cur += r.t; });
-                flush(); return lines;
+            // ---- height ka asli naap (browser mein wahi font) -> 2x mein page-page par sahi baantne ke liye ----
+            let _probe = null; const _lhc = {};
+            const mBox = () => { if (!_probe) { _probe = document.createElement('div'); _probe.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;line-height:normal;margin:0;padding:0;border:0;'; document.body.appendChild(_probe); } _probe.style.fontFamily = '"' + fontName + '", "Nirmala UI", sans-serif'; return _probe; };
+            const lineTw = px => { if (_lhc[px]) return _lhc[px]; const b = mBox(); b.style.fontSize = px + 'px'; b.style.width = '5000px'; b.style.fontWeight = '400'; b.textContent = 'Ag\u0905'; const h = b.getBoundingClientRect().height; return (_lhc[px] = (h > 0 ? h : px * 1.4) * 15); };
+            const parH = (lines, px, o) => lines * lineTw(px) * 1.04 * (((o && o.line) || lineVal) / 240) + ((o && o.before) || 0) + ((o && o.after === undefined) ? 40 : ((o && o.after) || 0));
+            const textLines = (runs, px, availTw, pre, bold) => {
+                const b = mBox(); b.style.fontSize = px + 'px'; b.style.width = (Math.max(availTw, 600) / 15) + 'px'; b.style.fontWeight = bold ? '700' : '400';
+                let t = pre || ''; runs.forEach(r => { if (r.br) t += '\n'; else if (r.tab) t += '    '; else if (r.t) t += r.t; });
+                b.textContent = t || ' ';
+                const lines = Math.max(1, Math.round(b.getBoundingClientRect().height * 15 / lineTw(px)));
+                b.textContent = ''; return lines;
             };
             const makeBlocks = () => {
                 linkN = 0; const blocks = []; const add = (x, h) => blocks.push({ x, h });
@@ -2408,12 +2411,13 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                     const pf = qCell.querySelector('strong'); if (pf) pf.remove();   // "प्रश्न 1." ab Word ki auto-numbering hai
                     const runs = collect(qCell, {}, []);
                     if (runs.length && runs[0].t !== undefined) runs[0].t = runs[0].t.replace(/^\s+/, '');
+                    const qRunsM = runs.slice();
                     const mCell = el.querySelector('.print-q-marks');
                     const mTxt = mCell ? mCell.textContent.trim() : '';
                     if (hasMarks && mTxt) { runs.push({ tab: true }); runs.push({ t: mTxt, b: true }); }
                     const opts = Array.from(el.querySelectorAll('.print-opt-col'));
-                    const qo = { num: numId, tabRight: hasMarks ? colW : 0, indR: marksW, keepNext: opts.length > 0, keepLines: true, sizePx: szQ, after: opts.length ? 20 : 100 };
-                    let qx = para(runs, qo), qh = parH(textLines(runs, szQ, colW - marksW, lvlText.replace('%1', '00') + ' '), szQ, qo);
+                    const qo = { num: numId, tabRight: hasMarks ? colW : 0, indR: marksW, keepNext: opts.length > 0, keepLines: true, sizePx: szQ, after: opts.length ? 20 : 60 };
+                    let qx = para(runs, qo), qh = parH(textLines(qRunsM, szQ, colW - marksW, lvlText.replace('%1', '00') + ' '), szQ, qo);
                     if (opts.length) {
                         const st = (el.querySelector('.print-options-container').getAttribute('style') || '');
                         let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
@@ -2427,7 +2431,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                         for (let i = 0; i < opts.length; i += cols) {
                             const r2 = []; opts.slice(i, i + cols).forEach((o, j) => { if (j) r2.push({ tab: true }); collect(o, {}, r2); });
                             const last = i + cols >= opts.length;
-                            const oo = { ind: indent, tabs: tabs.length ? tabs : null, keepNext: !last, keepLines: true, after: last ? 100 : 20, sizePx: szOpt };
+                            const oo = { ind: indent, tabs: tabs.length ? tabs : null, keepNext: !last, keepLines: true, after: last ? 60 : 20, sizePx: szOpt };
                             qx += para(r2, oo); qh += parH(cols === 1 ? textLines(r2, szOpt, colW - indent) : 1, szOpt, oo);
                         }
                     }
@@ -2443,7 +2447,7 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 linkMode = linked ? 'ref' : 'none'; numId = 2; const R = makeBlocks();
                 linkMode = 'none';
                 // lamba paper: page-page par baanto - har landscape page par left = copy ka hissa, right = wahi hissa (jodi kabhi nahi tootti)
-                const cap = (pageH - 2 * marginTw - 500) * 0.9;
+                const cap = (pageH - 2 * marginTw) * 0.94 - 300;
                 const pages = []; let cur = [], hh = 0;
                 L.forEach((bk, i) => { if (cur.length && hh + bk.h > cap) { pages.push(cur); cur = []; hh = 0; } cur.push(i); hh += bk.h; });
                 if (cur.length) pages.push(cur);
