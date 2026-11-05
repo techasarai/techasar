@@ -2341,9 +2341,10 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 if (o.keepLines) ppr += '<w:keepLines/>';
                 if (o.num) ppr += `<w:numPr><w:ilvl w:val="0"/><w:numId w:val="${o.num}"/></w:numPr>`;
                 if (o.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="2" w:color="000000"/></w:pBdr>';
-                if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
+                if (o.tabs) ppr += `<w:tabs>${o.tabs.join('')}</w:tabs>`;
+                else if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
                 ppr += `<w:spacing w:before="${o.before || 0}" w:after="${o.after === undefined ? 40 : o.after}" w:line="${o.line || lineVal}" w:lineRule="auto"/>`;
-                if (o.ind) ppr += `<w:ind w:left="${o.ind}"/>`;
+                if (o.ind || o.indR) ppr += `<w:ind w:left="${o.ind || 0}"${o.indR ? ` w:right="${o.indR}"` : ''}/>`;
                 if (o.align) ppr += `<w:jc w:val="${o.align}"/>`;
                 let inner = runs.map(r => runXml(r, sizePx, o.bold, o.underline)).join('');
                 if (linkMode !== 'none' && runs.length) {
@@ -2367,48 +2368,28 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
             const school = doc.querySelector('.print-school'); const exam = doc.querySelector('.print-exam');
             if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
             if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
-            const metaRows = []; let metaWidths = [];
             const _mTr = Array.from(doc.querySelectorAll('.print-meta-table tr')).map(tr => Array.from(tr.querySelectorAll('td')));
             const _mTxt = td => td.textContent.replace(/\s+/g, ' ').trim();
-            if (_mTr.length && _mTr[0].length === 4) {
-                // 4 columns: label | : value (free space) | label | : value  -> left bilkul left, right bilkul right
-                // Asli text ki chaudai napo (bold, wahi font/size) -> label aur colon ke beech sirf single space
-                let _ctx = null; try { _ctx = document.createElement('canvas').getContext('2d'); _ctx.font = 'bold ' + szQ + 'px "' + fontName + '", "Nirmala UI", sans-serif'; } catch (e) {}
-                const _mw = t => _ctx ? _ctx.measureText(t).width : t.length * szQ * 0.62;
-                const _tw = t => Math.ceil(_mw(t) * 15 * 1.02) + 20; // px -> twips (+ tiny safety, cell margin ab 0)
-                const mxw = c => Math.max(...(_mTr.map(r => _tw(_mTxt(r[c]) || ' '))), 0);
-                const _sp = Math.ceil(_mw(' ') * 15);
-                let w1 = mxw(0) + _sp, w3 = mxw(2) + _sp, w4 = Math.ceil(mxw(3) * 1.3);
-                let w2 = colW - w1 - w3 - w4;
-                if (w2 < Math.round(colW * 0.08)) { const k = (colW - Math.round(colW * 0.08)) / (w1 + w3 + w4); w1 = Math.floor(w1 * k); w3 = Math.floor(w3 * k); w4 = Math.floor(w4 * k); w2 = colW - w1 - w3 - w4; }
-                metaWidths = [w1, w2, w3, w4];
-            }
-            _mTr.forEach(tds => {
-                if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
-                metaRows.push(tds.map(td => { const st = td.getAttribute('style') || ''; const al = st.includes('text-align: right') || st.includes('text-align:right') ? 'right' : (st.includes('center') ? 'center' : 'left'); return para([{ t: _mTxt(td) }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
+            _mTr.forEach((tds, ri) => {
+                const t = tds.map(_mTxt);
+                const parts = t.length === 4 ? [(t[0] + ' ' + t[1]).trim(), (t[2] + ' ' + t[3]).trim()] : t;
+                const runs = []; parts.forEach((p, i) => { if (i) runs.push({ tab: true }); runs.push({ t: p, b: true }); });
+                const tabs = parts.length === 3 ? [`<w:tab w:val="center" w:pos="${Math.round(colW / 2)}"/>`, `<w:tab w:val="right" w:pos="${colW}"/>`] : [`<w:tab w:val="right" w:pos="${colW}"/>`];
+                body += para(runs, { bold: true, tabs, after: ri === _mTr.length - 1 ? 40 : 10, line: 240, sizePx: szQ, border: ri === _mTr.length - 1 });
             });
-            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true, true, false, '<w:noWrap/>'); }
 
             // ---- Body ---- (print jaisa: text | marks, text marks se pehle hi wrap; har question ek row; Word auto-numbering)
             const content = doc.querySelector('.single-paper-content');
             const hasMarks = !!content.querySelector('.print-q-marks');
-            const marksW = hasMarks ? 620 : 0, padR = 180;
-            const qTextW = colW - marksW, innerW = qTextW - padR;
-            const rowsAcc = [];
-            const flushRows = () => {
-                if (!rowsAcc.length) return;
-                body += `<w:tbl><w:tblPr><w:tblW w:w="${colW}" w:type="dxa"/>${noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${qTextW}"/>${hasMarks ? `<w:gridCol w:w="${marksW}"/>` : ''}</w:tblGrid>`
-                    + rowsAcc.map(r => `<w:tr><w:trPr><w:cantSplit/></w:trPr><w:tc><w:tcPr><w:tcW w:w="${qTextW}" w:type="dxa"/><w:tcMar><w:right w:w="${padR}" w:type="dxa"/></w:tcMar></w:tcPr>${r.q}</w:tc>${hasMarks ? `<w:tc><w:tcPr><w:tcW w:w="${marksW}" w:type="dxa"/></w:tcPr>${r.m}</w:tc>` : ''}</w:tr>`).join('') + '</w:tbl>';
-                rowsAcc.length = 0;
-            };
+            const marksW = hasMarks ? 620 : 0;
+            let _mctx = null; try { _mctx = document.createElement('canvas').getContext('2d'); } catch (e) {}
+            const mTw = (txt, px, bold) => { if (_mctx) { _mctx.font = (bold ? 'bold ' : '') + px + 'px "' + fontName + '", "Nirmala UI", sans-serif'; return _mctx.measureText(txt).width * 15; } return txt.length * px * 0.65 * 15; };
             content.querySelectorAll(':scope > .print-note, :scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
                 if (el.classList.contains('print-note')) {
-                    flushRows();
                     body += para([{ t: el.textContent.trim() }], { bold: true, sizePx: szQ, before: twoUp ? 40 : 80, after: twoUp ? 20 : 40, line: 240 });
                     return;
                 }
                 if (el.classList.contains('print-section-heading')) {
-                    flushRows();
                     body += para([{ t: el.textContent }], { align: 'center', bold: true, underline: true, sizePx: szHead, before: twoUp ? 120 : 200, after: 100, keepNext: true, line: 240 });
                     return;
                 }
@@ -2417,25 +2398,27 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 const runs = collect(qCell, {}, []);
                 if (runs.length && runs[0].t !== undefined) runs[0].t = runs[0].t.replace(/^\s+/, '');
                 const mCell = el.querySelector('.print-q-marks');
-                const opts = el.querySelectorAll('.print-opt-col');
-                let qx = para(runs, { num: numId, keepNext: opts.length > 0, sizePx: szQ, after: opts.length ? 20 : 100 });
+                const mTxt = mCell ? mCell.textContent.trim() : '';
+                if (hasMarks && mTxt) { runs.push({ tab: true }); runs.push({ t: mTxt, b: true }); }
+                const opts = Array.from(el.querySelectorAll('.print-opt-col'));
+                body += para(runs, { num: numId, tabRight: hasMarks ? colW : 0, indR: marksW, keepNext: opts.length > 0, sizePx: szQ, after: opts.length ? 20 : 100 });
                 if (opts.length) {
                     const st = (el.querySelector('.print-options-container').getAttribute('style') || '');
                     let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
                     if (st.includes('repeat(2')) cols = 2; else if (st.includes('1fr')) cols = 1;
-                    const indent = 375; const cw = Math.floor((innerW - indent) / cols);
-                    const orows = []; const list = Array.from(opts);
-                    for (let i = 0; i < list.length; i += cols) {
-                        const row = list.slice(i, i + cols).map(o => para(collect(o, {}, []), { after: 20, sizePx: szOpt }));
-                        while (row.length < cols) row.push('');
-                        orows.push(row);
+                    const indent = 375;
+                    // lamba option ho to columns apne aap kam (4 -> 2 -> 1) taaki text ek doosre par na chadhe
+                    const info = opts.map(o => { const lab = o.querySelector('strong'); const lt = lab ? lab.textContent : ''; const full = o.textContent.replace(/\s+/g, ' ').trim(); return { w: (mTw(lt + ' ', szOpt, true) + mTw(full.slice(lt.length), szOpt, false)) * 1.12, br: !!o.querySelector('br') }; });
+                    while (cols > 1) { const c0 = Math.floor((colW - indent) / cols) - 100; if (info.some(x => x.w > c0 || x.br)) cols = cols === 4 ? 2 : 1; else break; }
+                    const cw = Math.floor((colW - indent) / cols);
+                    const tabs = []; for (let k = 1; k < cols; k++) tabs.push(`<w:tab w:val="left" w:pos="${indent + k * cw}"/>`);
+                    for (let i = 0; i < opts.length; i += cols) {
+                        const r2 = []; opts.slice(i, i + cols).forEach((o, j) => { if (j) r2.push({ tab: true }); collect(o, {}, r2); });
+                        const last = i + cols >= opts.length;
+                        body += para(r2, { ind: indent, tabs: tabs.length ? tabs : null, keepNext: !last, after: last ? 100 : 20, sizePx: szOpt });
                     }
-                    qx += table(orows, Array(cols).fill(cw), indent, false, false, true) + para([], { after: 100, line: 240, sizePx: 4 });
                 }
-                const mx = hasMarks ? para(mCell && mCell.textContent.trim() ? [{ t: mCell.textContent.trim(), b: true }] : [], { align: 'right', sizePx: szQ, after: 0 }) : '';
-                rowsAcc.push({ q: qx, m: mx });
             });
-            flushRows();
             body += para([], { after: 0, line: 240, sizePx: 4 });
             return body; };
             let body;
@@ -2444,16 +2427,13 @@ body.day-theme .toast-msg { color: #0f172a; background: rgba(255, 255, 255, 0.62
                 linkMode = linked ? 'orig' : 'none'; numId = 1; const leftBody = makeBody();
                 linkMode = linked ? 'ref' : 'none'; numId = 2; const rightBody = makeBody();
                 linkMode = 'none';
-                const tc = (w, content, dashed) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${dashed ? '<w:tcBorders><w:right w:val="dashed" w:sz="8" w:space="0" w:color="000000"/></w:tcBorders>' : ''}</w:tcPr>${content}</w:tc>`;
-                const rowH = pageH - 2 * marginTw - 500;
-                const w2 = colW * 2 + gapW;
-                body = para([], { after: 0, sizePx: 8, line: 240 }) + `<w:tbl><w:tblPr><w:tblW w:w="${w2}" w:type="dxa"/>${noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${colW}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${colW}"/></w:tblGrid><w:tr><w:trPr><w:trHeight w:val="${rowH}" w:hRule="atLeast"/></w:trPr>${tc(colW, leftBody)}${tc(gapW / 2, '<w:p/>', true)}${tc(gapW / 2, '<w:p/>')}${tc(colW, rightBody)}</w:tr></w:tbl>` + para([], { after: 0, sizePx: 8, line: 240 });
+                body = leftBody + rightBody.replace('</w:pPr>', '</w:pPr><w:r><w:br w:type="column"/></w:r>');   // doosri copy 2nd column mein
             } else {
                 numId = 1; body = makeBody();
             }
 
             const W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
-            const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${body}<w:sectPr><w:pgSz w:w="${pageW}" w:h="${pageH}"${twoUp ? ' w:orient="landscape"' : ''}/><w:pgMar w:top="${marginTw}" w:right="${marginTw}" w:bottom="${marginTw}" w:left="${marginTw}" w:header="400" w:footer="400" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+            const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${body}<w:sectPr><w:pgSz w:w="${pageW}" w:h="${pageH}"${twoUp ? ' w:orient="landscape"' : ''}/><w:pgMar w:top="${marginTw}" w:right="${marginTw}" w:bottom="${marginTw}" w:left="${marginTw}" w:header="400" w:footer="400" w:gutter="0"/>${twoUp ? `<w:cols w:num="2" w:space="${gapW}" w:sep="1"/>` : ''}</w:sectPr></w:body></w:document>`;
             const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${W}><w:docDefaults><w:rPrDefault><w:rPr>${fontXml}<w:sz w:val="${hp(fontPx)}"/><w:szCs w:val="${hp(fontPx)}"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="hi-IN"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="40" w:line="${lineVal}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`;
             const _pf = doc.querySelector('.print-q-text strong');
             const lvlText = (_pf ? _pf.textContent.trim() : 'प्रश्न 1.').replace(/\d+/, '%1');
